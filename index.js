@@ -3,17 +3,19 @@ require('dotenv').config();
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
+const path = require('path');
 const { getAccessToken } = require('./daraja');
 const { initiateSTKPush } = require('./stkpush'); // Fixed: changed from './stkPush' to './stkpush'
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.static(__dirname));
 
 const PORT = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
-  res.send('Daraja API is live!');
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.get('/access-token', async (req, res) => {
