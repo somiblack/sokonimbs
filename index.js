@@ -4,7 +4,7 @@ const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
 const { getAccessToken } = require('./daraja');
-const { initiateSTKPush } = require('./stkPush'); // Add this line
+const { initiateSTKPush } = require('./stkpush'); // Fixed: changed from './stkPush' to './stkpush'
 
 const app = express();
 app.use(cors());
