@@ -304,7 +304,7 @@
                             id="phoneNumber" 
                             class="phone-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none"
                             placeholder="0712345678"
-                            maxlength="10"
+                            maxlength="12"
                             required
                         >
                         <p id="phoneError" class="text-red-500 text-sm mt-1 hidden"></p>
@@ -347,28 +347,41 @@
         // Phone number formatting and validation
         function formatPhoneNumber(value) {
             // Remove all non-digits
-            const digits = value.replace(/\D/g, '');
+            let digits = value.replace(/\D/g, '');
             
             // Handle different input formats
             if (digits.startsWith('254')) {
-                return digits.slice(3); // Remove country code
+                digits = digits.slice(3); // Remove country code
             } else if (digits.startsWith('0')) {
-                return digits.slice(1); // Remove leading zero
+                digits = digits.slice(1); // Remove leading zero
             }
+            
+            // Limit to 9 digits (after removing 0 or 254)
+            digits = digits.slice(0, 9);
+            
             return digits;
         }
 
         function validatePhoneNumber(phone) {
-            const formatted = formatPhoneNumber(phone);
-            return /^[17]\d{8}$/.test(formatted); // Safaricom numbers start with 1 or 7
+            const digits = formatPhoneNumber(phone);
+            // Safaricom numbers: 7xxxxxxxx or 1xxxxxxxx (9 digits after removing 0)
+            return /^[17]\d{8}$/.test(digits);
         }
 
         function displayPhoneNumber(phone) {
-            const formatted = formatPhoneNumber(phone);
-            if (formatted.length >= 3) {
-                return `0${formatted.slice(0, 3)} ${formatted.slice(3, 6)} ${formatted.slice(6)}`.trim();
+            const digits = formatPhoneNumber(phone);
+            
+            if (digits.length === 0) return '';
+            
+            // Always start with 0
+            let formatted = '0' + digits;
+            
+            // Add spaces for better readability
+            if (digits.length >= 3) {
+                formatted = `0${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6)}`.trim();
             }
-            return `0${formatted}`;
+            
+            return formatted;
         }
 
         // Phone input event listeners
@@ -377,20 +390,49 @@
             const phoneError = document.getElementById('phoneError');
 
             phoneInput.addEventListener('input', function(e) {
-                const value = e.target.value;
-                const formatted = formatPhoneNumber(value);
+                const cursorPosition = e.target.selectionStart;
+                const oldValue = e.target.value;
+                const newValue = displayPhoneNumber(e.target.value);
                 
-                // Update display
-                e.target.value = displayPhoneNumber(value);
+                // Update the input value
+                e.target.value = newValue;
                 
-                // Validate
-                if (value && !validatePhoneNumber(value)) {
-                    phoneInput.classList.add('error');
-                    phoneError.textContent = 'Please enter a valid Safaricom number (07xxxxxxxx or 01xxxxxxxx)';
-                    phoneError.classList.remove('hidden');
+                // Restore cursor position (approximately)
+                const lengthDiff = newValue.length - oldValue.length;
+                const newCursorPosition = Math.min(cursorPosition + lengthDiff, newValue.length);
+                e.target.setSelectionRange(newCursorPosition, newCursorPosition);
+                
+                // Validate only if user has entered something
+                if (newValue.length > 1) {
+                    if (!validatePhoneNumber(newValue)) {
+                        phoneInput.classList.add('error');
+                        phoneError.textContent = 'Please enter a valid Safaricom number (07xxxxxxxx or 01xxxxxxxx)';
+                        phoneError.classList.remove('hidden');
+                    } else {
+                        phoneInput.classList.remove('error');
+                        phoneError.classList.add('hidden');
+                    }
                 } else {
                     phoneInput.classList.remove('error');
                     phoneError.classList.add('hidden');
+                }
+            });
+
+            phoneInput.addEventListener('keydown', function(e) {
+                // Allow backspace, delete, tab, escape, enter
+                if ([8, 9, 27, 13, 46].indexOf(e.keyCode) !== -1 ||
+                    // Allow Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+                    (e.keyCode === 65 && e.ctrlKey === true) ||
+                    (e.keyCode === 67 && e.ctrlKey === true) ||
+                    (e.keyCode === 86 && e.ctrlKey === true) ||
+                    (e.keyCode === 88 && e.ctrlKey === true) ||
+                    // Allow home, end, left, right
+                    (e.keyCode >= 35 && e.keyCode <= 39)) {
+                    return;
+                }
+                // Ensure that it is a number and stop the keypress
+                if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                    e.preventDefault();
                 }
             });
 
@@ -442,7 +484,13 @@
             document.getElementById('bundleDetails').textContent = `${bundleName} - Ksh ${price}`;
             document.getElementById('phoneLabel').textContent = forAnother ? 'Recipient\'s Phone Number' : 'Your Phone Number';
             document.getElementById('purchaseModal').classList.remove('hidden');
-            document.getElementById('phoneNumber').focus();
+            
+            // Clear and focus the phone input
+            const phoneInput = document.getElementById('phoneNumber');
+            phoneInput.value = '';
+            phoneInput.classList.remove('error');
+            document.getElementById('phoneError').classList.add('hidden');
+            setTimeout(() => phoneInput.focus(), 100);
         }
 
         function closeModal() {
@@ -479,7 +527,7 @@
                 // Format phone number for API (254xxxxxxxxx)
                 const formattedPhone = '254' + formatPhoneNumber(phone);
                 
-                const response = await fetch('http://localhost:3000/stk-push', {
+                const response = await fetch('/stk-push', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
