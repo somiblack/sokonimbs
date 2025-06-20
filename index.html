@@ -137,39 +137,55 @@
         }
 
         .tabs {
-            display: flex;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
             margin-bottom: 30px;
             background: rgba(255, 255, 255, 0.9);
             border-radius: 15px;
-            padding: 10px;
+            padding: 20px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            flex-wrap: wrap;
-            gap: 5px;
         }
 
         .tab {
-            padding: 12px 20px;
-            background: transparent;
-            border: none;
-            border-radius: 10px;
+            padding: 20px 15px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 2px solid #dee2e6;
+            border-radius: 12px;
             cursor: pointer;
             font-weight: 600;
-            color: #7f8c8d;
+            color: #495057;
             transition: all 0.3s ease;
             font-size: 0.9rem;
+            text-align: center;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .tab i {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            display: block;
         }
 
         .tab.active {
-            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
             color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+            border-color: #27ae60;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(39, 174, 96, 0.3);
         }
 
         .tab:hover:not(.active) {
-            background: rgba(39, 174, 96, 0.1);
+            background: linear-gradient(135deg, #e8f5e8, #d4edda);
+            border-color: #27ae60;
             color: #27ae60;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.2);
         }
 
         .tab-content {
@@ -193,8 +209,8 @@
 
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
             margin-bottom: 30px;
         }
 
@@ -211,6 +227,11 @@
             transform: translateY(-5px);
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
             border-color: rgba(39, 174, 96, 0.3);
+        }
+
+        .service-card.hot-card {
+            background: linear-gradient(135deg, #fff8e1 0%, #fff3c4 100%);
+            border: 2px solid #ff9800;
         }
 
         .service-card.data-card {
@@ -233,11 +254,6 @@
             background: linear-gradient(135deg, #f3e5f5 0%, #faf5ff 100%);
         }
 
-        .service-card.hot-offers-card {
-            background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
-            border: 2px solid #ff9800;
-        }
-
         .service-header {
             display: flex;
             align-items: center;
@@ -253,7 +269,7 @@
             color: white;
         }
 
-        .service-icon.hot {
+        .service-icon.hot-icon {
             background: linear-gradient(45deg, #ff9800, #f57c00);
         }
 
@@ -281,18 +297,15 @@
             border-left: 4px solid #27ae60;
         }
 
+        .offer-item.hot-offer {
+            border-left: 4px solid #ff9800;
+            background: rgba(255, 152, 0, 0.1);
+            position: relative;
+        }
+
         .offer-item:hover {
             background: rgba(255, 255, 255, 0.9);
             transform: translateX(5px);
-        }
-
-        .offer-item.hot-offer {
-            border-left: 4px solid #ff9800;
-            background: rgba(255, 193, 7, 0.1);
-        }
-
-        .offer-item.hot-offer:hover {
-            background: rgba(255, 193, 7, 0.2);
         }
 
         .offer-details {
@@ -317,14 +330,19 @@
         }
 
         .hot-badge {
-            background: linear-gradient(45deg, #ff5722, #d84315);
+            background: linear-gradient(45deg, #ff5722, #ff9800);
             color: white;
             padding: 4px 8px;
             border-radius: 12px;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             font-weight: 600;
             margin-left: 10px;
-            animation: pulse 2s infinite;
+            animation: hotPulse 2s infinite;
+        }
+
+        @keyframes hotPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         .discount-badge {
@@ -457,6 +475,50 @@
             box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
         }
 
+        /* Enhanced Buy for Another Option */
+        .buy-for-another-section {
+            background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%);
+            border: 2px solid #27ae60;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .buy-for-another-section::before {
+            content: '🎁';
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            background: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 1.2rem;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+
+        .checkbox-wrapper input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            cursor: pointer;
+            accent-color: #27ae60;
+        }
+
+        .checkbox-wrapper label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #27ae60;
+            cursor: pointer;
+            margin-bottom: 0;
+        }
+
         .calculation-display {
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             padding: 15px;
@@ -527,16 +589,25 @@
                 font-size: 2rem;
             }
 
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
-
             .tabs {
-                flex-direction: column;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+                padding: 15px;
             }
 
             .tab {
+                padding: 15px 10px;
+                min-height: 70px;
+                font-size: 0.8rem;
+            }
+
+            .tab i {
+                font-size: 1.2rem;
                 margin-bottom: 5px;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
             }
 
             .phone-character {
@@ -548,6 +619,12 @@
 
             .floating-icon {
                 font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tabs {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -572,23 +649,41 @@
         </div>
 
         <div class="tabs">
-            <button class="tab active" onclick="showTab('hot-offers')">🔥 Hot Offers</button>
-            <button class="tab" onclick="showTab('data')">Data Bundles</button>
-            <button class="tab" onclick="showTab('sms')">SMS Bundles</button>
-            <button class="tab" onclick="showTab('minutes')">Minutes & Talktime</button>
-            <button class="tab" onclick="showTab('airtime')">Airtime Services</button>
-            <button class="tab" onclick="showTab('bonga')">Bonga Points</button>
+            <button class="tab active" onclick="showTab('hot')">
+                <i class="fas fa-fire"></i>
+                Hot Offers
+            </button>
+            <button class="tab" onclick="showTab('data')">
+                <i class="fas fa-wifi"></i>
+                Data Bundles
+            </button>
+            <button class="tab" onclick="showTab('sms')">
+                <i class="fas fa-sms"></i>
+                SMS Bundles
+            </button>
+            <button class="tab" onclick="showTab('minutes')">
+                <i class="fas fa-phone"></i>
+                Minutes
+            </button>
+            <button class="tab" onclick="showTab('airtime')">
+                <i class="fas fa-coins"></i>
+                Airtime
+            </button>
+            <button class="tab" onclick="showTab('bonga')">
+                <i class="fas fa-star"></i>
+                Bonga Points
+            </button>
         </div>
 
         <!-- Hot Offers Tab -->
-        <div id="hot-offers" class="tab-content active">
+        <div id="hot" class="tab-content active">
             <div class="services-grid">
-                <div class="service-card hot-offers-card">
+                <div class="service-card hot-card">
                     <div class="service-header">
-                        <div class="service-icon hot"><i class="fas fa-fire"></i></div>
-                        <div class="service-title">🔥 Hot Data Offers</div>
+                        <div class="service-icon hot-icon"><i class="fas fa-fire"></i></div>
+                        <div class="service-title">🔥 Hot Offers</div>
                     </div>
-                    <div class="service-description">Limited time special data bundles at unbeatable prices</div>
+                    <div class="service-description">Limited time special deals - grab them while they're hot!</div>
                     
                     <div class="offer-item hot-offer" onclick="openModal('data', 55, '1.25GB - Till Midnight')">
                         <div class="offer-details">
@@ -597,7 +692,7 @@
                         </div>
                         <div>
                             <span class="offer-price">Ksh 55</span>
-                            <span class="hot-badge">HOT</span>
+                            <span class="hot-badge">HOT 🔥</span>
                         </div>
                     </div>
 
@@ -608,7 +703,7 @@
                         </div>
                         <div>
                             <span class="offer-price">Ksh 20</span>
-                            <span class="hot-badge">HOT</span>
+                            <span class="hot-badge">HOT 🔥</span>
                         </div>
                     </div>
 
@@ -619,7 +714,7 @@
                         </div>
                         <div>
                             <span class="offer-price">Ksh 19</span>
-                            <span class="hot-badge">HOT</span>
+                            <span class="hot-badge">HOT 🔥</span>
                         </div>
                     </div>
 
@@ -630,7 +725,7 @@
                         </div>
                         <div>
                             <span class="offer-price">Ksh 50</span>
-                            <span class="hot-badge">HOT</span>
+                            <span class="hot-badge">HOT 🔥</span>
                         </div>
                     </div>
 
@@ -641,7 +736,7 @@
                         </div>
                         <div>
                             <span class="offer-price">Ksh 99</span>
-                            <span class="hot-badge">HOT</span>
+                            <span class="hot-badge">HOT 🔥</span>
                         </div>
                     </div>
 
@@ -652,7 +747,7 @@
                         </div>
                         <div>
                             <span class="offer-price">Ksh 49</span>
-                            <span class="hot-badge">HOT</span>
+                            <span class="hot-badge">HOT 🔥</span>
                         </div>
                     </div>
 
@@ -663,7 +758,7 @@
                         </div>
                         <div>
                             <span class="offer-price">Ksh 300</span>
-                            <span class="hot-badge">HOT</span>
+                            <span class="hot-badge">HOT 🔥</span>
                         </div>
                     </div>
                 </div>
@@ -900,15 +995,18 @@
                     <label for="phone">Your Phone Number:</label>
                     <input type="tel" id="phone" placeholder="0712345678" required>
                 </div>
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" id="buyForAnother"> Buy for another number
-                    </label>
+                
+                <div class="buy-for-another-section">
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="buyForAnother">
+                        <label for="buyForAnother">🎁 Buy for another number</label>
+                    </div>
+                    <div class="form-group" id="recipientPhoneGroup" style="display: none;">
+                        <label for="recipientPhone">Recipient Phone Number:</label>
+                        <input type="tel" id="recipientPhone" placeholder="0712345678">
+                    </div>
                 </div>
-                <div class="form-group" id="recipientPhoneGroup" style="display: none;">
-                    <label for="recipientPhone">Recipient Phone Number:</label>
-                    <input type="tel" id="recipientPhone" placeholder="0712345678">
-                </div>
+                
                 <div class="form-group">
                     <label for="amount">Amount:</label>
                     <input type="number" id="amount" readonly>
@@ -969,15 +1067,18 @@
                     <label for="purchasePhone">Your Phone Number:</label>
                     <input type="tel" id="purchasePhone" placeholder="0712345678" required>
                 </div>
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" id="buyAirtimeForAnother"> Buy for another number
-                    </label>
+                
+                <div class="buy-for-another-section">
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="buyAirtimeForAnother">
+                        <label for="buyAirtimeForAnother">🎁 Buy for another number</label>
+                    </div>
+                    <div class="form-group" id="airtimeRecipientGroup" style="display: none;">
+                        <label for="airtimeRecipientPhone">Recipient Phone Number:</label>
+                        <input type="tel" id="airtimeRecipientPhone" placeholder="0712345678">
+                    </div>
                 </div>
-                <div class="form-group" id="airtimeRecipientGroup" style="display: none;">
-                    <label for="airtimeRecipientPhone">Recipient Phone Number:</label>
-                    <input type="tel" id="airtimeRecipientPhone" placeholder="0712345678">
-                </div>
+                
                 <div class="form-group">
                     <label for="desiredAirtime">Desired Airtime Amount:</label>
                     <input type="number" id="desiredAirtime" placeholder="Enter amount" min="1" required>
