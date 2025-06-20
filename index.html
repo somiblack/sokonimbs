@@ -233,6 +233,11 @@
             background: linear-gradient(135deg, #f3e5f5 0%, #faf5ff 100%);
         }
 
+        .service-card.hot-offers-card {
+            background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+            border: 2px solid #ff9800;
+        }
+
         .service-header {
             display: flex;
             align-items: center;
@@ -246,6 +251,10 @@
             border-radius: 12px;
             background: linear-gradient(45deg, #27ae60, #2ecc71);
             color: white;
+        }
+
+        .service-icon.hot {
+            background: linear-gradient(45deg, #ff9800, #f57c00);
         }
 
         .service-title {
@@ -277,6 +286,15 @@
             transform: translateX(5px);
         }
 
+        .offer-item.hot-offer {
+            border-left: 4px solid #ff9800;
+            background: rgba(255, 193, 7, 0.1);
+        }
+
+        .offer-item.hot-offer:hover {
+            background: rgba(255, 193, 7, 0.2);
+        }
+
         .offer-details {
             flex: 1;
         }
@@ -296,6 +314,17 @@
             font-size: 1.2rem;
             font-weight: 700;
             color: #27ae60;
+        }
+
+        .hot-badge {
+            background: linear-gradient(45deg, #ff5722, #d84315);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 10px;
+            animation: pulse 2s infinite;
         }
 
         .discount-badge {
@@ -543,15 +572,106 @@
         </div>
 
         <div class="tabs">
-            <button class="tab active" onclick="showTab('data')">Data Bundles</button>
+            <button class="tab active" onclick="showTab('hot-offers')">🔥 Hot Offers</button>
+            <button class="tab" onclick="showTab('data')">Data Bundles</button>
             <button class="tab" onclick="showTab('sms')">SMS Bundles</button>
             <button class="tab" onclick="showTab('minutes')">Minutes & Talktime</button>
             <button class="tab" onclick="showTab('airtime')">Airtime Services</button>
             <button class="tab" onclick="showTab('bonga')">Bonga Points</button>
         </div>
 
+        <!-- Hot Offers Tab -->
+        <div id="hot-offers" class="tab-content active">
+            <div class="services-grid">
+                <div class="service-card hot-offers-card">
+                    <div class="service-header">
+                        <div class="service-icon hot"><i class="fas fa-fire"></i></div>
+                        <div class="service-title">🔥 Hot Data Offers</div>
+                    </div>
+                    <div class="service-description">Limited time special data bundles at unbeatable prices</div>
+                    
+                    <div class="offer-item hot-offer" onclick="openModal('data', 55, '1.25GB - Till Midnight')">
+                        <div class="offer-details">
+                            <div class="offer-title">1.25GB Data Bundle</div>
+                            <div class="offer-subtitle">Valid till midnight</div>
+                        </div>
+                        <div>
+                            <span class="offer-price">Ksh 55</span>
+                            <span class="hot-badge">HOT</span>
+                        </div>
+                    </div>
+
+                    <div class="offer-item hot-offer" onclick="openModal('data', 20, '250MB - 24 hours')">
+                        <div class="offer-details">
+                            <div class="offer-title">250MB Data Bundle</div>
+                            <div class="offer-subtitle">Valid for 24 hours</div>
+                        </div>
+                        <div>
+                            <span class="offer-price">Ksh 20</span>
+                            <span class="hot-badge">HOT</span>
+                        </div>
+                    </div>
+
+                    <div class="offer-item hot-offer" onclick="openModal('data', 19, '1GB - 1 hour')">
+                        <div class="offer-details">
+                            <div class="offer-title">1GB Data Bundle</div>
+                            <div class="offer-subtitle">Valid for 1 hour</div>
+                        </div>
+                        <div>
+                            <span class="offer-price">Ksh 19</span>
+                            <span class="hot-badge">HOT</span>
+                        </div>
+                    </div>
+
+                    <div class="offer-item hot-offer" onclick="openModal('data', 50, '1.5GB - 3 hours')">
+                        <div class="offer-details">
+                            <div class="offer-title">1.5GB Data Bundle</div>
+                            <div class="offer-subtitle">Valid for 3 hours</div>
+                        </div>
+                        <div>
+                            <span class="offer-price">Ksh 50</span>
+                            <span class="hot-badge">HOT</span>
+                        </div>
+                    </div>
+
+                    <div class="offer-item hot-offer" onclick="openModal('data', 99, '1GB - 24 hours')">
+                        <div class="offer-details">
+                            <div class="offer-title">1GB Data Bundle</div>
+                            <div class="offer-subtitle">Valid for 24 hours</div>
+                        </div>
+                        <div>
+                            <span class="offer-price">Ksh 99</span>
+                            <span class="hot-badge">HOT</span>
+                        </div>
+                    </div>
+
+                    <div class="offer-item hot-offer" onclick="openModal('data', 49, '350MB - 7 days')">
+                        <div class="offer-details">
+                            <div class="offer-title">350MB Data Bundle</div>
+                            <div class="offer-subtitle">Valid for 7 days</div>
+                        </div>
+                        <div>
+                            <span class="offer-price">Ksh 49</span>
+                            <span class="hot-badge">HOT</span>
+                        </div>
+                    </div>
+
+                    <div class="offer-item hot-offer" onclick="openModal('data', 300, '2.5GB - 7 days')">
+                        <div class="offer-details">
+                            <div class="offer-title">2.5GB Data Bundle</div>
+                            <div class="offer-subtitle">Valid for 7 days</div>
+                        </div>
+                        <div>
+                            <span class="offer-price">Ksh 300</span>
+                            <span class="hot-badge">HOT</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Data Bundles Tab -->
-        <div id="data" class="tab-content active">
+        <div id="data" class="tab-content">
             <div class="services-grid">
                 <div class="service-card data-card">
                     <div class="service-header">
