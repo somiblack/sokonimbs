@@ -4,8 +4,6 @@ const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
 const path = require('path');
-const { getAccessToken } = require('./daraja');
-const { initiateSTKPush } = require('./stkpush'); // Fixed: changed from './stkPush' to './stkpush'
 
 const app = express();
 app.use(cors());
@@ -14,36 +12,54 @@ app.use(express.static(__dirname));
 
 const PORT = process.env.PORT || 3000;
 
+// Lipia API configuration
+const LIPIA_BASE_URL = 'https://lipia-api.kreativelabske.com/api';
+const LIPIA_API_KEY = '79233999f4f4b0e88c6db407d978d439790e5ada';
+
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.get('/access-token', async (req, res) => {
-  try {
-    const token = await getAccessToken();
-    res.json({ access_token: token });
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to get access token' });
-  }
-});
-
 app.post('/stk-push', async (req, res) => {
   try {
-    const response = await initiateSTKPush(req.body);
-    res.json(response);
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to initiate STK Push' });
-  }
-});
+    const { amount, phone } = req.body;
+    
+    // Format phone number for Lipia API (07XXXXXXXX format)
+    let formattedPhone = phone;
+    if (phone.startsWith('254')) {
+      formattedPhone = '0' + phone.slice(3);
+    }
+    
+    const response = await axios.post(
+      `${LIPIA_BASE_URL}/request/stk`,
+      {
+        phone: formattedPhone,
+        amount: amount.toString()
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${LIPIA_API_KEY}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
 
-app.post('/access', async (req, res) => {
-  const { amount, phone } = req.body;
+    // Return success response in format expected by frontend
+    res.json({
+      ResponseCode: '0',
+      ResponseDescription: 'Success. Request accepted for processing',
+      ...response.data
+    });
 
-  try {
-    const result = await initiateSTKPush({ amount, phone });
-    res.json(result);
-  } catch (err) {
-    res.status(500).json({ error: 'STK Push failed', details: err.message });
+  } catch (error) {
+    console.error('Lipia API Error:', error.response?.data || error.message);
+    
+    // Return error response in format expected by frontend
+    res.status(500).json({
+      ResponseCode: '1',
+      ResponseDescription: 'Failed',
+      errorMessage: error.response?.data?.message || 'Payment request failed'
+    });
   }
 });
 
