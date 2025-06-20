@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 
 app.post('/stk-push', async (req, res) => {
   try {
-    const { amount, phone, recipientPhone } = req.body;
+    const { amount, phone, recipientPhone, type, originalAmount, discount } = req.body;
     
     // Format phone number for Lipia API (07XXXXXXXX format)
     let formattedPayerPhone = phone;
@@ -46,13 +46,24 @@ app.post('/stk-push', async (req, res) => {
     );
 
     // Log the transaction details for reference
-    console.log('Transaction Details:', {
+    const transactionDetails = {
       payer: formattedPayerPhone,
       recipient: recipientPhone ? ('0' + recipientPhone.slice(3)) : formattedPayerPhone,
       amount: amount,
-      bundle: 'Data Bundle',
       timestamp: new Date().toISOString()
-    });
+    };
+
+    // Add specific details based on transaction type
+    if (type === 'airtime') {
+      transactionDetails.type = 'Discounted Airtime';
+      transactionDetails.originalAmount = originalAmount;
+      transactionDetails.discount = `${discount}%`;
+      transactionDetails.savings = originalAmount - amount;
+    } else {
+      transactionDetails.type = 'Data Bundle';
+    }
+
+    console.log('Transaction Details:', transactionDetails);
 
     // Return success response in format expected by frontend
     res.json({

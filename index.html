@@ -131,6 +131,60 @@
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
         }
+        
+        /* Tab Styles */
+        .tab-button {
+            transition: all 0.2s;
+        }
+        .tab-button.active {
+            background-color: #10b981;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+        
+        /* Section Styles */
+        .section-hidden {
+            display: none;
+        }
+        
+        /* Discount Badge */
+        .discount-badge {
+            background: linear-gradient(45deg, #ef4444, #dc2626);
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 12px;
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            font-weight: bold;
+        }
+        
+        /* Special Offer Cards */
+        .special-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .renewable-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        
+        .minutes-card {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+        
+        /* Amount Input Styling */
+        .amount-input {
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .amount-input:focus {
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-green-50 to-blue-100 font-sans">
@@ -147,118 +201,313 @@
             <p class="text-gray-600">Affordable & Instant Safaricom Bundles, Airtime & Minutes</p>
         </div>
 
-        <div class="mb-6">
-            <h3 class="text-2xl font-semibold text-blue-700 mb-4 text-center sm:text-left">Data Offers - <span class="text-green-600">Hot Offers</span></h3>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="bundle-card bg-yellow-100 rounded-lg p-4 shadow-md text-center">
-                    <h3 class="text-lg font-bold">1.25GB till Midnight</h3>
-                    <p class="text-gray-800">Ksh 55</p>
-                    <div class="mt-3 space-y-2">
-                        <button onclick="buyBundle('1.25GB till Midnight', 55, false)" class="btn-primary w-full bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg font-medium">Buy Now</button>
-                        <button onclick="buyBundle('1.25GB till Midnight', 55, true)" class="btn-secondary w-full bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+        <!-- Navigation Tabs -->
+        <div class="mb-8">
+            <div class="flex flex-wrap justify-center gap-2 mb-6">
+                <button onclick="showSection('data')" class="tab-button active px-4 py-2 rounded-lg font-medium bg-gray-200 text-gray-700">Data Bundles</button>
+                <button onclick="showSection('airtime')" class="tab-button px-4 py-2 rounded-lg font-medium bg-gray-200 text-gray-700">Airtime Services</button>
+                <button onclick="showSection('sms')" class="tab-button px-4 py-2 rounded-lg font-medium bg-gray-200 text-gray-700">SMS Bundles</button>
+                <button onclick="showSection('renewable')" class="tab-button px-4 py-2 rounded-lg font-medium bg-gray-200 text-gray-700">Renewable Data</button>
+                <button onclick="showSection('minutes')" class="tab-button px-4 py-2 rounded-lg font-medium bg-gray-200 text-gray-700">Minutes & Talktime</button>
+            </div>
+        </div>
+
+        <!-- Data Bundles Section -->
+        <div id="data-section" class="section">
+            <div class="mb-6">
+                <h3 class="text-2xl font-semibold text-blue-700 mb-4 text-center sm:text-left">Data Offers - <span class="text-green-600">Hot Offers</span></h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bundle-card bg-yellow-100 rounded-lg p-4 shadow-md text-center">
+                        <h3 class="text-lg font-bold">1.25GB till Midnight</h3>
+                        <p class="text-gray-800">Ksh 55</p>
+                        <div class="mt-3 space-y-2">
+                            <button onclick="buyBundle('1.25GB till Midnight', 55, false)" class="btn-primary w-full bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg font-medium">Buy Now</button>
+                            <button onclick="buyBundle('1.25GB till Midnight', 55, true)" class="btn-secondary w-full bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+                        </div>
+                    </div>
+                    <div class="bundle-card bg-yellow-100 rounded-lg p-4 shadow-md text-center">
+                        <h3 class="text-lg font-bold">1.2GB - 30 Days</h3>
+                        <p class="text-gray-800">Ksh 250</p>
+                        <div class="mt-3 space-y-2">
+                            <button onclick="buyBundle('1.2GB - 30 Days', 250, false)" class="btn-primary w-full bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg font-medium">Buy Now</button>
+                            <button onclick="buyBundle('1.2GB - 30 Days', 250, true)" class="btn-secondary w-full bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+                        </div>
+                    </div>
+                    <div class="bundle-card bg-yellow-100 rounded-lg p-4 shadow-md text-center">
+                        <h3 class="text-lg font-bold">350MB - Weekly</h3>
+                        <p class="text-gray-800">Ksh 49</p>
+                        <div class="mt-3 space-y-2">
+                            <button onclick="buyBundle('350MB - Weekly', 49, false)" class="btn-primary w-full bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg font-medium">Buy Now</button>
+                            <button onclick="buyBundle('350MB - Weekly', 49, true)" class="btn-secondary w-full bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+                        </div>
+                    </div>
+                    <div class="bundle-card bg-yellow-100 rounded-lg p-4 shadow-md text-center">
+                        <h3 class="text-lg font-bold">1GB - 1 Hour</h3>
+                        <p class="text-gray-800">Ksh 19</p>
+                        <div class="mt-3 space-y-2">
+                            <button onclick="buyBundle('1GB - 1 Hour', 19, false)" class="btn-primary w-full bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg font-medium">Buy Now</button>
+                            <button onclick="buyBundle('1GB - 1 Hour', 19, true)" class="btn-secondary w-full bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+                        </div>
+                    </div>
+                    <div class="bundle-card bg-yellow-100 rounded-lg p-4 shadow-md text-center">
+                        <h3 class="text-lg font-bold">250MB - 24 Hours</h3>
+                        <p class="text-gray-800">Ksh 20</p>
+                        <div class="mt-3 space-y-2">
+                            <button onclick="buyBundle('250MB - 24 Hours', 20, false)" class="btn-primary w-full bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg font-medium">Buy Now</button>
+                            <button onclick="buyBundle('250MB - 24 Hours', 20, true)" class="btn-secondary w-full bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+                        </div>
+                    </div>
+                    <div class="bundle-card bg-yellow-100 rounded-lg p-4 shadow-md text-center">
+                        <h3 class="text-lg font-bold">1GB - 24 Hours</h3>
+                        <p class="text-gray-800">Ksh 99</p>
+                        <div class="mt-3 space-y-2">
+                            <button onclick="buyBundle('1GB - 24 Hours', 99, false)" class="btn-primary w-full bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg font-medium">Buy Now</button>
+                            <button onclick="buyBundle('1GB - 24 Hours', 99, true)" class="btn-secondary w-full bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+                        </div>
+                    </div>
+                    <div class="bundle-card bg-red-100 rounded-lg p-4 shadow-md text-center">
+                        <h3 class="text-lg font-bold">2.5GB - 7 Days</h3>
+                        <p class="text-gray-800">Ksh 300</p>
+                        <div class="mt-3 space-y-2">
+                            <button onclick="buyBundle('2.5GB - 7 Days', 300, false)" class="btn-primary w-full bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg font-medium">Buy Now</button>
+                            <button onclick="buyBundle('2.5GB - 7 Days', 300, true)" class="btn-secondary w-full bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+                        </div>
+                    </div>
+                    <div class="bundle-card bg-red-100 rounded-lg p-4 shadow-md text-center">
+                        <h3 class="text-lg font-bold">6GB - 7 Days</h3>
+                        <p class="text-gray-800">Ksh 700</p>
+                        <div class="mt-3 space-y-2">
+                            <button onclick="buyBundle('6GB - 7 Days', 700, false)" class="btn-primary w-full bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg font-medium">Buy Now</button>
+                            <button onclick="buyBundle('6GB - 7 Days', 700, true)" class="btn-secondary w-full bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+                        </div>
                     </div>
                 </div>
-                <div class="bundle-card bg-yellow-100 rounded-lg p-4 shadow-md text-center">
-                    <h3 class="text-lg font-bold">1.2GB - 30 Days</h3>
-                    <p class="text-gray-800">Ksh 250</p>
-                    <div class="mt-3 space-y-2">
-                        <button onclick="buyBundle('1.2GB - 30 Days', 250, false)" class="btn-primary w-full bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg font-medium">Buy Now</button>
-                        <button onclick="buyBundle('1.2GB - 30 Days', 250, true)" class="btn-secondary w-full bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-2xl font-semibold text-blue-700 mb-4 text-center sm:text-left">Data Offers - <span class="text-purple-600">Monthly Packages</span></h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bundle-card bg-purple-100 rounded-lg p-4 shadow-md text-center">
+                        <h3 class="text-lg font-bold">1.2GB - 30 Days</h3>
+                        <p class="text-gray-800">Ksh 250</p>
+                        <div class="mt-3 space-y-2">
+                            <button onclick="buyBundle('1.2GB - 30 Days', 250, false)" class="btn-primary w-full bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg font-medium">Buy Now</button>
+                            <button onclick="buyBundle('1.2GB - 30 Days', 250, true)" class="btn-secondary w-full bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+                        </div>
                     </div>
-                </div>
-                <div class="bundle-card bg-yellow-100 rounded-lg p-4 shadow-md text-center">
-                    <h3 class="text-lg font-bold">350MB - Weekly</h3>
-                    <p class="text-gray-800">Ksh 49</p>
-                    <div class="mt-3 space-y-2">
-                        <button onclick="buyBundle('350MB - Weekly', 49, false)" class="btn-primary w-full bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg font-medium">Buy Now</button>
-                        <button onclick="buyBundle('350MB - Weekly', 49, true)" class="btn-secondary w-full bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+                    <div class="bundle-card bg-purple-100 rounded-lg p-4 shadow-md text-center">
+                        <h3 class="text-lg font-bold">2.5GB - 30 Days</h3>
+                        <p class="text-gray-800">Ksh 500</p>
+                        <div class="mt-3 space-y-2">
+                            <button onclick="buyBundle('2.5GB - 30 Days', 500, false)" class="btn-primary w-full bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg font-medium">Buy Now</button>
+                            <button onclick="buyBundle('2.5GB - 30 Days', 500, true)" class="btn-secondary w-full bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+                        </div>
                     </div>
-                </div>
-                <div class="bundle-card bg-yellow-100 rounded-lg p-4 shadow-md text-center">
-                    <h3 class="text-lg font-bold">1GB - 1 Hour</h3>
-                    <p class="text-gray-800">Ksh 19</p>
-                    <div class="mt-3 space-y-2">
-                        <button onclick="buyBundle('1GB - 1 Hour', 19, false)" class="btn-primary w-full bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg font-medium">Buy Now</button>
-                        <button onclick="buyBundle('1GB - 1 Hour', 19, true)" class="btn-secondary w-full bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+                    <div class="bundle-card bg-purple-100 rounded-lg p-4 shadow-md text-center">
+                        <h3 class="text-lg font-bold">10GB - 30 Days</h3>
+                        <p class="text-gray-800">Ksh 1001</p>
+                        <div class="mt-3 space-y-2">
+                            <button onclick="buyBundle('10GB - 30 Days', 1001, false)" class="btn-primary w-full bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg font-medium">Buy Now</button>
+                            <button onclick="buyBundle('10GB - 30 Days', 1001, true)" class="btn-secondary w-full bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+                        </div>
                     </div>
-                </div>
-                <div class="bundle-card bg-yellow-100 rounded-lg p-4 shadow-md text-center">
-                    <h3 class="text-lg font-bold">250MB - 24 Hours</h3>
-                    <p class="text-gray-800">Ksh 20</p>
-                    <div class="mt-3 space-y-2">
-                        <button onclick="buyBundle('250MB - 24 Hours', 20, false)" class="btn-primary w-full bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg font-medium">Buy Now</button>
-                        <button onclick="buyBundle('250MB - 24 Hours', 20, true)" class="btn-secondary w-full bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+                    <div class="bundle-card bg-purple-100 rounded-lg p-4 shadow-md text-center">
+                        <h3 class="text-lg font-bold">8GB + 400 Min - 30 Days</h3>
+                        <p class="text-gray-800">Ksh 1000</p>
+                        <div class="mt-3 space-y-2">
+                            <button onclick="buyBundle('8GB + 400 Min - 30 Days', 1000, false)" class="btn-primary w-full bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg font-medium">Buy Now</button>
+                            <button onclick="buyBundle('8GB + 400 Min - 30 Days', 1000, true)" class="btn-secondary w-full bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+                        </div>
                     </div>
-                </div>
-                <div class="bundle-card bg-yellow-100 rounded-lg p-4 shadow-md text-center">
-                    <h3 class="text-lg font-bold">1GB - 24 Hours</h3>
-                    <p class="text-gray-800">Ksh 99</p>
-                    <div class="mt-3 space-y-2">
-                        <button onclick="buyBundle('1GB - 24 Hours', 99, false)" class="btn-primary w-full bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg font-medium">Buy Now</button>
-                        <button onclick="buyBundle('1GB - 24 Hours', 99, true)" class="btn-secondary w-full bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
-                    </div>
-                </div>
-                <div class="bundle-card bg-red-100 rounded-lg p-4 shadow-md text-center">
-                    <h3 class="text-lg font-bold">2.5GB - 7 Days</h3>
-                    <p class="text-gray-800">Ksh 300</p>
-                    <div class="mt-3 space-y-2">
-                        <button onclick="buyBundle('2.5GB - 7 Days', 300, false)" class="btn-primary w-full bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg font-medium">Buy Now</button>
-                        <button onclick="buyBundle('2.5GB - 7 Days', 300, true)" class="btn-secondary w-full bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
-                    </div>
-                </div>
-                <div class="bundle-card bg-red-100 rounded-lg p-4 shadow-md text-center">
-                    <h3 class="text-lg font-bold">6GB - 7 Days</h3>
-                    <p class="text-gray-800">Ksh 700</p>
-                    <div class="mt-3 space-y-2">
-                        <button onclick="buyBundle('6GB - 7 Days', 700, false)" class="btn-primary w-full bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg font-medium">Buy Now</button>
-                        <button onclick="buyBundle('6GB - 7 Days', 700, true)" class="btn-secondary w-full bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+                    <div class="bundle-card bg-purple-100 rounded-lg p-4 shadow-md text-center">
+                        <h3 class="text-lg font-bold">300 Min - 30 Days</h3>
+                        <p class="text-gray-800">Ksh 500</p>
+                        <div class="mt-3 space-y-2">
+                            <button onclick="buyBundle('300 Min - 30 Days', 500, false)" class="btn-primary w-full bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg font-medium">Buy Now</button>
+                            <button onclick="buyBundle('300 Min - 30 Days', 500, true)" class="btn-secondary w-full bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="mb-6">
-            <h3 class="text-2xl font-semibold text-blue-700 mb-4 text-center sm:text-left">Data Offers - <span class="text-purple-600">Monthly Packages</span></h3>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="bundle-card bg-purple-100 rounded-lg p-4 shadow-md text-center">
-                    <h3 class="text-lg font-bold">1.2GB - 30 Days</h3>
-                    <p class="text-gray-800">Ksh 250</p>
-                    <div class="mt-3 space-y-2">
-                        <button onclick="buyBundle('1.2GB - 30 Days', 250, false)" class="btn-primary w-full bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg font-medium">Buy Now</button>
-                        <button onclick="buyBundle('1.2GB - 30 Days', 250, true)" class="btn-secondary w-full bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+        <!-- Airtime Services Section -->
+        <div id="airtime-section" class="section section-hidden">
+            <div class="mb-6">
+                <h3 class="text-2xl font-semibold text-blue-700 mb-4 text-center sm:text-left">Airtime Services</h3>
+                
+                <!-- Convert Airtime to Cash -->
+                <div class="mb-8">
+                    <h4 class="text-xl font-semibold text-green-600 mb-4">Convert Airtime to Cash</h4>
+                    <div class="bg-gradient-to-r from-green-100 to-blue-100 rounded-lg p-6 shadow-md">
+                        <div class="text-center mb-4">
+                            <h5 class="text-lg font-bold text-gray-800">Get 80% Cash Back</h5>
+                            <p class="text-gray-600">Convert your unused airtime to cash instantly</p>
+                        </div>
+                        <div class="max-w-md mx-auto">
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Airtime Amount (Ksh)</label>
+                                <input type="number" id="airtimeAmount" class="amount-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none" placeholder="Enter amount" min="10">
+                                <p class="text-sm text-gray-500 mt-1">You'll receive: <span id="cashBack" class="font-bold text-green-600">Ksh 0</span></p>
+                            </div>
+                            <button onclick="convertAirtime()" class="btn-primary w-full bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-lg font-medium">Convert Airtime</button>
+                        </div>
                     </div>
                 </div>
-                <div class="bundle-card bg-purple-100 rounded-lg p-4 shadow-md text-center">
-                    <h3 class="text-lg font-bold">2.5GB - 30 Days</h3>
-                    <p class="text-gray-800">Ksh 500</p>
-                    <div class="mt-3 space-y-2">
-                        <button onclick="buyBundle('2.5GB - 30 Days', 500, false)" class="btn-primary w-full bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg font-medium">Buy Now</button>
-                        <button onclick="buyBundle('2.5GB - 30 Days', 500, true)" class="btn-secondary w-full bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+
+                <!-- Buy Discounted Airtime -->
+                <div class="mb-8">
+                    <h4 class="text-xl font-semibold text-purple-600 mb-4">Buy Discounted Airtime</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bundle-card bg-purple-100 rounded-lg p-4 shadow-md text-center relative">
+                            <div class="discount-badge">4% OFF</div>
+                            <h3 class="text-lg font-bold">Airtime - Below Ksh 2000</h3>
+                            <p class="text-gray-800">4% Discount</p>
+                            <div class="mt-3">
+                                <button onclick="buyDiscountedAirtime('below2000')" class="btn-primary w-full bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-lg font-medium">Buy Now</button>
+                            </div>
+                        </div>
+                        <div class="bundle-card bg-purple-100 rounded-lg p-4 shadow-md text-center relative">
+                            <div class="discount-badge">6% OFF</div>
+                            <h3 class="text-lg font-bold">Airtime - Above Ksh 2000</h3>
+                            <p class="text-gray-800">6% Discount</p>
+                            <div class="mt-3">
+                                <button onclick="buyDiscountedAirtime('above2000')" class="btn-primary w-full bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-lg font-medium">Buy Now</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="bundle-card bg-purple-100 rounded-lg p-4 shadow-md text-center">
-                    <h3 class="text-lg font-bold">10GB - 30 Days</h3>
-                    <p class="text-gray-800">Ksh 1001</p>
-                    <div class="mt-3 space-y-2">
-                        <button onclick="buyBundle('10GB - 30 Days', 1001, false)" class="btn-primary w-full bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg font-medium">Buy Now</button>
-                        <button onclick="buyBundle('10GB - 30 Days', 1001, true)" class="btn-secondary w-full bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+            </div>
+        </div>
+
+        <!-- SMS Bundles Section -->
+        <div id="sms-section" class="section section-hidden">
+            <div class="mb-6">
+                <h3 class="text-2xl font-semibold text-blue-700 mb-4 text-center sm:text-left">SMS Bundle Offers</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bundle-card bg-orange-100 rounded-lg p-4 shadow-md text-center">
+                        <h3 class="text-lg font-bold">20 SMS - 24 Hours</h3>
+                        <p class="text-gray-800">Ksh 5</p>
+                        <div class="mt-3 space-y-2">
+                            <button onclick="buyBundle('20 SMS - 24 Hours', 5, false)" class="btn-primary w-full bg-orange-500 hover:bg-orange-600 text-white px-3 py-2 rounded-lg font-medium">Buy Now</button>
+                            <button onclick="buyBundle('20 SMS - 24 Hours', 5, true)" class="btn-secondary w-full bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+                        </div>
+                    </div>
+                    <div class="bundle-card bg-orange-100 rounded-lg p-4 shadow-md text-center">
+                        <h3 class="text-lg font-bold">200 SMS - 24 Hours</h3>
+                        <p class="text-gray-800">Ksh 10</p>
+                        <div class="mt-3 space-y-2">
+                            <button onclick="buyBundle('200 SMS - 24 Hours', 10, false)" class="btn-primary w-full bg-orange-500 hover:bg-orange-600 text-white px-3 py-2 rounded-lg font-medium">Buy Now</button>
+                            <button onclick="buyBundle('200 SMS - 24 Hours', 10, true)" class="btn-secondary w-full bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+                        </div>
+                    </div>
+                    <div class="bundle-card bg-orange-100 rounded-lg p-4 shadow-md text-center">
+                        <h3 class="text-lg font-bold">1000 SMS - Weekly</h3>
+                        <p class="text-gray-800">Ksh 30</p>
+                        <div class="mt-3 space-y-2">
+                            <button onclick="buyBundle('1000 SMS - Weekly', 30, false)" class="btn-primary w-full bg-orange-500 hover:bg-orange-600 text-white px-3 py-2 rounded-lg font-medium">Buy Now</button>
+                            <button onclick="buyBundle('1000 SMS - Weekly', 30, true)" class="btn-secondary w-full bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+                        </div>
+                    </div>
+                    <div class="bundle-card bg-orange-100 rounded-lg p-4 shadow-md text-center">
+                        <h3 class="text-lg font-bold">1500 SMS - Monthly</h3>
+                        <p class="text-gray-800">Ksh 100</p>
+                        <div class="mt-3 space-y-2">
+                            <button onclick="buyBundle('1500 SMS - Monthly', 100, false)" class="btn-primary w-full bg-orange-500 hover:bg-orange-600 text-white px-3 py-2 rounded-lg font-medium">Buy Now</button>
+                            <button onclick="buyBundle('1500 SMS - Monthly', 100, true)" class="btn-secondary w-full bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+                        </div>
+                    </div>
+                    <div class="bundle-card bg-orange-100 rounded-lg p-4 shadow-md text-center">
+                        <h3 class="text-lg font-bold">3500 SMS - Monthly</h3>
+                        <p class="text-gray-800">Ksh 200</p>
+                        <div class="mt-3 space-y-2">
+                            <button onclick="buyBundle('3500 SMS - Monthly', 200, false)" class="btn-primary w-full bg-orange-500 hover:bg-orange-600 text-white px-3 py-2 rounded-lg font-medium">Buy Now</button>
+                            <button onclick="buyBundle('3500 SMS - Monthly', 200, true)" class="btn-secondary w-full bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+                        </div>
                     </div>
                 </div>
-                <div class="bundle-card bg-purple-100 rounded-lg p-4 shadow-md text-center">
-                    <h3 class="text-lg font-bold">8GB + 400 Min - 30 Days</h3>
-                    <p class="text-gray-800">Ksh 1000</p>
-                    <div class="mt-3 space-y-2">
-                        <button onclick="buyBundle('8GB + 400 Min - 30 Days', 1000, false)" class="btn-primary w-full bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg font-medium">Buy Now</button>
-                        <button onclick="buyBundle('8GB + 400 Min - 30 Days', 1000, true)" class="btn-secondary w-full bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+            </div>
+        </div>
+
+        <!-- Renewable Data Section -->
+        <div id="renewable-section" class="section section-hidden">
+            <div class="mb-6">
+                <h3 class="text-2xl font-semibold text-blue-700 mb-4 text-center sm:text-left">Renewable Data Offers - <span class="text-pink-600">Before Midnight</span></h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bundle-card renewable-card rounded-lg p-4 shadow-md text-center relative">
+                        <div class="discount-badge">Save 20%</div>
+                        <h3 class="text-lg font-bold">2GB - 24 Hours</h3>
+                        <p class="text-white">Ksh 110</p>
+                        <p class="text-xs text-pink-100 mb-3">Renewable before midnight</p>
+                        <div class="mt-3 space-y-2">
+                            <button onclick="buyBundle('2GB - 24 Hours (Renewable)', 110, false)" class="btn-primary w-full bg-white text-pink-600 hover:bg-pink-50 px-3 py-2 rounded-lg font-medium">Buy Now</button>
+                            <button onclick="buyBundle('2GB - 24 Hours (Renewable)', 110, true)" class="btn-secondary w-full bg-pink-200 hover:bg-pink-300 text-pink-800 px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+                        </div>
+                    </div>
+                    <div class="bundle-card renewable-card rounded-lg p-4 shadow-md text-center">
+                        <h3 class="text-lg font-bold">1.5GB - 3 Hours</h3>
+                        <p class="text-white">Ksh 51</p>
+                        <p class="text-xs text-pink-100 mb-3">Renewable before midnight</p>
+                        <div class="mt-3 space-y-2">
+                            <button onclick="buyBundle('1.5GB - 3 Hours (Renewable)', 51, false)" class="btn-primary w-full bg-white text-pink-600 hover:bg-pink-50 px-3 py-2 rounded-lg font-medium">Buy Now</button>
+                            <button onclick="buyBundle('1.5GB - 3 Hours (Renewable)', 51, true)" class="btn-secondary w-full bg-pink-200 hover:bg-pink-300 text-pink-800 px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+                        </div>
+                    </div>
+                    <div class="bundle-card renewable-card rounded-lg p-4 shadow-md text-center">
+                        <h3 class="text-lg font-bold">1GB - 1 Hour</h3>
+                        <p class="text-white">Ksh 21</p>
+                        <p class="text-xs text-pink-100 mb-3">Renewable before midnight</p>
+                        <div class="mt-3 space-y-2">
+                            <button onclick="buyBundle('1GB - 1 Hour (Renewable)', 21, false)" class="btn-primary w-full bg-white text-pink-600 hover:bg-pink-50 px-3 py-2 rounded-lg font-medium">Buy Now</button>
+                            <button onclick="buyBundle('1GB - 1 Hour (Renewable)', 21, true)" class="btn-secondary w-full bg-pink-200 hover:bg-pink-300 text-pink-800 px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+                        </div>
                     </div>
                 </div>
-                <div class="bundle-card bg-purple-100 rounded-lg p-4 shadow-md text-center">
-                    <h3 class="text-lg font-bold">300 Min - 30 Days</h3>
-                    <p class="text-gray-800">Ksh 500</p>
-                    <div class="mt-3 space-y-2">
-                        <button onclick="buyBundle('300 Min - 30 Days', 500, false)" class="btn-primary w-full bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg font-medium">Buy Now</button>
-                        <button onclick="buyBundle('300 Min - 30 Days', 500, true)" class="btn-secondary w-full bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+            </div>
+        </div>
+
+        <!-- Minutes & Talktime Section -->
+        <div id="minutes-section" class="section section-hidden">
+            <div class="mb-6">
+                <h3 class="text-2xl font-semibold text-blue-700 mb-4 text-center sm:text-left">Minutes & Talktime Offers</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bundle-card minutes-card rounded-lg p-4 shadow-md text-center">
+                        <h3 class="text-lg font-bold">45 Minutes - 3 Hours</h3>
+                        <p class="text-white">Ksh 22</p>
+                        <div class="mt-3 space-y-2">
+                            <button onclick="buyMinutes('45 Minutes - 3 Hours', 22, false)" class="btn-primary w-full bg-white text-blue-600 hover:bg-blue-50 px-3 py-2 rounded-lg font-medium">Buy Now</button>
+                            <button onclick="buyMinutes('45 Minutes - 3 Hours', 22, true)" class="btn-secondary w-full bg-blue-200 hover:bg-blue-300 text-blue-800 px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+                        </div>
                     </div>
+                    <div class="bundle-card minutes-card rounded-lg p-4 shadow-md text-center">
+                        <h3 class="text-lg font-bold">200 Bob Credit - Till Midnight</h3>
+                        <p class="text-white">Ksh 52</p>
+                        <div class="mt-3 space-y-2">
+                            <button onclick="buyMinutes('200 Bob Credit - Till Midnight', 52, false)" class="btn-primary w-full bg-white text-blue-600 hover:bg-blue-50 px-3 py-2 rounded-lg font-medium">Buy Now</button>
+                            <button onclick="buyMinutes('200 Bob Credit - Till Midnight', 52, true)" class="btn-secondary w-full bg-blue-200 hover:bg-blue-300 text-blue-800 px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+                        </div>
+                    </div>
+                    <div class="bundle-card minutes-card rounded-lg p-4 shadow-md text-center">
+                        <h3 class="text-lg font-bold">250 Minutes - 7 Days</h3>
+                        <p class="text-white">Ksh 200</p>
+                        <div class="mt-3 space-y-2">
+                            <button onclick="buyMinutes('250 Minutes - 7 Days', 200, false)" class="btn-primary w-full bg-white text-blue-600 hover:bg-blue-50 px-3 py-2 rounded-lg font-medium">Buy Now</button>
+                            <button onclick="buyMinutes('250 Minutes - 7 Days', 200, true)" class="btn-secondary w-full bg-blue-200 hover:bg-blue-300 text-blue-800 px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+                        </div>
+                    </div>
+                    <div class="bundle-card minutes-card rounded-lg p-4 shadow-md text-center">
+                        <h3 class="text-lg font-bold">1250 Minutes - 30 Days</h3>
+                        <p class="text-white">Ksh 1000</p>
+                        <div class="mt-3 space-y-2">
+                            <button onclick="buyMinutes('1250 Minutes - 30 Days', 1000, false)" class="btn-primary w-full bg-white text-blue-600 hover:bg-blue-50 px-3 py-2 rounded-lg font-medium">Buy Now</button>
+                            <button onclick="buyMinutes('1250 Minutes - 30 Days', 1000, true)" class="btn-secondary w-full bg-blue-200 hover:bg-blue-300 text-blue-800 px-3 py-2 rounded-lg font-medium text-sm">Buy for Another</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6 p-4 text-center text-sm text-blue-800 bg-blue-100 rounded shadow">
+                    📞 For minutes orders, send money to <strong>0112223307</strong><br>
+                    <span class="text-xs text-gray-600">Automation coming soon</span>
                 </div>
             </div>
         </div>
@@ -350,6 +599,76 @@
         </div>
     </div>
 
+    <!-- Airtime Modal -->
+    <div id="airtimeModal" class="fixed inset-0 z-50 hidden">
+        <div class="modal-overlay fixed inset-0" onclick="closeAirtimeModal()"></div>
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="modal-content bg-white rounded-xl shadow-2xl max-w-md w-full p-6 relative">
+                <button onclick="closeAirtimeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+                
+                <div class="text-center mb-6">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2" id="airtimeModalTitle">Buy Discounted Airtime</h3>
+                    <p id="airtimeDetails" class="text-gray-600"></p>
+                </div>
+
+                <form id="airtimeForm" onsubmit="processAirtimePurchase(event)">
+                    <div class="mb-4">
+                        <label for="airtimeAmountInput" class="block text-sm font-medium text-gray-700 mb-2">
+                            Airtime Amount (Ksh)
+                        </label>
+                        <input 
+                            type="number" 
+                            id="airtimeAmountInput" 
+                            class="amount-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none"
+                            placeholder="Enter amount"
+                            min="1"
+                            required
+                        >
+                        <p id="discountInfo" class="text-sm text-green-600 mt-1"></p>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="airtimeRecipientPhone" class="block text-sm font-medium text-gray-700 mb-2">
+                            Phone Number
+                        </label>
+                        <input 
+                            type="tel" 
+                            id="airtimeRecipientPhone" 
+                            class="phone-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none"
+                            placeholder="0712345678"
+                            maxlength="12"
+                            required
+                        >
+                        <p id="airtimeRecipientError" class="text-red-500 text-sm mt-1 hidden"></p>
+                    </div>
+
+                    <div class="flex space-x-3">
+                        <button 
+                            type="button" 
+                            onclick="closeAirtimeModal()" 
+                            class="flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition-colors"
+                        >
+                            Cancel
+                        </button>
+                        <button 
+                            type="submit" 
+                            id="airtimePurchaseBtn"
+                            class="flex-1 px-4 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium transition-colors flex items-center justify-center"
+                        >
+                            <span id="airtimePurchaseBtnText">Purchase Now</span>
+                            <div id="airtimePurchaseSpinner" class="spinner ml-2 hidden"></div>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Toast Container -->
     <div id="toastContainer" class="fixed top-4 right-4 z-50 space-y-2"></div>
 
@@ -360,6 +679,7 @@
     <script>
         let currentBundle = null;
         let isForAnother = false;
+        let currentAirtimeType = null;
 
         // Phone number formatting and validation
         function formatPhoneNumber(value) {
@@ -465,7 +785,33 @@
         document.addEventListener('DOMContentLoaded', function() {
             setupPhoneInput('recipientPhone', 'recipientError');
             setupPhoneInput('payerPhone', 'payerError');
+            setupPhoneInput('airtimeRecipientPhone', 'airtimeRecipientError');
+            
+            // Setup airtime amount calculator
+            const airtimeAmountInput = document.getElementById('airtimeAmount');
+            const cashBackSpan = document.getElementById('cashBack');
+            
+            airtimeAmountInput.addEventListener('input', function() {
+                const amount = parseFloat(this.value) || 0;
+                const cashBack = Math.floor(amount * 0.8);
+                cashBackSpan.textContent = `Ksh ${cashBack}`;
+            });
         });
+
+        // Section navigation
+        function showSection(sectionName) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => section.classList.add('section-hidden'));
+            
+            // Show selected section
+            document.getElementById(sectionName + '-section').classList.remove('section-hidden');
+            
+            // Update tab buttons
+            const tabs = document.querySelectorAll('.tab-button');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+        }
 
         // Toast notification system
         function showToast(message, type = 'success') {
@@ -540,6 +886,54 @@
             document.getElementById('payerPhone').classList.remove('error');
             document.getElementById('recipientError').classList.add('hidden');
             document.getElementById('payerError').classList.add('hidden');
+        }
+
+        // Airtime conversion
+        function convertAirtime() {
+            const amount = document.getElementById('airtimeAmount').value;
+            if (!amount || amount < 10) {
+                showToast('Please enter a valid amount (minimum Ksh 10)', 'error');
+                return;
+            }
+            
+            const cashBack = Math.floor(amount * 0.8);
+            showToast(`To convert Ksh ${amount} airtime to Ksh ${cashBack} cash, please contact us on WhatsApp.`, 'info');
+        }
+
+        // Discounted airtime purchase
+        function buyDiscountedAirtime(type) {
+            currentAirtimeType = type;
+            const discount = type === 'below2000' ? 4 : 6;
+            
+            document.getElementById('airtimeModalTitle').textContent = 'Buy Discounted Airtime';
+            document.getElementById('airtimeDetails').textContent = `Get ${discount}% discount on airtime purchase`;
+            
+            // Setup amount input listener for discount calculation
+            const amountInput = document.getElementById('airtimeAmountInput');
+            const discountInfo = document.getElementById('discountInfo');
+            
+            amountInput.oninput = function() {
+                const amount = parseFloat(this.value) || 0;
+                const discountAmount = Math.floor(amount * (discount / 100));
+                const finalAmount = amount - discountAmount;
+                discountInfo.textContent = `You pay: Ksh ${finalAmount} (Save Ksh ${discountAmount})`;
+            };
+            
+            document.getElementById('airtimeModal').classList.remove('hidden');
+            setTimeout(() => amountInput.focus(), 100);
+        }
+
+        function closeAirtimeModal() {
+            document.getElementById('airtimeModal').classList.add('hidden');
+            document.getElementById('airtimeForm').reset();
+            document.getElementById('airtimeRecipientPhone').classList.remove('error');
+            document.getElementById('airtimeRecipientError').classList.add('hidden');
+        }
+
+        // Minutes purchase (manual process)
+        function buyMinutes(bundleName, price, forAnother = false) {
+            const recipient = forAnother ? 'recipient' : 'you';
+            showToast(`For ${bundleName}, please send Ksh ${price} to 0112223307. The bundle will be sent to ${recipient}. Automation coming soon!`, 'info');
         }
 
         // Purchase processing
@@ -617,10 +1011,91 @@
             }
         }
 
+        // Airtime purchase processing
+        async function processAirtimePurchase(event) {
+            event.preventDefault();
+            
+            const amountInput = document.getElementById('airtimeAmountInput');
+            const phoneInput = document.getElementById('airtimeRecipientPhone');
+            const amount = parseFloat(amountInput.value);
+            const phone = phoneInput.value;
+            
+            // Validate amount based on type
+            if (currentAirtimeType === 'below2000' && amount >= 2000) {
+                showToast('For amounts above Ksh 2000, please select the 6% discount option', 'error');
+                return;
+            }
+            
+            if (currentAirtimeType === 'above2000' && amount < 2000) {
+                showToast('For amounts below Ksh 2000, please select the 4% discount option', 'error');
+                return;
+            }
+            
+            // Validate phone
+            if (!validatePhoneNumber(phone)) {
+                phoneInput.classList.add('error');
+                document.getElementById('airtimeRecipientError').textContent = 'Please enter a valid Safaricom number';
+                document.getElementById('airtimeRecipientError').classList.remove('hidden');
+                return;
+            }
+
+            // Calculate discount
+            const discount = currentAirtimeType === 'below2000' ? 4 : 6;
+            const discountAmount = Math.floor(amount * (discount / 100));
+            const finalAmount = amount - discountAmount;
+
+            // Show loading state
+            const purchaseBtn = document.getElementById('airtimePurchaseBtn');
+            const purchaseBtnText = document.getElementById('airtimePurchaseBtnText');
+            const purchaseSpinner = document.getElementById('airtimePurchaseSpinner');
+            
+            purchaseBtn.disabled = true;
+            purchaseBtnText.textContent = 'Processing...';
+            purchaseSpinner.classList.remove('hidden');
+
+            try {
+                // Format phone number for API
+                const formattedPhone = '254' + formatPhoneNumber(phone);
+                
+                const response = await fetch('/stk-push', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        amount: finalAmount,
+                        phone: formattedPhone,
+                        recipientPhone: formattedPhone,
+                        type: 'airtime',
+                        originalAmount: amount,
+                        discount: discount
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.ResponseCode === '0') {
+                    showToast(`Payment request sent! You'll receive Ksh ${amount} airtime for Ksh ${finalAmount} (${discount}% discount)`, 'success');
+                    closeAirtimeModal();
+                } else {
+                    throw new Error(result.errorMessage || 'Payment failed');
+                }
+            } catch (error) {
+                console.error('Airtime purchase error:', error);
+                showToast(`Purchase failed: ${error.message}`, 'error');
+            } finally {
+                // Reset loading state
+                purchaseBtn.disabled = false;
+                purchaseBtnText.textContent = 'Purchase Now';
+                purchaseSpinner.classList.add('hidden');
+            }
+        }
+
         // Close modal on escape key
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
                 closeModal();
+                closeAirtimeModal();
             }
         });
     </script>
