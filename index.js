@@ -22,18 +22,19 @@ app.get('/', (req, res) => {
 
 app.post('/stk-push', async (req, res) => {
   try {
-    const { amount, phone } = req.body;
+    const { amount, phone, recipientPhone } = req.body;
     
     // Format phone number for Lipia API (07XXXXXXXX format)
-    let formattedPhone = phone;
+    let formattedPayerPhone = phone;
     if (phone.startsWith('254')) {
-      formattedPhone = '0' + phone.slice(3);
+      formattedPayerPhone = '0' + phone.slice(3);
     }
     
+    // The payment request goes to the payer's phone
     const response = await axios.post(
       `${LIPIA_BASE_URL}/request/stk`,
       {
-        phone: formattedPhone,
+        phone: formattedPayerPhone,
         amount: amount.toString()
       },
       {
@@ -43,6 +44,15 @@ app.post('/stk-push', async (req, res) => {
         }
       }
     );
+
+    // Log the transaction details for reference
+    console.log('Transaction Details:', {
+      payer: formattedPayerPhone,
+      recipient: recipientPhone ? ('0' + recipientPhone.slice(3)) : formattedPayerPhone,
+      amount: amount,
+      bundle: 'Data Bundle',
+      timestamp: new Date().toISOString()
+    });
 
     // Return success response in format expected by frontend
     res.json({

@@ -295,20 +295,37 @@
                 </div>
 
                 <form id="purchaseForm" onsubmit="processPurchase(event)">
+                    <!-- Recipient Phone Number (always shown) -->
                     <div class="mb-4">
-                        <label for="phoneNumber" class="block text-sm font-medium text-gray-700 mb-2">
-                            <span id="phoneLabel">Your Phone Number</span>
+                        <label for="recipientPhone" class="block text-sm font-medium text-gray-700 mb-2">
+                            <span id="recipientLabel">Recipient's Phone Number</span>
                         </label>
                         <input 
                             type="tel" 
-                            id="phoneNumber" 
+                            id="recipientPhone" 
                             class="phone-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none"
                             placeholder="0712345678"
                             maxlength="12"
                             required
                         >
-                        <p id="phoneError" class="text-red-500 text-sm mt-1 hidden"></p>
-                        <p class="text-gray-500 text-xs mt-1">Enter your Safaricom number to receive the bundle</p>
+                        <p id="recipientError" class="text-red-500 text-sm mt-1 hidden"></p>
+                        <p class="text-gray-500 text-xs mt-1">Enter the Safaricom number to receive the bundle</p>
+                    </div>
+
+                    <!-- Payer Phone Number (only shown for "Buy for Another") -->
+                    <div id="payerSection" class="mb-4 hidden">
+                        <label for="payerPhone" class="block text-sm font-medium text-gray-700 mb-2">
+                            Payer's Phone Number
+                        </label>
+                        <input 
+                            type="tel" 
+                            id="payerPhone" 
+                            class="phone-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none"
+                            placeholder="0712345678"
+                            maxlength="12"
+                        >
+                        <p id="payerError" class="text-red-500 text-sm mt-1 hidden"></p>
+                        <p class="text-gray-500 text-xs mt-1">Enter the phone number that will pay for this bundle</p>
                     </div>
 
                     <div class="flex space-x-3">
@@ -384,10 +401,10 @@
             return formatted;
         }
 
-        // Phone input event listeners
-        document.addEventListener('DOMContentLoaded', function() {
-            const phoneInput = document.getElementById('phoneNumber');
-            const phoneError = document.getElementById('phoneError');
+        // Setup phone input handlers
+        function setupPhoneInput(inputId, errorId) {
+            const phoneInput = document.getElementById(inputId);
+            const phoneError = document.getElementById(errorId);
 
             phoneInput.addEventListener('input', function(e) {
                 const cursorPosition = e.target.selectionStart;
@@ -442,6 +459,12 @@
                     e.target.value = displayPhoneNumber(value);
                 }, 10);
             });
+        }
+
+        // Initialize phone inputs when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            setupPhoneInput('recipientPhone', 'recipientError');
+            setupPhoneInput('payerPhone', 'payerError');
         });
 
         // Toast notification system
@@ -482,36 +505,68 @@
             isForAnother = forAnother;
             
             document.getElementById('bundleDetails').textContent = `${bundleName} - Ksh ${price}`;
-            document.getElementById('phoneLabel').textContent = forAnother ? 'Recipient\'s Phone Number' : 'Your Phone Number';
+            
+            // Update labels and visibility based on purchase type
+            if (forAnother) {
+                document.getElementById('recipientLabel').textContent = 'Recipient\'s Phone Number';
+                document.getElementById('payerSection').classList.remove('hidden');
+                document.getElementById('payerPhone').required = true;
+            } else {
+                document.getElementById('recipientLabel').textContent = 'Your Phone Number';
+                document.getElementById('payerSection').classList.add('hidden');
+                document.getElementById('payerPhone').required = false;
+            }
+            
             document.getElementById('purchaseModal').classList.remove('hidden');
             
-            // Clear and focus the phone input
-            const phoneInput = document.getElementById('phoneNumber');
-            phoneInput.value = '';
-            phoneInput.classList.remove('error');
-            document.getElementById('phoneError').classList.add('hidden');
-            setTimeout(() => phoneInput.focus(), 100);
+            // Clear and focus the recipient phone input
+            const recipientInput = document.getElementById('recipientPhone');
+            const payerInput = document.getElementById('payerPhone');
+            
+            recipientInput.value = '';
+            payerInput.value = '';
+            recipientInput.classList.remove('error');
+            payerInput.classList.remove('error');
+            document.getElementById('recipientError').classList.add('hidden');
+            document.getElementById('payerError').classList.add('hidden');
+            
+            setTimeout(() => recipientInput.focus(), 100);
         }
 
         function closeModal() {
             document.getElementById('purchaseModal').classList.add('hidden');
             document.getElementById('purchaseForm').reset();
-            document.getElementById('phoneNumber').classList.remove('error');
-            document.getElementById('phoneError').classList.add('hidden');
+            document.getElementById('recipientPhone').classList.remove('error');
+            document.getElementById('payerPhone').classList.remove('error');
+            document.getElementById('recipientError').classList.add('hidden');
+            document.getElementById('payerError').classList.add('hidden');
         }
 
         // Purchase processing
         async function processPurchase(event) {
             event.preventDefault();
             
-            const phoneInput = document.getElementById('phoneNumber');
-            const phone = phoneInput.value;
+            const recipientInput = document.getElementById('recipientPhone');
+            const payerInput = document.getElementById('payerPhone');
+            const recipientPhone = recipientInput.value;
+            const payerPhone = payerInput.value;
             
-            if (!validatePhoneNumber(phone)) {
-                phoneInput.classList.add('error');
-                document.getElementById('phoneError').textContent = 'Please enter a valid Safaricom number';
-                document.getElementById('phoneError').classList.remove('hidden');
+            // Validate recipient phone
+            if (!validatePhoneNumber(recipientPhone)) {
+                recipientInput.classList.add('error');
+                document.getElementById('recipientError').textContent = 'Please enter a valid Safaricom number';
+                document.getElementById('recipientError').classList.remove('hidden');
                 return;
+            }
+
+            // Validate payer phone if buying for another
+            if (isForAnother) {
+                if (!validatePhoneNumber(payerPhone)) {
+                    payerInput.classList.add('error');
+                    document.getElementById('payerError').textContent = 'Please enter a valid Safaricom number';
+                    document.getElementById('payerError').classList.remove('hidden');
+                    return;
+                }
             }
 
             // Show loading state
@@ -524,8 +579,9 @@
             purchaseSpinner.classList.remove('hidden');
 
             try {
-                // Format phone number for API (254xxxxxxxxx)
-                const formattedPhone = '254' + formatPhoneNumber(phone);
+                // Format phone numbers for API (254xxxxxxxxx)
+                const formattedRecipientPhone = '254' + formatPhoneNumber(recipientPhone);
+                const formattedPayerPhone = isForAnother ? '254' + formatPhoneNumber(payerPhone) : formattedRecipientPhone;
                 
                 const response = await fetch('/stk-push', {
                     method: 'POST',
@@ -534,14 +590,18 @@
                     },
                     body: JSON.stringify({
                         amount: currentBundle.price,
-                        phone: formattedPhone
+                        phone: formattedPayerPhone, // The phone that will pay
+                        recipientPhone: formattedRecipientPhone // The phone that will receive the bundle
                     })
                 });
 
                 const result = await response.json();
 
                 if (response.ok && result.ResponseCode === '0') {
-                    showToast(`Payment request sent! Check your phone for M-Pesa prompt.`, 'success');
+                    const message = isForAnother 
+                        ? `Payment request sent to ${displayPhoneNumber(payerPhone)}! Bundle will be sent to ${displayPhoneNumber(recipientPhone)}.`
+                        : `Payment request sent! Check your phone for M-Pesa prompt.`;
+                    showToast(message, 'success');
                     closeModal();
                 } else {
                     throw new Error(result.errorMessage || 'Payment failed');
