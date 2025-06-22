@@ -128,6 +128,174 @@
       transform: translateY(-2px);
       box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
     }
+
+    /* Popup Modal Styles */
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .popup-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .popup-bubble {
+      background: linear-gradient(135deg, #ffffff, #f8fafc);
+      border-radius: 20px;
+      padding: 2rem;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+      transform: scale(0.8) translateY(20px);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .popup-overlay.active .popup-bubble {
+      transform: scale(1) translateY(0);
+    }
+
+    .popup-header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .popup-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #1f2937;
+      margin-bottom: 0.5rem;
+    }
+
+    .popup-subtitle {
+      color: #6b7280;
+      font-size: 0.9rem;
+    }
+
+    .popup-content {
+      margin-bottom: 1.5rem;
+    }
+
+    .popup-input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      margin-bottom: 1rem;
+    }
+
+    .popup-input:focus {
+      outline: none;
+      border-color: #10b981;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+    }
+
+    .popup-actions {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+    }
+
+    .popup-btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      font-size: 0.9rem;
+    }
+
+    .popup-btn-primary {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+    }
+
+    .popup-btn-primary:hover {
+      background: linear-gradient(135deg, #059669, #047857);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+    }
+
+    .popup-btn-secondary {
+      background: #f3f4f6;
+      color: #374151;
+    }
+
+    .popup-btn-secondary:hover {
+      background: #e5e7eb;
+      transform: translateY(-2px);
+    }
+
+    .popup-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    .popup-price {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .popup-toggle {
+      display: flex;
+      background: #f3f4f6;
+      border-radius: 10px;
+      padding: 0.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .popup-toggle-btn {
+      flex: 1;
+      padding: 0.5rem;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .popup-toggle-btn.active {
+      background: white;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      color: #10b981;
+    }
+
+    .error-message {
+      color: #ef4444;
+      font-size: 0.8rem;
+      margin-top: 0.5rem;
+      text-align: center;
+    }
+
+    .success-message {
+      color: #10b981;
+      font-size: 0.9rem;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
   </style>
 </head>
 <body class="font-sans text-gray-900">
@@ -213,6 +381,72 @@
     </svg>
   </a>
 
+  <!-- Purchase Popup Modal -->
+  <div id="purchasePopup" class="popup-overlay">
+    <div class="popup-bubble">
+      <div class="popup-header">
+        <div class="popup-title" id="popupTitle">Purchase Bundle</div>
+        <div class="popup-subtitle" id="popupSubtitle">Complete your purchase</div>
+      </div>
+      
+      <div class="popup-content">
+        <div class="popup-price" id="popupPrice">Ksh 0</div>
+        
+        <div class="popup-toggle" id="purchaseToggle">
+          <button class="popup-toggle-btn active" data-mode="self">For Me</button>
+          <button class="popup-toggle-btn" data-mode="other">For Another</button>
+        </div>
+        
+        <div id="phoneInputs">
+          <input type="tel" class="popup-input" id="payerPhone" placeholder="Your Safaricom number (07XXXXXXXX)" />
+          <input type="tel" class="popup-input" id="recipientPhone" placeholder="Recipient's number (07XXXXXXXX)" style="display: none;" />
+        </div>
+        
+        <div id="errorMessage" class="error-message" style="display: none;"></div>
+        <div id="successMessage" class="success-message" style="display: none;"></div>
+      </div>
+      
+      <div class="popup-actions">
+        <button class="popup-btn popup-btn-secondary" id="cancelBtn">Cancel</button>
+        <button class="popup-btn popup-btn-primary" id="confirmBtn">
+          <span id="confirmText">Confirm Purchase</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bonga Points Popup Modal -->
+  <div id="bongaPopup" class="popup-overlay">
+    <div class="popup-bubble">
+      <div class="popup-header">
+        <div class="popup-title">Sell Bonga Points</div>
+        <div class="popup-subtitle">Convert your points to cash</div>
+      </div>
+      
+      <div class="popup-content">
+        <select class="popup-input" id="bongaAmount">
+          <option value="">Select amount</option>
+          <option value="1000">1000 Points - Ksh 200</option>
+          <option value="2000">2000 Points - Ksh 400</option>
+          <option value="3000">3000 Points - Ksh 600</option>
+          <option value="5000">5000 Points - Ksh 1000</option>
+        </select>
+        
+        <input type="tel" class="popup-input" id="bongaPhone" placeholder="Your Safaricom number (07XXXXXXXX)" />
+        
+        <div id="bongaErrorMessage" class="error-message" style="display: none;"></div>
+        <div id="bongaSuccessMessage" class="success-message" style="display: none;"></div>
+      </div>
+      
+      <div class="popup-actions">
+        <button class="popup-btn popup-btn-secondary" id="bongaCancelBtn">Cancel</button>
+        <button class="popup-btn popup-btn-primary" id="bongaConfirmBtn" disabled>
+          <span id="bongaConfirmText">Sell Points</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- JavaScript -->
   <script>
     const dataOffers = [
@@ -244,6 +478,290 @@
       { name: "1000 Bonga Points", price: 200, description: "Sell your Bonga points instantly" }
     ];
 
+    // Popup functionality
+    let currentOffer = null;
+    let currentType = null;
+
+    function showPurchasePopup(offer, type, isOther = false) {
+      currentOffer = offer;
+      currentType = type;
+      
+      const popup = document.getElementById('purchasePopup');
+      const title = document.getElementById('popupTitle');
+      const subtitle = document.getElementById('popupSubtitle');
+      const price = document.getElementById('popupPrice');
+      const toggle = document.getElementById('purchaseToggle');
+      
+      title.textContent = offer.name;
+      
+      if (type === 'airtime') {
+        subtitle.textContent = `${offer.discount}% OFF - Save Ksh ${offer.originalPrice - offer.price}`;
+        price.innerHTML = `
+          <span style="text-decoration: line-through; opacity: 0.7; font-size: 0.8em;">Ksh ${offer.originalPrice}</span>
+          <span style="margin-left: 8px;">Ksh ${offer.price}</span>
+        `;
+      } else {
+        subtitle.textContent = 'Complete your purchase';
+        price.textContent = `Ksh ${offer.price}`;
+      }
+      
+      // Set initial mode
+      const selfBtn = toggle.querySelector('[data-mode="self"]');
+      const otherBtn = toggle.querySelector('[data-mode="other"]');
+      
+      if (isOther) {
+        selfBtn.classList.remove('active');
+        otherBtn.classList.add('active');
+        togglePurchaseMode('other');
+      } else {
+        selfBtn.classList.add('active');
+        otherBtn.classList.remove('active');
+        togglePurchaseMode('self');
+      }
+      
+      clearMessages();
+      popup.classList.add('active');
+    }
+
+    function showBongaPopup() {
+      const popup = document.getElementById('bongaPopup');
+      clearBongaMessages();
+      popup.classList.add('active');
+    }
+
+    function hidePurchasePopup() {
+      document.getElementById('purchasePopup').classList.remove('active');
+      clearInputs();
+    }
+
+    function hideBongaPopup() {
+      document.getElementById('bongaPopup').classList.remove('active');
+      clearBongaInputs();
+    }
+
+    function togglePurchaseMode(mode) {
+      const recipientPhone = document.getElementById('recipientPhone');
+      const payerPhone = document.getElementById('payerPhone');
+      
+      if (mode === 'other') {
+        recipientPhone.style.display = 'block';
+        payerPhone.placeholder = 'Your number (for payment)';
+      } else {
+        recipientPhone.style.display = 'none';
+        payerPhone.placeholder = 'Your Safaricom number (07XXXXXXXX)';
+      }
+      
+      clearMessages();
+    }
+
+    function validatePhone(phone) {
+      return /^(?:\+254|254|0)(7|1)[0-9]{8}$/.test(phone);
+    }
+
+    function showError(message) {
+      const errorDiv = document.getElementById('errorMessage');
+      errorDiv.textContent = message;
+      errorDiv.style.display = 'block';
+      setTimeout(() => {
+        errorDiv.style.display = 'none';
+      }, 5000);
+    }
+
+    function showSuccess(message) {
+      const successDiv = document.getElementById('successMessage');
+      successDiv.textContent = message;
+      successDiv.style.display = 'block';
+    }
+
+    function showBongaError(message) {
+      const errorDiv = document.getElementById('bongaErrorMessage');
+      errorDiv.textContent = message;
+      errorDiv.style.display = 'block';
+      setTimeout(() => {
+        errorDiv.style.display = 'none';
+      }, 5000);
+    }
+
+    function showBongaSuccess(message) {
+      const successDiv = document.getElementById('bongaSuccessMessage');
+      successDiv.textContent = message;
+      successDiv.style.display = 'block';
+    }
+
+    function clearMessages() {
+      document.getElementById('errorMessage').style.display = 'none';
+      document.getElementById('successMessage').style.display = 'none';
+    }
+
+    function clearBongaMessages() {
+      document.getElementById('bongaErrorMessage').style.display = 'none';
+      document.getElementById('bongaSuccessMessage').style.display = 'none';
+    }
+
+    function clearInputs() {
+      document.getElementById('payerPhone').value = '';
+      document.getElementById('recipientPhone').value = '';
+      clearMessages();
+    }
+
+    function clearBongaInputs() {
+      document.getElementById('bongaAmount').value = '';
+      document.getElementById('bongaPhone').value = '';
+      document.getElementById('bongaConfirmBtn').disabled = true;
+      document.getElementById('bongaConfirmText').textContent = 'Sell Points';
+      clearBongaMessages();
+    }
+
+    // Event listeners
+    document.getElementById('purchaseToggle').addEventListener('click', (e) => {
+      if (e.target.classList.contains('popup-toggle-btn')) {
+        const mode = e.target.dataset.mode;
+        const buttons = document.querySelectorAll('.popup-toggle-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        e.target.classList.add('active');
+        togglePurchaseMode(mode);
+      }
+    });
+
+    document.getElementById('cancelBtn').addEventListener('click', hidePurchasePopup);
+    document.getElementById('bongaCancelBtn').addEventListener('click', hideBongaPopup);
+
+    // Close popup when clicking overlay
+    document.getElementById('purchasePopup').addEventListener('click', (e) => {
+      if (e.target.id === 'purchasePopup') hidePurchasePopup();
+    });
+
+    document.getElementById('bongaPopup').addEventListener('click', (e) => {
+      if (e.target.id === 'bongaPopup') hideBongaPopup();
+    });
+
+    // Bonga amount selection
+    document.getElementById('bongaAmount').addEventListener('change', function() {
+      const confirmBtn = document.getElementById('bongaConfirmBtn');
+      const confirmText = document.getElementById('bongaConfirmText');
+      
+      if (this.value) {
+        confirmBtn.disabled = false;
+        confirmText.textContent = `Sell ${this.value} Points`;
+      } else {
+        confirmBtn.disabled = true;
+        confirmText.textContent = 'Sell Points';
+      }
+    });
+
+    // Confirm purchase
+    document.getElementById('confirmBtn').addEventListener('click', async () => {
+      const payerPhone = document.getElementById('payerPhone').value.trim();
+      const recipientPhone = document.getElementById('recipientPhone').value.trim();
+      const isOtherMode = document.querySelector('[data-mode="other"]').classList.contains('active');
+      
+      if (!validatePhone(payerPhone)) {
+        showError('Please enter a valid Safaricom number (07XXXXXXXX or +2547XXXXXXXX)');
+        return;
+      }
+      
+      if (isOtherMode && !validatePhone(recipientPhone)) {
+        showError('Please enter a valid recipient number');
+        return;
+      }
+      
+      const confirmBtn = document.getElementById('confirmBtn');
+      const confirmText = document.getElementById('confirmText');
+      
+      confirmBtn.disabled = true;
+      confirmText.textContent = 'Processing...';
+      
+      try {
+        const requestData = {
+          phone: payerPhone,
+          amount: parseInt(currentOffer.price),
+          type: currentType,
+          recipientPhone: isOtherMode ? recipientPhone : undefined
+        };
+
+        if (currentType === 'airtime') {
+          requestData.originalAmount = parseInt(currentOffer.originalPrice);
+          requestData.discount = parseInt(currentOffer.discount);
+        }
+
+        const res = await fetch("/stk-push", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(requestData)
+        });
+        
+        const data = await res.json();
+        
+        if (data.ResponseCode === '0') {
+          showSuccess('Payment request sent to your phone. Please complete the payment.');
+          setTimeout(() => {
+            hidePurchasePopup();
+          }, 3000);
+        } else {
+          showError(data.ResponseDescription || 'Payment request failed. Please try again.');
+        }
+      } catch (err) {
+        console.error('Error:', err);
+        showError('There was an error processing your request. Please try again.');
+      } finally {
+        confirmBtn.disabled = false;
+        confirmText.textContent = 'Confirm Purchase';
+      }
+    });
+
+    // Confirm Bonga sale
+    document.getElementById('bongaConfirmBtn').addEventListener('click', async () => {
+      const points = document.getElementById('bongaAmount').value;
+      const phone = document.getElementById('bongaPhone').value.trim();
+      
+      if (!points) {
+        showBongaError('Please select the amount of Bonga points to sell');
+        return;
+      }
+      
+      if (!validatePhone(phone)) {
+        showBongaError('Please enter a valid Safaricom number');
+        return;
+      }
+      
+      const price = (parseInt(points) / 1000) * 200;
+      const confirmBtn = document.getElementById('bongaConfirmBtn');
+      const confirmText = document.getElementById('bongaConfirmText');
+      
+      confirmBtn.disabled = true;
+      confirmText.textContent = 'Processing...';
+      
+      try {
+        const res = await fetch("/stk-push", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            phone,
+            amount: price,
+            type: 'bonga',
+            points: points
+          })
+        });
+        
+        const data = await res.json();
+        
+        if (data.ResponseCode === '0') {
+          showBongaSuccess(`Payment request sent! You will receive Ksh ${price} for ${points} Bonga points.`);
+          setTimeout(() => {
+            hideBongaPopup();
+          }, 3000);
+        } else {
+          showBongaError(data.ResponseDescription || 'Request failed. Please try again.');
+        }
+      } catch (err) {
+        console.error('Error:', err);
+        showBongaError('There was an error processing your request. Please try again.');
+      } finally {
+        confirmBtn.disabled = false;
+        confirmText.textContent = `Sell ${points} Points`;
+      }
+    });
+
     function renderOffers(offers, containerId, type = 'data') {
       const container = document.getElementById(containerId);
       offers.forEach(offer => {
@@ -273,13 +791,6 @@
             <h3 class="text-lg font-bold mb-2">${offer.name}</h3>
             <p class="text-xl font-bold mb-2">Ksh ${offer.price}</p>
             <p class="text-sm text-white/80 mb-3">${offer.description}</p>
-            <select class="w-full p-2 border border-gray-300 rounded-lg mb-3 bonga-select text-gray-800" data-price="${offer.price}">
-              <option value="">Select amount</option>
-              <option value="1000">1000 Points - Ksh 200</option>
-              <option value="2000">2000 Points - Ksh 400</option>
-              <option value="3000">3000 Points - Ksh 600</option>
-              <option value="5000">5000 Points - Ksh 1000</option>
-            </select>
           `;
         } else {
           cardContent = `
@@ -310,7 +821,7 @@
         } else {
           cardContent += `
             <div class="space-y-2">
-              <button class="btn-primary text-white px-4 py-2 rounded-lg w-full sell-bonga-btn font-medium" disabled>
+              <button class="btn-primary text-white px-4 py-2 rounded-lg w-full sell-bonga-btn font-medium">
                 Sell Points
               </button>
             </div>
@@ -323,135 +834,30 @@
 
       // Add event listeners for regular buy buttons
       container.querySelectorAll('.buy-btn, .buy-other-btn').forEach(button => {
-        button.addEventListener('click', async () => {
+        button.addEventListener('click', () => {
           const bundle = button.dataset.bundle;
           const price = button.dataset.price;
           const type = button.dataset.type;
           const isOther = button.classList.contains('buy-other-btn');
           
-          let phone, recipientPhone;
+          const offer = {
+            name: bundle,
+            price: parseInt(price)
+          };
           
-          if (isOther) {
-            phone = prompt(`Enter YOUR Safaricom number (for payment):`);
-            if (!phone || !/^(?:\+254|254|0)(7|1)[0-9]{8}$/.test(phone)) {
-              alert("Invalid number. Use format 07XXXXXXXX or +2547XXXXXXXX.");
-              return;
-            }
-            recipientPhone = prompt(`Enter recipient's Safaricom number for ${bundle}:`);
-            if (!recipientPhone || !/^(?:\+254|254|0)(7|1)[0-9]{8}$/.test(recipientPhone)) {
-              alert("Invalid recipient number. Use format 07XXXXXXXX or +2547XXXXXXXX.");
-              return;
-            }
-          } else {
-            phone = prompt(`Enter your Safaricom number to buy ${bundle} for Ksh ${price}:`);
-            if (!phone || !/^(?:\+254|254|0)(7|1)[0-9]{8}$/.test(phone)) {
-              alert("Invalid number. Use format 07XXXXXXXX or +2547XXXXXXXX.");
-              return;
-            }
+          if (type === 'airtime') {
+            offer.originalPrice = parseInt(button.dataset.original);
+            offer.discount = parseInt(button.dataset.discount);
           }
-
-          button.disabled = true;
-          const prevText = button.innerText;
-          button.innerText = "Processing...";
-
-          try {
-            const requestData = {
-              phone,
-              amount: parseInt(price),
-              type,
-              recipientPhone
-            };
-
-            if (type === 'airtime') {
-              requestData.originalAmount = parseInt(button.dataset.original);
-              requestData.discount = parseInt(button.dataset.discount);
-            }
-
-            const res = await fetch("/stk-push", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(requestData)
-            });
-            
-            const data = await res.json();
-            
-            if (data.ResponseCode === '0') {
-              alert("Payment request sent to your phone. Please complete the payment.");
-            } else {
-              alert(data.ResponseDescription || "Payment request failed. Please try again.");
-            }
-          } catch (err) {
-            console.error('Error:', err);
-            alert("There was an error processing your request. Please try again.");
-          } finally {
-            button.disabled = false;
-            button.innerText = prevText;
-          }
+          
+          showPurchasePopup(offer, type, isOther);
         });
       });
 
       // Add event listeners for Bonga points
-      container.querySelectorAll('.bonga-select').forEach(select => {
-        select.addEventListener('change', function() {
-          const sellButton = this.parentElement.querySelector('.sell-bonga-btn');
-          if (this.value) {
-            sellButton.disabled = false;
-            sellButton.textContent = `Sell ${this.value} Points`;
-          } else {
-            sellButton.disabled = true;
-            sellButton.textContent = 'Sell Points';
-          }
-        });
-      });
-
       container.querySelectorAll('.sell-bonga-btn').forEach(button => {
-        button.addEventListener('click', async () => {
-          const select = button.parentElement.parentElement.querySelector('.bonga-select');
-          const points = select.value;
-          
-          if (!points) {
-            alert("Please select the amount of Bonga points to sell.");
-            return;
-          }
-
-          const price = (parseInt(points) / 1000) * 200; // 200 KSH per 1000 points
-          const phone = prompt(`Enter your Safaricom number to sell ${points} Bonga points for Ksh ${price}:`);
-          
-          if (!phone || !/^(?:\+254|254|0)(7|1)[0-9]{8}$/.test(phone)) {
-            alert("Invalid number. Use format 07XXXXXXXX or +2547XXXXXXXX.");
-            return;
-          }
-
-          button.disabled = true;
-          const prevText = button.innerText;
-          button.innerText = "Processing...";
-
-          try {
-            const res = await fetch("/stk-push", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                phone,
-                amount: price,
-                type: 'bonga',
-                points: points
-              })
-            });
-            
-            const data = await res.json();
-            
-            if (data.ResponseCode === '0') {
-              alert(`Payment request sent! You will receive Ksh ${price} for ${points} Bonga points.`);
-            } else {
-              alert(data.ResponseDescription || "Request failed. Please try again.");
-            }
-          } catch (err) {
-            console.error('Error:', err);
-            alert("There was an error processing your request. Please try again.");
-          } finally {
-            button.disabled = false;
-            button.innerText = prevText;
-          }
+        button.addEventListener('click', () => {
+          showBongaPopup();
         });
       });
     }
