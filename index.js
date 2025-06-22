@@ -41,7 +41,8 @@ app.post('/stk-push', async (req, res) => {
         headers: {
           'Authorization': `Bearer ${LIPIA_API_KEY}`,
           'Content-Type': 'application/json'
-        }
+        },
+        timeout: 10000 // 10 seconds timeout to prevent socket hang up
       }
     );
 
