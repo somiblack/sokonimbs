@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 3000;
 
 // Lipia API configuration
 const LIPIA_BASE_URL = 'https://lipia-api.kreativelabske.com/api';
-const LIPIA_API_KEY = '79233999f4f4b0e88c6db407d978d439790e5ada';
+const LIPIA_API_KEY = process.env.VITE_LIPIA_API_KEY || 'b7c94be90840bf90881d351ded5ffaf740070501';
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));

@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bingwa - Buy Bundles & Airtime ChapChap!</title>
-  <meta name="description" content="Buy affordable Safaricom bundles, airtime, and sell Bonga points instantly with STK Push at Bingwa. Fast, simple, reliable." />
-  <meta name="keywords" content="Bingwa, Safaricom bundles, Kenya, data deals, internet packages, airtime, Bonga points" />
-  <meta name="author" content="Bingwa Team" />
+  <title>SokoniMbs - Buy Bundles & Airtime ChapChap!</title>
+  <meta name="description" content="Buy affordable Safaricom bundles, airtime, and sell Bonga points instantly with STK Push at SokoniMbs. Fast, simple, reliable." />
+  <meta name="keywords" content="SokoniMbs, Safaricom bundles, Kenya, data deals, internet packages, airtime, Bonga points" />
+  <meta name="author" content="SokoniMbs Team" />
   <link rel="icon" href="favicon.ico" />
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
@@ -31,14 +31,44 @@
     .bundle-card {
       transition: all 0.3s ease;
       backdrop-filter: blur(10px);
-      background: rgba(255, 255, 255, 0.9);
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
     
     .bundle-card:hover {
       transform: translateY(-8px);
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-      background: rgba(255, 255, 255, 0.95);
+    }
+
+    .data-card {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.9), rgba(5, 150, 105, 0.9));
+    }
+
+    .data-card:hover {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.95), rgba(5, 150, 105, 0.95));
+    }
+
+    .monthly-card {
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.9), rgba(124, 58, 237, 0.9));
+    }
+
+    .monthly-card:hover {
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.95), rgba(124, 58, 237, 0.95));
+    }
+
+    .airtime-card {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.9), rgba(37, 99, 235, 0.9));
+    }
+
+    .airtime-card:hover {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.95), rgba(37, 99, 235, 0.95));
+    }
+
+    .bonga-card {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.9), rgba(217, 119, 6, 0.9));
+    }
+
+    .bonga-card:hover {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.95), rgba(217, 119, 6, 0.95));
     }
     
     .whatsapp-float {
@@ -71,10 +101,10 @@
     }
 
     .icon-small {
-      width: 20px;
-      height: 20px;
+      width: 16px;
+      height: 16px;
       display: inline-block;
-      margin-right: 8px;
+      margin-right: 6px;
     }
 
     .btn-primary {
@@ -105,7 +135,7 @@
   <!-- Header -->
   <header class="header-glass text-white p-4 shadow-lg sticky top-0 z-50">
     <div class="max-w-6xl mx-auto">
-      <h1 class="text-xl font-bold text-left">Bingwa</h1>
+      <h1 class="text-lg font-bold text-left">SokoniMbs.co.ke</h1>
     </div>
   </header>
 
@@ -218,25 +248,32 @@
       const container = document.getElementById(containerId);
       offers.forEach(offer => {
         const card = document.createElement("div");
-        card.className = "bundle-card rounded-xl p-6 shadow-lg text-center";
+        
+        let cardClass = "bundle-card rounded-xl p-6 shadow-lg text-center text-white";
+        if (type === 'data') cardClass += " data-card";
+        else if (type === 'monthly') cardClass += " monthly-card";
+        else if (type === 'airtime') cardClass += " airtime-card";
+        else if (type === 'bonga') cardClass += " bonga-card";
+        
+        card.className = cardClass;
         
         let cardContent = '';
         
         if (type === 'airtime') {
           cardContent = `
-            <h3 class="text-lg font-bold mb-2 text-gray-800">${offer.name}</h3>
+            <h3 class="text-lg font-bold mb-2">${offer.name}</h3>
             <div class="mb-3">
-              <span class="text-sm text-gray-500 line-through">Ksh ${offer.originalPrice}</span>
-              <span class="text-xl font-bold text-green-600 ml-2">Ksh ${offer.price}</span>
-              <span class="text-sm text-green-500 block">${offer.discount}% OFF</span>
+              <span class="text-sm text-white/70 line-through">Ksh ${offer.originalPrice}</span>
+              <span class="text-xl font-bold ml-2">Ksh ${offer.price}</span>
+              <span class="text-sm text-white/90 block">${offer.discount}% OFF</span>
             </div>
           `;
         } else if (type === 'bonga') {
           cardContent = `
-            <h3 class="text-lg font-bold mb-2 text-gray-800">${offer.name}</h3>
-            <p class="text-xl font-bold text-green-600 mb-2">Ksh ${offer.price}</p>
-            <p class="text-sm text-gray-600 mb-3">${offer.description}</p>
-            <select class="w-full p-2 border border-gray-300 rounded-lg mb-3 bonga-select" data-price="${offer.price}">
+            <h3 class="text-lg font-bold mb-2">${offer.name}</h3>
+            <p class="text-xl font-bold mb-2">Ksh ${offer.price}</p>
+            <p class="text-sm text-white/80 mb-3">${offer.description}</p>
+            <select class="w-full p-2 border border-gray-300 rounded-lg mb-3 bonga-select text-gray-800" data-price="${offer.price}">
               <option value="">Select amount</option>
               <option value="1000">1000 Points - Ksh 200</option>
               <option value="2000">2000 Points - Ksh 400</option>
@@ -246,8 +283,8 @@
           `;
         } else {
           cardContent = `
-            <h3 class="text-lg font-bold mb-2 text-gray-800">${offer.name}</h3>
-            <p class="text-xl font-bold text-green-600 mb-3">Ksh ${offer.price}</p>
+            <h3 class="text-lg font-bold mb-2">${offer.name}</h3>
+            <p class="text-xl font-bold mb-3">Ksh ${offer.price}</p>
           `;
         }
         
@@ -421,7 +458,7 @@
 
     // Render all offers
     renderOffers(dataOffers, "data-offers", "data");
-    renderOffers(monthlyOffers, "monthly-offers", "data");
+    renderOffers(monthlyOffers, "monthly-offers", "monthly");
     renderOffers(airtimeOffers, "airtime-offers", "airtime");
     renderOffers(bongaOffers, "bonga-offers", "bonga");
   </script>
