@@ -47,12 +47,36 @@
       background: linear-gradient(135deg, rgba(16, 185, 129, 0.95), rgba(5, 150, 105, 0.95));
     }
 
+    .renewable-card {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.9), rgba(22, 163, 74, 0.9));
+    }
+
+    .renewable-card:hover {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.95), rgba(22, 163, 74, 0.95));
+    }
+
     .monthly-card {
       background: linear-gradient(135deg, rgba(139, 92, 246, 0.9), rgba(124, 58, 237, 0.9));
     }
 
     .monthly-card:hover {
       background: linear-gradient(135deg, rgba(139, 92, 246, 0.95), rgba(124, 58, 237, 0.95));
+    }
+
+    .minutes-card {
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.9), rgba(219, 39, 119, 0.9));
+    }
+
+    .minutes-card:hover {
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.95), rgba(219, 39, 119, 0.95));
+    }
+
+    .sms-card {
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.9), rgba(147, 51, 234, 0.9));
+    }
+
+    .sms-card:hover {
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.95), rgba(147, 51, 234, 0.95));
     }
 
     .airtime-card {
@@ -127,6 +151,37 @@
       background: linear-gradient(135deg, #2563eb, #1d4ed8);
       transform: translateY(-2px);
       box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+    }
+
+    .btn-manual {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      transition: all 0.3s ease;
+    }
+    
+    .btn-manual:hover {
+      background: linear-gradient(135deg, #d97706, #b45309);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.375rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      margin-right: 0.25rem;
+    }
+
+    .badge-save {
+      background-color: rgba(239, 68, 68, 0.9);
+      color: white;
+    }
+
+    .badge-renewable {
+      background-color: rgba(34, 197, 94, 0.9);
+      color: white;
     }
 
     /* Popup Modal Styles */
@@ -325,6 +380,17 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="data-offers"></div>
     </section>
 
+    <!-- Renewable Data Offers -->
+    <section class="mb-12">
+      <h3 class="text-2xl font-semibold text-white mb-6 flex items-center">
+        <svg class="icon-small" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"/>
+        </svg>
+        Renewable Data Offers
+      </h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="renewable-offers"></div>
+    </section>
+
     <!-- Monthly Packages -->
     <section class="mb-12">
       <h3 class="text-2xl font-semibold text-white mb-6 flex items-center">
@@ -334,6 +400,28 @@
         Monthly Packages
       </h3>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="monthly-offers"></div>
+    </section>
+
+    <!-- Minutes & Talktime -->
+    <section class="mb-12">
+      <h3 class="text-2xl font-semibold text-white mb-6 flex items-center">
+        <svg class="icon-small" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+        </svg>
+        Minutes & Talktime ☎️
+      </h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="minutes-offers"></div>
+    </section>
+
+    <!-- SMS Bundle Offers -->
+    <section class="mb-12">
+      <h3 class="text-2xl font-semibold text-white mb-6 flex items-center">
+        <svg class="icon-small" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd"/>
+        </svg>
+        SMS Bundle Offers 📱
+      </h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="sms-offers"></div>
     </section>
 
     <!-- Airtime -->
@@ -367,6 +455,10 @@
       <div class="p-4 text-sm text-green-800 bg-green-100/90 backdrop-blur-sm rounded-lg shadow-lg text-center border border-green-200">
         <strong>Manual Payment:</strong> Till Number: <strong>4288958</strong><br>
         Recipient: <strong>Shem Kirimi</strong>
+      </div>
+      <div class="p-4 text-sm text-orange-800 bg-orange-100/90 backdrop-blur-sm rounded-lg shadow-lg text-center border border-orange-200">
+        <strong>Minutes & Talktime Manual Payment:</strong> Send to <strong>0112223307</strong><br>
+        <em>Automation coming soon!</em>
       </div>
       <div class="p-4 text-sm text-blue-800 bg-blue-100/90 backdrop-blur-sm rounded-lg shadow-lg text-center border border-blue-200">
         More deals on <a href="https://sokoni.co.ke/" class="underline font-semibold text-blue-900 hover:text-blue-700" target="_blank">Sokoni.co.ke</a>
@@ -459,12 +551,33 @@
       { name: "6GB - 7 Days", price: 700 }
     ];
 
+    const renewableOffers = [
+      { name: "2GB - 24 hours", price: 110, originalPrice: 138, discount: 20, badges: ["Save 20%", "Renewable"] },
+      { name: "1.5GB - 3 hours", price: 51, badges: ["Renewable"] },
+      { name: "1GB - 1 hour", price: 21, badges: ["Renewable"] }
+    ];
+
     const monthlyOffers = [
       { name: "1.2GB - 30 Days", price: 250 },
       { name: "2.5GB - 30 Days", price: 500 },
       { name: "10GB - 30 Days", price: 1001 },
       { name: "8GB + 400 Min - 30 Days", price: 1000 },
       { name: "300 Min - 30 Days", price: 500 }
+    ];
+
+    const minutesOffers = [
+      { name: "45 minutes (3 hours)", price: 22, isManual: true },
+      { name: "200 Bob credit (till midnight)", price: 52, isManual: true },
+      { name: "250 minutes (7 days)", price: 200, isManual: true },
+      { name: "1250 minutes (30 days)", price: 1000, isManual: true }
+    ];
+
+    const smsOffers = [
+      { name: "20 SMS (24 hours)", price: 5 },
+      { name: "200 SMS (24 hours)", price: 10 },
+      { name: "1000 SMS (weekly)", price: 30 },
+      { name: "1500 SMS (monthly)", price: 100 },
+      { name: "3500 SMS (monthly)", price: 200 }
     ];
 
     const airtimeOffers = [
@@ -495,6 +608,12 @@
       title.textContent = offer.name;
       
       if (type === 'airtime') {
+        subtitle.textContent = `${offer.discount}% OFF - Save Ksh ${offer.originalPrice - offer.price}`;
+        price.innerHTML = `
+          <span style="text-decoration: line-through; opacity: 0.7; font-size: 0.8em;">Ksh ${offer.originalPrice}</span>
+          <span style="margin-left: 8px;">Ksh ${offer.price}</span>
+        `;
+      } else if (type === 'renewable' && offer.originalPrice) {
         subtitle.textContent = `${offer.discount}% OFF - Save Ksh ${offer.originalPrice - offer.price}`;
         price.innerHTML = `
           <span style="text-decoration: line-through; opacity: 0.7; font-size: 0.8em;">Ksh ${offer.originalPrice}</span>
@@ -684,6 +803,11 @@
           requestData.discount = parseInt(currentOffer.discount);
         }
 
+        if (currentType === 'renewable' && currentOffer.originalPrice) {
+          requestData.originalAmount = parseInt(currentOffer.originalPrice);
+          requestData.discount = parseInt(currentOffer.discount);
+        }
+
         const res = await fetch("/stk-push", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -769,7 +893,10 @@
         
         let cardClass = "bundle-card rounded-xl p-6 shadow-lg text-center text-white";
         if (type === 'data') cardClass += " data-card";
+        else if (type === 'renewable') cardClass += " renewable-card";
         else if (type === 'monthly') cardClass += " monthly-card";
+        else if (type === 'minutes') cardClass += " minutes-card";
+        else if (type === 'sms') cardClass += " sms-card";
         else if (type === 'airtime') cardClass += " airtime-card";
         else if (type === 'bonga') cardClass += " bonga-card";
         
@@ -777,8 +904,27 @@
         
         let cardContent = '';
         
+        // Add badges for renewable offers
+        if (type === 'renewable' && offer.badges) {
+          cardContent += '<div class="mb-3">';
+          offer.badges.forEach(badge => {
+            const badgeClass = badge.includes('Save') ? 'badge badge-save' : 'badge badge-renewable';
+            cardContent += `<span class="${badgeClass}">${badge}</span>`;
+          });
+          cardContent += '</div>';
+        }
+        
         if (type === 'airtime') {
-          cardContent = `
+          cardContent += `
+            <h3 class="text-lg font-bold mb-2">${offer.name}</h3>
+            <div class="mb-3">
+              <span class="text-sm text-white/70 line-through">Ksh ${offer.originalPrice}</span>
+              <span class="text-xl font-bold ml-2">Ksh ${offer.price}</span>
+              <span class="text-sm text-white/90 block">${offer.discount}% OFF</span>
+            </div>
+          `;
+        } else if (type === 'renewable' && offer.originalPrice) {
+          cardContent += `
             <h3 class="text-lg font-bold mb-2">${offer.name}</h3>
             <div class="mb-3">
               <span class="text-sm text-white/70 line-through">Ksh ${offer.originalPrice}</span>
@@ -787,37 +933,51 @@
             </div>
           `;
         } else if (type === 'bonga') {
-          cardContent = `
+          cardContent += `
             <h3 class="text-lg font-bold mb-2">${offer.name}</h3>
             <p class="text-xl font-bold mb-2">Ksh ${offer.price}</p>
             <p class="text-sm text-white/80 mb-3">${offer.description}</p>
           `;
         } else {
-          cardContent = `
+          cardContent += `
             <h3 class="text-lg font-bold mb-2">${offer.name}</h3>
             <p class="text-xl font-bold mb-3">Ksh ${offer.price}</p>
           `;
         }
         
         if (type !== 'bonga') {
-          cardContent += `
-            <div class="space-y-2">
-              <button class="btn-primary text-white px-4 py-2 rounded-lg w-full buy-btn font-medium" 
-                      data-bundle="${offer.name}" 
-                      data-price="${offer.price}" 
-                      ${type === 'airtime' ? `data-original="${offer.originalPrice}" data-discount="${offer.discount}"` : ''}
-                      data-type="${type}">
-                Buy Now
-              </button>
-              <button class="btn-secondary text-white px-4 py-2 rounded-lg w-full buy-other-btn font-medium" 
-                      data-bundle="${offer.name}" 
-                      data-price="${offer.price}"
-                      ${type === 'airtime' ? `data-original="${offer.originalPrice}" data-discount="${offer.discount}"` : ''}
-                      data-type="${type}">
-                Buy for Another
-              </button>
-            </div>
-          `;
+          if (type === 'minutes' && offer.isManual) {
+            cardContent += `
+              <div class="space-y-2">
+                <button class="btn-manual text-white px-4 py-2 rounded-lg w-full font-medium" 
+                        onclick="alert('Send Ksh ${offer.price} to 0112223307 for ${offer.name}')">
+                  Manual Payment
+                </button>
+                <p class="text-xs text-white/70">Send to 0112223307</p>
+              </div>
+            `;
+          } else {
+            cardContent += `
+              <div class="space-y-2">
+                <button class="btn-primary text-white px-4 py-2 rounded-lg w-full buy-btn font-medium" 
+                        data-bundle="${offer.name}" 
+                        data-price="${offer.price}" 
+                        ${type === 'airtime' ? `data-original="${offer.originalPrice}" data-discount="${offer.discount}"` : ''}
+                        ${type === 'renewable' && offer.originalPrice ? `data-original="${offer.originalPrice}" data-discount="${offer.discount}"` : ''}
+                        data-type="${type}">
+                  Buy Now
+                </button>
+                <button class="btn-secondary text-white px-4 py-2 rounded-lg w-full buy-other-btn font-medium" 
+                        data-bundle="${offer.name}" 
+                        data-price="${offer.price}"
+                        ${type === 'airtime' ? `data-original="${offer.originalPrice}" data-discount="${offer.discount}"` : ''}
+                        ${type === 'renewable' && offer.originalPrice ? `data-original="${offer.originalPrice}" data-discount="${offer.discount}"` : ''}
+                        data-type="${type}">
+                  Buy for Another
+                </button>
+              </div>
+            `;
+          }
         } else {
           cardContent += `
             <div class="space-y-2">
@@ -845,7 +1005,7 @@
             price: parseInt(price)
           };
           
-          if (type === 'airtime') {
+          if (type === 'airtime' || (type === 'renewable' && button.dataset.original)) {
             offer.originalPrice = parseInt(button.dataset.original);
             offer.discount = parseInt(button.dataset.discount);
           }
@@ -864,7 +1024,10 @@
 
     // Render all offers
     renderOffers(dataOffers, "data-offers", "data");
+    renderOffers(renewableOffers, "renewable-offers", "renewable");
     renderOffers(monthlyOffers, "monthly-offers", "monthly");
+    renderOffers(minutesOffers, "minutes-offers", "minutes");
+    renderOffers(smsOffers, "sms-offers", "sms");
     renderOffers(airtimeOffers, "airtime-offers", "airtime");
     renderOffers(bongaOffers, "bonga-offers", "bonga");
   </script>
