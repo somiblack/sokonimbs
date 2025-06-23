@@ -12,9 +12,10 @@ app.use(express.static(__dirname));
 
 const PORT = process.env.PORT || 3000;
 
-// Lipia API configuration
-const LIPIA_BASE_URL = 'https://lipia-api.kreativelabske.com/api';
-const LIPIA_API_KEY = process.env.VITE_LIPIA_API_KEY || 'b7c94be90840bf90881d351ded5ffaf740070501';
+// TinyPesa API configuration
+const TINYPESA_BASE_URL = 'https://tinypesa.com/api/v1/express';
+const TINYPESA_API_KEY = process.env.VITE_TINYPESA_API_KEY || 'oOW7lXuHaLESTs1GUw1tQ1bN8peEN-wbxqdnqGmA5Rbiic1xnT';
+const TINYPESA_USERNAME = process.env.VITE_TINYPESA_USERNAME || 'shemkirimi3@gmail.com';
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
@@ -22,36 +23,48 @@ app.get('/', (req, res) => {
 
 app.post('/stk-push', async (req, res) => {
   try {
-    const { amount, phone, recipientPhone, type, originalAmount, discount } = req.body;
+    const { amount, phone, recipientPhone, type, originalAmount, discount, points } = req.body;
     
-    // Format phone number for Lipia API (07XXXXXXXX format)
+    // Format phone number for TinyPesa API
     let formattedPayerPhone = phone;
-    if (phone.startsWith('254')) {
-      formattedPayerPhone = '0' + phone.slice(3);
+    if (phone.startsWith('0')) {
+      formattedPayerPhone = '254' + phone.slice(1);
+    } else if (phone.startsWith('+254')) {
+      formattedPayerPhone = phone.slice(1);
     }
     
-    // The payment request goes to the payer's phone
+    // Prepare request data for TinyPesa
+    const requestData = {
+      msisdn: formattedPayerPhone,
+      amount: amount,
+      account_no: 'SOKONIMBS' + Date.now(), // Unique account reference
+      callback_url: 'https://your-callback-url.com/callback' // You can update this later
+    };
+
+    console.log('TinyPesa Request:', requestData);
+
+    // Make request to TinyPesa API
     const response = await axios.post(
-      `${LIPIA_BASE_URL}/request/stk`,
-      {
-        phone: formattedPayerPhone,
-        amount: amount.toString()
-      },
+      TINYPESA_BASE_URL,
+      requestData,
       {
         headers: {
-          'Authorization': `Bearer ${LIPIA_API_KEY}`,
-          'Content-Type': 'application/json'
+          'Apikey': TINYPESA_API_KEY,
+          'Content-Type': 'application/x-www-form-urlencoded'
         },
-        timeout: 30000 // Increased timeout to 30 seconds to prevent socket hang up
+        timeout: 30000
       }
     );
+
+    console.log('TinyPesa Response:', response.data);
 
     // Log the transaction details for reference
     const transactionDetails = {
       payer: formattedPayerPhone,
-      recipient: recipientPhone ? ('0' + recipientPhone.slice(3)) : formattedPayerPhone,
+      recipient: recipientPhone ? (recipientPhone.startsWith('0') ? '254' + recipientPhone.slice(1) : recipientPhone) : formattedPayerPhone,
       amount: amount,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      account_ref: requestData.account_no
     };
 
     // Add specific details based on transaction type
@@ -60,31 +73,45 @@ app.post('/stk-push', async (req, res) => {
       transactionDetails.originalAmount = originalAmount;
       transactionDetails.discount = `${discount}%`;
       transactionDetails.savings = originalAmount - amount;
+    } else if (type === 'bonga') {
+      transactionDetails.type = 'Bonga Points Sale';
+      transactionDetails.points = points;
     } else {
       transactionDetails.type = 'Data Bundle';
     }
 
     console.log('Transaction Details:', transactionDetails);
 
-    // Return success response in format expected by frontend
-    res.json({
-      ResponseCode: '0',
-      ResponseDescription: 'Success. Request accepted for processing',
-      ...response.data
-    });
+    // Check if TinyPesa response indicates success
+    if (response.data && (response.data.success === true || response.data.ResponseCode === '0')) {
+      res.json({
+        ResponseCode: '0',
+        ResponseDescription: 'Success. Request accepted for processing',
+        CheckoutRequestID: response.data.CheckoutRequestID || response.data.id,
+        MerchantRequestID: response.data.MerchantRequestID || response.data.merchant_request_id
+      });
+    } else {
+      // Handle TinyPesa error response
+      res.status(400).json({
+        ResponseCode: '1',
+        ResponseDescription: response.data?.message || 'Payment request failed',
+        errorMessage: response.data?.error || 'Unknown error occurred'
+      });
+    }
 
   } catch (error) {
-    console.error('Lipia API Error:', error.response?.data || error.message);
+    console.error('TinyPesa API Error:', error.response?.data || error.message);
     
     // Return error response in format expected by frontend
     res.status(500).json({
       ResponseCode: '1',
       ResponseDescription: 'Failed',
-      errorMessage: error.response?.data?.message || 'Payment request failed'
+      errorMessage: error.response?.data?.message || error.message || 'Payment request failed'
     });
   }
 });
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Using TinyPesa API with username: ${TINYPESA_USERNAME}`);
 });
