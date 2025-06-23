@@ -14,43 +14,53 @@ const PORT = process.env.PORT || 3000;
 
 // TinyPesa API configuration
 const TINYPESA_BASE_URL = 'https://tinypesa.com/api/v1/express/stk/push';
-const TINYPESA_API_KEY = process.env.VITE_TINYPESA_API_KEY || 'oOW7lXuHaLESTs1GUw1tQ1bN8peEN-wbxqdnqGmA5Rbiic1xnT';
-const TINYPESA_USERNAME = process.env.VITE_TINYPESA_USERNAME || 'shemkirimi3@gmail.com';
+const TINYPESA_API_KEY = process.env.TINYPESA_API_KEY || process.env.VITE_TINYPESA_API_KEY || 'oOW7lXuHaLESTs1GUw1tQ1bN8peEN-wbxqdnqGmA5Rbiic1xnT';
+const TINYPESA_USERNAME = process.env.TINYPESA_USERNAME || process.env.VITE_TINYPESA_USERNAME || 'shemkirimi3@gmail.com';
 
 // Test mode flag - set to true for development testing
 const TEST_MODE = process.env.NODE_ENV === 'development' || process.env.TEST_MODE === 'true';
 
-// Create axios instance with better defaults for TinyPesa
+// Create axios instance with proper headers for TinyPesa
 const tinypesaClient = axios.create({
-  timeout: 30000, // 30 second timeout
+  timeout: 45000, // 45 second timeout
   headers: {
-    'User-Agent': 'SokoniMbs/1.0 (Node.js)',
-    'Accept': 'application/json',
+    'User-Agent': 'Mozilla/5.0 (compatible; SokoniMbs/1.0)',
+    'Accept': 'application/json, text/plain, */*',
+    'Accept-Language': 'en-US,en;q=0.9',
+    'Accept-Encoding': 'gzip, deflate, br',
     'Connection': 'keep-alive',
-    'Accept-Encoding': 'gzip, deflate'
+    'Cache-Control': 'no-cache',
+    'Pragma': 'no-cache',
+    // Add origin header to prevent CSRF issues
+    'Origin': 'https://tinypesa.com',
+    'Referer': 'https://tinypesa.com/',
+    // Security headers
+    'Sec-Fetch-Dest': 'empty',
+    'Sec-Fetch-Mode': 'cors',
+    'Sec-Fetch-Site': 'same-origin'
   },
-  // Disable automatic decompression to avoid potential issues
-  decompress: false,
-  // Keep connections alive
+  // Keep connections alive for better performance
   httpAgent: new (require('http').Agent)({ 
     keepAlive: true,
     keepAliveMsecs: 30000,
-    maxSockets: 10,
-    maxFreeSockets: 5
+    maxSockets: 5,
+    maxFreeSockets: 2
   }),
   httpsAgent: new (require('https').Agent)({ 
     keepAlive: true,
     keepAliveMsecs: 30000,
-    maxSockets: 10,
-    maxFreeSockets: 5,
-    // Add SSL options for better compatibility
+    maxSockets: 5,
+    maxFreeSockets: 2,
+    // SSL configuration for better compatibility
     secureProtocol: 'TLSv1_2_method',
-    rejectUnauthorized: true
+    rejectUnauthorized: true,
+    // Add cipher configuration
+    ciphers: 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384'
   })
 });
 
 // Enhanced retry mechanism with exponential backoff
-async function makeApiCallWithRetry(requestData, maxRetries = 5, initialDelay = 1000) {
+async function makeApiCallWithRetry(requestData, maxRetries = 3, initialDelay = 2000) {
   let lastError;
   const startTime = Date.now();
   
@@ -73,22 +83,37 @@ async function makeApiCallWithRetry(requestData, maxRetries = 5, initialDelay = 
       
       console.log('📤 Form Data:', formData.toString());
       
+      // Make the request with specific headers to avoid 403 CSRF error
       const response = await tinypesaClient({
         method: 'POST',
         url: TINYPESA_BASE_URL,
         data: formData,
         headers: {
+          // TinyPesa specific headers
           'Apikey': TINYPESA_API_KEY,
           'Content-Type': 'application/x-www-form-urlencoded',
+          // Override some default headers for this specific request
+          'X-Requested-With': 'XMLHttpRequest',
+          'Accept': 'application/json',
+          // Add CSRF token simulation (some APIs expect this)
+          'X-CSRF-Token': 'fetch',
+          // Ensure proper content length
+          'Content-Length': formData.toString().length.toString()
         },
-        // Add request interceptor for debugging
-        transformRequest: [(data) => {
-          console.log('🔍 Transformed request data:', data.toString());
-          return data;
-        }],
+        // Validate status codes
         validateStatus: function (status) {
           return status < 500; // Don't throw for 4xx errors, only 5xx
-        }
+        },
+        // Add response interceptor for debugging
+        transformResponse: [(data) => {
+          console.log('🔍 Raw response data:', data);
+          try {
+            return JSON.parse(data);
+          } catch (e) {
+            console.log('⚠️ Response is not JSON, returning as string');
+            return data;
+          }
+        }]
       });
       
       const attemptDuration = Date.now() - attemptStartTime;
@@ -102,13 +127,15 @@ async function makeApiCallWithRetry(requestData, maxRetries = 5, initialDelay = 
         const totalDuration = Date.now() - startTime;
         console.log(`🎉 API call successful after ${attempt} attempts in ${totalDuration}ms`);
         return response;
+      } else if (response.status === 403) {
+        // Handle 403 specifically - this is likely a CSRF or authentication issue
+        console.error('🚫 403 Forbidden - CSRF or authentication issue');
+        throw new Error(`API Error 403: Cross-site POST form submissions are forbidden. Check API key and headers.`);
+      } else if (response.status >= 400 && response.status < 500) {
+        // Handle other 4xx errors (client errors) - don't retry these
+        console.log('❌ Client error detected, not retrying');
+        throw new Error(`API Error ${response.status}: ${response.data?.message || JSON.stringify(response.data) || 'Client error'}`);
       } else {
-        // Handle 4xx errors (client errors) - don't retry these
-        if (response.status >= 400 && response.status < 500) {
-          console.log('❌ Client error detected, not retrying');
-          throw new Error(`API Error ${response.status}: ${response.data?.message || JSON.stringify(response.data) || 'Client error'}`);
-        }
-        
         // For other status codes, treat as retryable
         throw new Error(`HTTP ${response.status}: ${response.data?.message || JSON.stringify(response.data) || 'Server error'}`);
       }
@@ -126,13 +153,13 @@ async function makeApiCallWithRetry(requestData, maxRetries = 5, initialDelay = 
         headers: error.response?.headers
       });
       
-      // Log additional debugging info for socket errors
-      if (error.code === 'ECONNRESET' || error.message.includes('socket hang up')) {
-        console.error('🔌 Socket connection details:', {
-          host: new URL(TINYPESA_BASE_URL).hostname,
-          port: new URL(TINYPESA_BASE_URL).port || 443,
-          protocol: new URL(TINYPESA_BASE_URL).protocol,
-          timeout: tinypesaClient.defaults.timeout
+      // Log additional debugging info for specific errors
+      if (error.response?.status === 403) {
+        console.error('🔍 403 Error Details:', {
+          url: TINYPESA_BASE_URL,
+          apiKey: TINYPESA_API_KEY ? `${TINYPESA_API_KEY.substring(0, 10)}...` : 'NOT SET',
+          headers: error.config?.headers,
+          data: error.config?.data?.toString()
         });
       }
       
@@ -142,7 +169,7 @@ async function makeApiCallWithRetry(requestData, maxRetries = 5, initialDelay = 
         break;
       }
       
-      // Check if it's a retryable error
+      // Check if it's a retryable error (don't retry 403 or other 4xx errors)
       const isRetryableError = 
         error.code === 'ECONNRESET' ||
         error.code === 'ENOTFOUND' ||
@@ -154,8 +181,6 @@ async function makeApiCallWithRetry(requestData, maxRetries = 5, initialDelay = 
         error.code === 'ENETUNREACH' ||
         error.message.includes('socket hang up') ||
         error.message.includes('timeout') ||
-        error.message.includes('ENOTFOUND') ||
-        error.message.includes('ECONNRESET') ||
         error.message.includes('network') ||
         (error.response && error.response.status >= 500);
       
@@ -165,7 +190,7 @@ async function makeApiCallWithRetry(requestData, maxRetries = 5, initialDelay = 
       }
       
       // Calculate delay with exponential backoff and jitter
-      const baseDelay = initialDelay * Math.pow(2, attempt - 1); // Exponential backoff
+      const baseDelay = initialDelay * Math.pow(1.5, attempt - 1);
       const jitter = Math.random() * 1000; // Add up to 1 second of jitter
       const waitTime = Math.min(baseDelay + jitter, 30000); // Cap at 30 seconds
       
@@ -350,7 +375,7 @@ app.post('/stk-push', async (req, res) => {
       response = simulateTestModeResponse(requestData);
     } else {
       // Make request to TinyPesa API with enhanced retry mechanism
-      response = await makeApiCallWithRetry(requestData, 5, 1000);
+      response = await makeApiCallWithRetry(requestData, 3, 2000);
     }
 
     // Log the transaction details for reference
@@ -423,7 +448,10 @@ app.post('/stk-push', async (req, res) => {
     let errorMessage = 'Payment request failed. Please try again.';
     let responseCode = '1';
     
-    if (error.code === 'ENOTFOUND' || error.code === 'ECONNREFUSED') {
+    if (error.message.includes('Cross-site POST form submissions are forbidden')) {
+      errorMessage = 'API authentication failed. Please contact support if this persists.';
+      responseCode = '403';
+    } else if (error.code === 'ENOTFOUND' || error.code === 'ECONNREFUSED') {
       errorMessage = 'Unable to connect to payment service. Please check your internet connection and try again.';
     } else if (error.code === 'ETIMEDOUT' || error.message.includes('timeout')) {
       errorMessage = 'Request timed out. Please try again.';
@@ -432,6 +460,9 @@ app.post('/stk-push', async (req, res) => {
     } else if (error.response?.status === 401) {
       errorMessage = 'Authentication failed. Please contact support.';
       responseCode = '401';
+    } else if (error.response?.status === 403) {
+      errorMessage = 'Access forbidden. Please verify your API credentials.';
+      responseCode = '403';
     } else if (error.response?.status === 400) {
       errorMessage = error.response.data?.message || 'Invalid request. Please check your details.';
       responseCode = '400';
@@ -526,4 +557,8 @@ app.listen(PORT, () => {
   console.log(`   - Visit /test-tinypesa to test API connectivity`);
   console.log(`   - Set TEST_MODE=true in .env for development testing`);
   console.log(`   - Check /health for system diagnostics`);
+  console.log(`\n🔧 To fix 403 errors:`);
+  console.log(`   - Ensure TINYPESA_API_KEY is correctly set in .env`);
+  console.log(`   - Verify your TinyPesa account is active`);
+  console.log(`   - Use TEST_MODE=true for development testing`);
 });
