@@ -27,13 +27,19 @@ async function makeApiCallWithRetry(requestData, maxRetries = 3, initialDelay = 
       console.log('Request URL:', TINYPESA_BASE_URL);
       console.log('Request Data:', JSON.stringify(requestData, null, 2));
       
+      // Convert request data to URLSearchParams for form-encoded submission
+      const formData = new URLSearchParams();
+      Object.keys(requestData).forEach(key => {
+        formData.append(key, requestData[key]);
+      });
+      
       const response = await axios({
         method: 'POST',
         url: TINYPESA_BASE_URL,
-        data: requestData,
+        data: formData,
         headers: {
           'Apikey': TINYPESA_API_KEY,
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded',
           'Accept': 'application/json',
           'User-Agent': 'SokoniMbs/1.0'
         },
