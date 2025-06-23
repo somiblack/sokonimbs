@@ -17,6 +17,57 @@ const TINYPESA_BASE_URL = 'https://tinypesa.com/api/v1/express';
 const TINYPESA_API_KEY = process.env.VITE_TINYPESA_API_KEY || 'oOW7lXuHaLESTs1GUw1tQ1bN8peEN-wbxqdnqGmA5Rbiic1xnT';
 const TINYPESA_USERNAME = process.env.VITE_TINYPESA_USERNAME || 'shemkirimi3@gmail.com';
 
+// Retry mechanism for API calls
+async function makeApiCallWithRetry(requestData, maxRetries = 3, delay = 1000) {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      console.log(`TinyPesa API attempt ${attempt}/${maxRetries}`);
+      
+      const response = await axios.post(
+        TINYPESA_BASE_URL,
+        requestData,
+        {
+          headers: {
+            'Apikey': TINYPESA_API_KEY,
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          timeout: 30000
+        }
+      );
+      
+      console.log('TinyPesa Response:', response.data);
+      return response;
+      
+    } catch (error) {
+      console.error(`TinyPesa API attempt ${attempt} failed:`, error.message);
+      
+      // If this is the last attempt, throw the error
+      if (attempt === maxRetries) {
+        throw error;
+      }
+      
+      // Check if it's a retryable error
+      const isRetryableError = 
+        error.code === 'ECONNRESET' ||
+        error.code === 'ENOTFOUND' ||
+        error.code === 'ECONNREFUSED' ||
+        error.message.includes('socket hang up') ||
+        error.message.includes('timeout') ||
+        (error.response && error.response.status >= 500);
+      
+      if (!isRetryableError) {
+        console.log('Non-retryable error, not retrying');
+        throw error;
+      }
+      
+      // Wait before retrying (exponential backoff)
+      const waitTime = delay * Math.pow(2, attempt - 1);
+      console.log(`Waiting ${waitTime}ms before retry...`);
+      await new Promise(resolve => setTimeout(resolve, waitTime));
+    }
+  }
+}
+
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
@@ -43,20 +94,8 @@ app.post('/stk-push', async (req, res) => {
 
     console.log('TinyPesa Request:', requestData);
 
-    // Make request to TinyPesa API
-    const response = await axios.post(
-      TINYPESA_BASE_URL,
-      requestData,
-      {
-        headers: {
-          'Apikey': TINYPESA_API_KEY,
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        timeout: 30000
-      }
-    );
-
-    console.log('TinyPesa Response:', response.data);
+    // Make request to TinyPesa API with retry mechanism
+    const response = await makeApiCallWithRetry(requestData);
 
     // Log the transaction details for reference
     const transactionDetails = {
