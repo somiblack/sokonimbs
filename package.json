@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "build": "echo \"No specific build step defined for this project. Running directly from source.\""
   },
   "keywords": [],
   "author": "",
