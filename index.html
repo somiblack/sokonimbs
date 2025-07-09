@@ -351,6 +351,74 @@
       text-align: center;
       margin-bottom: 1rem;
     }
+
+    /* Transaction History Styles */
+    .transaction-item {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .transaction-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .transaction-offer {
+      font-weight: bold;
+      color: white;
+    }
+
+    .transaction-amount {
+      font-weight: bold;
+      color: #10b981;
+    }
+
+    .transaction-details {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 0.5rem;
+    }
+
+    .transaction-details div {
+      margin-bottom: 0.25rem;
+    }
+
+    .transaction-status {
+      font-weight: bold;
+      padding: 0.2rem 0.5rem;
+      border-radius: 0.25rem;
+      font-size: 0.8rem;
+    }
+
+    .status-pending {
+      background-color: rgba(245, 158, 11, 0.2);
+      color: #f59e0b;
+    }
+
+    .status-success {
+      background-color: rgba(16, 185, 129, 0.2);
+      color: #10b981;
+    }
+
+    .status-failed {
+      background-color: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+    }
+
+    .status-cancelled {
+      background-color: rgba(107, 114, 128, 0.2);
+      color: #6b7280;
+    }
+
+    .transaction-date {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.6);
+      text-align: right;
+    }
   </style>
 </head>
 <body class="font-sans text-gray-900">
@@ -1140,48 +1208,16 @@
       hideAllHistoryStates();
       const errorDiv = document.getElementById('historyError');
       errorDiv.textContent = message;
-      const loadBtn = document.getElementById('loadHistoryBtn');
-      const loadText = document.getElementById('loadHistoryText');
-      const loadSpinner = document.getElementById('loadHistorySpinner');
-      const historyContent = document.getElementById('historyContent');
-      
-      if (!validatePhone(phone)) {
-        historyContent.innerHTML = '<div class="no-transactions" style="color: #ef4444;">Please enter a valid Safaricom number</div>';
-        return;
-      }
-      
-      // Show loading state
-      loadBtn.disabled = true;
-      loadText.textContent = 'Loading...';
-      loadSpinner.style.display = 'inline-block';
-      historyContent.innerHTML = '<div class="no-transactions"><div class="loading-spinner" style="margin: 0 auto;"></div><br>Loading your transaction history...</div>';
-      
-      try {
-        const response = await fetch(`/api/transactions/${encodeURIComponent(phone)}`);
-        const data = await response.json();
-        
-        if (data.success && data.transactions) {
-          if (data.transactions.length === 0) {
-            historyContent.innerHTML = '<div class="no-transactions">No transactions found for this number</div>';
-          } else {
-            renderTransactionHistory(data.transactions);
-          }
-        } else {
-          historyContent.innerHTML = '<div class="no-transactions" style="color: #ef4444;">Failed to load transaction history</div>';
-        }
-      } catch (error) {
-        console.error('Error loading transaction history:', error);
-        historyContent.innerHTML = '<div class="no-transactions" style="color: #ef4444;">Error loading transaction history. Please try again.</div>';
-      } finally {
-        // Reset loading state
-        loadBtn.disabled = false;
-        loadText.textContent = 'Load Transaction History';
-        loadSpinner.style.display = 'none';
-      }
+      errorDiv.style.display = 'block';
     }
 
-    function renderTransactionHistory(transactions) {
-      const historyContent = document.getElementById('historyContent');
+    function displayTransactionHistory(transactions) {
+      hideAllHistoryStates();
+      const contentDiv = document.getElementById('historyContent');
+      const countDiv = document.getElementById('historyCount');
+      const listDiv = document.getElementById('historyList');
+      
+      countDiv.textContent = `${transactions.length} transaction${transactions.length !== 1 ? 's' : ''}`;
       
       const transactionsHtml = transactions.map(transaction => {
         const date = new Date(transaction.createdAt).toLocaleString();
@@ -1199,13 +1235,14 @@
               <div><strong>Payer:</strong> ${formatPhoneForDisplay(transaction.payerPhone)}</div>
               <div><strong>Recipient:</strong> ${formatPhoneForDisplay(transaction.recipientPhone)}</div>
             </div>
-            ${transaction.responseDescription ? `<div style="font-size: 0.8rem; color: #6b7280; margin-top: 0.5rem;">${transaction.responseDescription}</div>` : ''}
+            ${transaction.responseDescription ? `<div style="font-size: 0.8rem; color: rgba(255, 255, 255, 0.6); margin-top: 0.5rem;">${transaction.responseDescription}</div>` : ''}
             <div class="transaction-date">${date}</div>
           </div>
         `;
       }).join('');
       
-      historyContent.innerHTML = transactionsHtml;
+      listDiv.innerHTML = transactionsHtml;
+      contentDiv.style.display = 'block';
     }
 
     function formatPhoneForDisplay(phone) {
@@ -1216,14 +1253,7 @@
     }
 
     // Event listeners for transaction history
-    document.getElementById('historyBtn').addEventListener('click', showHistoryModal);
-    document.getElementById('historyCloseBtn').addEventListener('click', hideHistoryModal);
     document.getElementById('loadHistoryBtn').addEventListener('click', loadTransactionHistory);
-
-    // Close history modal when clicking overlay
-    document.getElementById('historyModal').addEventListener('click', (e) => {
-      if (e.target.id === 'historyModal') hideHistoryModal();
-    });
 
     // Allow Enter key to load history
     document.getElementById('historyPhone').addEventListener('keypress', (e) => {
@@ -1231,6 +1261,7 @@
         loadTransactionHistory();
       }
     });
+
     // Render all offers
     renderOffers(dataOffers, "data-offers", "data");
     renderOffers(renewableOffers, "renewable-offers", "renewable");
