@@ -407,6 +407,7 @@
 
     .show-history-btn {
       position: fixed;
+    }
   </style>
 </head>
 <body class="font-sans text-gray-900">
