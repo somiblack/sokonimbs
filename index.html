@@ -416,6 +416,62 @@
 
     .show-history-btn {
       position: fixed;
+
+    /* Transaction History Styles */
+    .transaction-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .transaction-card:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .status-success {
+      background-color: rgba(34, 197, 94, 0.2);
+      color: #22c55e;
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+
+    .status-pending {
+      background-color: rgba(245, 158, 11, 0.2);
+      color: #f59e0b;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .status-failed {
+      background-color: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .transaction-amount {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #10b981;
+    }
+
+    .transaction-meta {
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .show-history-btn {
+      position: fixed;
       backdrop-filter: blur(10px);
       transition: all 0.3s ease;
     }
@@ -520,6 +576,53 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="bonga-offers"></div>
     </section>
 
+    <!-- Transaction History -->
+    <section class="mb-12" id="historySection" style="display: none;">
+      <h3 class="text-2xl font-semibold text-white mb-6 flex items-center">
+        <svg class="icon-small" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+        </svg>
+        Transaction History
+        <button id="refreshHistoryBtn" class="ml-4 text-sm bg-white/20 hover:bg-white/30 px-3 py-1 rounded-lg transition-all">
+          Refresh
+        </button>
+      </h3>
+      
+      <div class="mb-4">
+        <div class="flex flex-col sm:flex-row gap-4 items-center">
+          <input 
+            type="tel" 
+            id="historyPhoneInput" 
+            placeholder="Enter phone number (07XXXXXXXX)" 
+            class="flex-1 px-4 py-2 rounded-lg border border-white/20 bg-white/10 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+          <button 
+            id="loadHistoryBtn" 
+            class="btn-primary text-white px-6 py-2 rounded-lg font-medium whitespace-nowrap"
+          >
+            Load History
+          </button>
+        </div>
+      </div>
+      
+      <div id="historyLoading" class="text-center text-white/80 py-8" style="display: none;">
+        <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+        <p class="mt-2">Loading transaction history...</p>
+      </div>
+      
+      <div id="historyError" class="text-center text-red-300 py-8" style="display: none;">
+        <p id="historyErrorMessage">Failed to load transaction history</p>
+      </div>
+      
+      <div id="historyEmpty" class="text-center text-white/60 py-8" style="display: none;">
+        <svg class="mx-auto h-12 w-12 mb-4 opacity-50" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+        </svg>
+        <p>No transactions found for this number</p>
+      </div>
+      
+      <div id="historyContent" class="space-y-4" style="display: none;"></div>
+    </section>
     <!-- Transaction History -->
     <section class="mb-12" id="historySection" style="display: none;">
       <h3 class="text-2xl font-semibold text-white mb-6 flex items-center">
