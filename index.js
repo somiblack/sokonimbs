@@ -4,6 +4,7 @@ const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
 const path = require('path');
+const { TransactionManager } = require('./lib/supabase');
 
 const app = express();
 app.use(cors());
@@ -336,13 +337,14 @@ app.get('/test-tinypesa', async (req, res) => {
 
 app.post('/stk-push', async (req, res) => {
   try {
-    const { amount, phone, recipientPhone, type, originalAmount, discount, points } = req.body;
+    const { amount, phone, recipientPhone, type, originalAmount, discount, points, offerName } = req.body;
     
     console.log('\n🎯 STK Push Request Received:', {
       amount,
       phone,
       recipientPhone,
       type,
+      offerName,
       originalAmount,
       discount,
       points,
@@ -392,6 +394,32 @@ app.post('/stk-push', async (req, res) => {
     // Generate unique account reference
     const accountRef = `SOKONIMBS_${type?.toUpperCase() || 'BUNDLE'}_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
     
+    // Determine offer name for transaction record
+    let transactionOfferName = offerName || 'Unknown Offer';
+    if (type === 'bonga') {
+      transactionOfferName = `${points} Bonga Points`;
+    } else if (type === 'airtime') {
+      transactionOfferName = `Ksh ${originalAmount || amount} Airtime${discount ? ` (${discount}% OFF)` : ''}`;
+    }
+    
+    // Create transaction record in database
+    let transaction;
+    try {
+      transaction = await TransactionManager.createTransaction({
+        payer_phone: formattedPayerPhone,
+        recipient_phone: formattedRecipientPhone,
+        amount: parseInt(amount),
+        type: type || 'data',
+        offer_name: transactionOfferName,
+        account_ref: accountRef,
+        customer_message: 'Transaction initiated'
+      });
+      console.log('📊 Transaction record created:', transaction.id);
+    } catch (dbError) {
+      console.error('❌ Failed to create transaction record:', dbError);
+      // Continue with payment even if DB fails, but log the error
+    }
+    
     // Determine callback URL - use ngrok or external URL in production
     let callbackUrl = `${req.protocol}://${req.get('host')}/callback`;
     
@@ -424,6 +452,16 @@ app.post('/stk-push', async (req, res) => {
     } else {
       // Make request to TinyPesa API with enhanced retry mechanism
       response = await makeApiCallWithRetry(requestData, 3, 2000);
+    }
+
+    // Update transaction record with TinyPesa response
+    if (transaction) {
+      try {
+        await TransactionManager.updateTransactionWithResponse(accountRef, response.data);
+        console.log('📊 Transaction updated with TinyPesa response');
+      } catch (dbError) {
+        console.error('❌ Failed to update transaction with response:', dbError);
+      }
     }
 
     // Log the transaction details for reference
@@ -581,6 +619,17 @@ app.post('/callback', (req, res) => {
       resultDesc: stkCallback.ResultDesc
     });
     
+    // Update transaction in database with callback data
+    if (stkCallback.CheckoutRequestID) {
+      TransactionManager.updateTransactionWithCallback(stkCallback.CheckoutRequestID, callbackData)
+        .then(updatedTransaction => {
+          console.log('📊 Transaction updated with callback:', updatedTransaction.id);
+        })
+        .catch(error => {
+          console.error('❌ Failed to update transaction with callback:', error);
+        });
+    }
+    
     if (stkCallback.ResultCode === 0) {
       console.log('✅ Payment successful!');
       // Here you would typically:
@@ -596,6 +645,70 @@ app.post('/callback', (req, res) => {
     ResultCode: 0,
     ResultDesc: "Callback received successfully"
   });
+});
+
+// API endpoint to get transaction history for a phone number
+app.get('/api/transactions/:phone', async (req, res) => {
+  try {
+    const { phone } = req.params;
+    const limit = parseInt(req.query.limit) || 50;
+    
+    // Validate and format phone number
+    const formattedPhone = validateAndFormatPhone(phone);
+    if (!formattedPhone) {
+      return res.status(400).json({
+        error: 'Invalid phone number format',
+        message: 'Please provide a valid Kenyan phone number'
+      });
+    }
+    
+    const transactions = await TransactionManager.getTransactionsByPhone(formattedPhone, limit);
+    
+    // Format transactions for frontend
+    const formattedTransactions = transactions.map(transaction => ({
+      id: transaction.id,
+      offerName: transaction.offer_name,
+      amount: transaction.amount,
+      type: transaction.type,
+      status: transaction.status,
+      payerPhone: transaction.payer_phone,
+      recipientPhone: transaction.recipient_phone,
+      createdAt: transaction.created_at,
+      updatedAt: transaction.updated_at,
+      accountRef: transaction.account_ref,
+      responseDescription: transaction.response_description
+    }));
+    
+    res.json({
+      success: true,
+      transactions: formattedTransactions,
+      total: formattedTransactions.length
+    });
+    
+  } catch (error) {
+    console.error('❌ Error fetching transaction history:', error);
+    res.status(500).json({
+      error: 'Failed to fetch transaction history',
+      message: error.message
+    });
+  }
+});
+
+// API endpoint to get transaction statistics (for admin/monitoring)
+app.get('/api/stats', async (req, res) => {
+  try {
+    const stats = await TransactionManager.getTransactionStats();
+    res.json({
+      success: true,
+      stats: stats
+    });
+  } catch (error) {
+    console.error('❌ Error fetching transaction stats:', error);
+    res.status(500).json({
+      error: 'Failed to fetch transaction statistics',
+      message: error.message
+    });
+  }
 });
 
 // Health check endpoint with enhanced diagnostics
