@@ -22,160 +22,75 @@
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 10px;
+            padding: 15px;
         }
 
         .header {
-            position: relative;
             text-align: center;
-            padding: 20px 0;
+            margin-bottom: 25px;
             color: white;
-            overflow: hidden;
+            position: relative;
+            padding: 20px 0;
         }
 
-        .brand-logo {
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            z-index: -1;
+        }
+
+        .brand-name {
             position: absolute;
             top: 10px;
             left: 20px;
             font-size: 1.5rem;
             font-weight: bold;
-            color: white;
+            color: #fff;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            z-index: 10;
-        }
-
-        .floating-icons {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .floating-icon {
-            position: absolute;
-            font-size: 2rem;
-            opacity: 0.1;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .floating-icon:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
-        .floating-icon:nth-child(2) { top: 20%; right: 15%; animation-delay: 1s; }
-        .floating-icon:nth-child(3) { bottom: 30%; left: 20%; animation-delay: 2s; }
-        .floating-icon:nth-child(4) { bottom: 20%; right: 10%; animation-delay: 3s; }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
-        }
-
-        .hero-section {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 30px;
-            margin: 20px auto;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
 
         .header h1 {
-            font-size: 3.5rem;
-            margin-bottom: 10px;
-            background: linear-gradient(45deg, #fff, #f093fb, #667eea);
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, #fff, #f0f8ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: glow 2s ease-in-out infinite alternate;
-            text-shadow: 0 0 20px rgba(255,255,255,0.5);
-        }
-
-        @keyframes glow {
-            from { filter: brightness(1); }
-            to { filter: brightness(1.2); }
         }
 
         .header p {
-            font-size: 1.3rem;
-            opacity: 0.9;
-            margin-bottom: 20px;
-        }
-
-        .phone-input-section {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-            backdrop-filter: blur(10px);
-        }
-
-        .phone-input-section h3 {
-            text-align: center;
-            margin-bottom: 15px;
-            color: #333;
-            font-size: 1.3rem;
-        }
-
-        .input-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .input-group input {
-            flex: 1;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .input-group input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+            font-size: 1.1rem;
+            opacity: 0.95;
         }
 
         .offers-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: 20px;
+            margin-bottom: 25px;
         }
 
         .offer-category {
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             padding: 20px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
             backdrop-filter: blur(10px);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .offer-category::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: left 0.5s;
-        }
-
-        .offer-category:hover::before {
-            left: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .offer-category:hover {
             transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(0,0,0,0.2);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.25);
         }
 
         .category-header {
@@ -197,36 +112,12 @@
             font-size: 1.3rem;
             color: white;
             background: linear-gradient(135deg, #667eea, #764ba2);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
         }
 
         .category-title {
             font-size: 1.2rem;
             font-weight: 600;
             color: #333;
-        }
-
-        .hot-badge {
-            background: linear-gradient(45deg, #ff6b6b, #ff8e53);
-            color: white;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 0.7rem;
-            font-weight: bold;
-            margin-left: auto;
-            animation: bounce 1s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-5px); }
-            60% { transform: translateY(-3px); }
         }
 
         .offer-item {
@@ -236,13 +127,12 @@
             border-radius: 10px;
             border: 1px solid #e0e6ff;
             transition: all 0.3s ease;
-            position: relative;
         }
 
         .offer-item:hover {
             background: linear-gradient(135deg, #e8ecff, #d4e0ff);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
         }
 
         .offer-header {
@@ -279,16 +169,6 @@
             font-weight: 700;
             color: #667eea;
             margin-left: 12px;
-        }
-
-        .savings-badge {
-            background: linear-gradient(45deg, #28a745, #20c997);
-            color: white;
-            padding: 2px 6px;
-            border-radius: 8px;
-            font-size: 0.7rem;
-            font-weight: bold;
-            margin-top: 4px;
         }
 
         .offer-buttons {
@@ -340,67 +220,36 @@
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             padding: 20px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.15);
             backdrop-filter: blur(10px);
         }
 
-        .faq-header {
-            text-align: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #f0f0f0;
-        }
-
         .faq-title {
-            font-size: 1.8rem;
+            font-size: 1.4rem;
             font-weight: 600;
             color: #333;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .faq-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 15px;
+            margin-bottom: 15px;
+            text-align: center;
         }
 
         .faq-item {
+            margin-bottom: 12px;
+            padding: 12px;
             background: linear-gradient(135deg, #f8f9ff, #e8ecff);
-            padding: 15px;
-            border-radius: 10px;
+            border-radius: 8px;
             border-left: 4px solid #667eea;
-            transition: all 0.3s ease;
-        }
-
-        .faq-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
         }
 
         .faq-question {
             font-weight: 600;
             color: #333;
-            margin-bottom: 8px;
-            font-size: 1rem;
+            margin-bottom: 5px;
         }
 
         .faq-answer {
             color: #666;
             font-size: 0.9rem;
-            line-height: 1.4;
-        }
-
-        .till-number {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-weight: bold;
-            font-family: monospace;
         }
 
         .history-section {
@@ -527,20 +376,26 @@
             background-color: white;
             margin: 10% auto;
             padding: 25px;
-            border-radius: 15px;
+            border-radius: 12px;
             width: 90%;
             max-width: 450px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
         }
 
         .modal-header {
             text-align: center;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .modal-header h3 {
             color: #333;
             margin-bottom: 8px;
+            font-size: 1.3rem;
+        }
+
+        .modal-header p {
+            color: #666;
+            font-size: 0.9rem;
         }
 
         .modal-input {
@@ -548,7 +403,7 @@
             padding: 12px;
             border: 2px solid #ddd;
             border-radius: 8px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             margin-bottom: 15px;
         }
 
@@ -584,29 +439,32 @@
             border: 2px solid #ddd;
         }
 
+        .discount-badge {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 5px;
+        }
+
         @media (max-width: 768px) {
             .container {
-                padding: 8px;
+                padding: 10px;
             }
 
             .header h1 {
-                font-size: 2.5rem;
+                font-size: 2rem;
             }
 
             .offers-grid {
                 grid-template-columns: 1fr;
-            }
-
-            .input-group {
-                flex-direction: column;
+                gap: 15px;
             }
 
             .offer-buttons {
                 flex-direction: column;
-            }
-
-            .faq-grid {
-                grid-template-columns: 1fr;
             }
 
             .modal-content {
@@ -614,8 +472,10 @@
                 width: 95%;
             }
 
-            .brand-logo {
+            .brand-name {
                 font-size: 1.2rem;
+                top: 5px;
+                left: 10px;
             }
         }
     </style>
@@ -623,28 +483,10 @@
 <body>
     <div class="container">
         <div class="header">
-            <div class="brand-logo">SokoniMBS</div>
-            <div class="floating-icons">
-                <div class="floating-icon">📱</div>
-                <div class="floating-icon">💎</div>
-                <div class="floating-icon">🌟</div>
-                <div class="floating-icon">⚡</div>
-            </div>
-            
-            <div class="hero-section">
-                <h1>🌟 Bingwa</h1>
-                <p>Your trusted partner for mobile data and services</p>
-                
-                <div class="phone-input-section">
-                    <h3>📱 Enter Your Phone Number</h3>
-                    <div class="input-group">
-                        <input type="tel" id="payerPhone" placeholder="Your phone number (e.g., 0712345678)" required>
-                    </div>
-                </div>
-            </div>
+            <div class="brand-name">SokoniMBS</div>
+            <h1>🌟 Your Mobile Services Hub</h1>
+            <p>Fast, reliable, and affordable mobile data & services</p>
         </div>
-
-        <div id="statusMessage"></div>
 
         <div class="offers-grid">
             <!-- Hot Offers -->
@@ -652,14 +494,13 @@
                 <div class="category-header">
                     <div class="category-icon">🔥</div>
                     <div class="category-title">Hot Offers</div>
-                    <div class="hot-badge">HOT!</div>
                 </div>
                 
                 <div class="offer-item">
                     <div class="offer-header">
                         <div class="offer-details">
                             <div class="offer-name">1.25GB Till Midnight</div>
-                            <div class="offer-validity">Valid till midnight</div>
+                            <div class="offer-validity">Valid until midnight</div>
                             <div class="offer-description">Perfect for evening browsing</div>
                         </div>
                         <div class="offer-price">KSh 55</div>
@@ -675,7 +516,7 @@
                         <div class="offer-details">
                             <div class="offer-name">1.2GB Monthly</div>
                             <div class="offer-validity">Valid for 30 days</div>
-                            <div class="offer-description">Great monthly value</div>
+                            <div class="offer-description">Long-term data bundle</div>
                         </div>
                         <div class="offer-price">KSh 250</div>
                     </div>
@@ -733,15 +574,15 @@
                 <div class="offer-item">
                     <div class="offer-header">
                         <div class="offer-details">
-                            <div class="offer-name">1GB Daily</div>
+                            <div class="offer-name">1GB Daily Premium</div>
                             <div class="offer-validity">Valid for 24 hours</div>
-                            <div class="offer-description">Full day data bundle</div>
+                            <div class="offer-description">Premium daily bundle</div>
                         </div>
                         <div class="offer-price">KSh 99</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('data', '1GB Daily', 99, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('data', '1GB Daily', 99, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('data', '1GB Daily Premium', 99, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('data', '1GB Daily Premium', 99, true)">Buy for Another</button>
                     </div>
                 </div>
 
@@ -786,10 +627,9 @@
                 <div class="offer-item">
                     <div class="offer-header">
                         <div class="offer-details">
-                            <div class="offer-name">2GB Daily Renewable</div>
+                            <div class="offer-name">2GB Daily Renewable <span class="discount-badge">Save 20%</span></div>
                             <div class="offer-validity">Valid for 24 hours</div>
-                            <div class="offer-description">Auto-renewable daily bundle</div>
-                            <div class="savings-badge">Save 20%</div>
+                            <div class="offer-description">Auto-renews daily with savings</div>
                         </div>
                         <div class="offer-price">KSh 110</div>
                     </div>
@@ -804,7 +644,7 @@
                         <div class="offer-details">
                             <div class="offer-name">1GB Hourly Renewable</div>
                             <div class="offer-validity">Valid for 1 hour</div>
-                            <div class="offer-description">Auto-renewable hourly bundle</div>
+                            <div class="offer-description">Auto-renews hourly</div>
                         </div>
                         <div class="offer-price">KSh 23</div>
                     </div>
@@ -819,7 +659,7 @@
                         <div class="offer-details">
                             <div class="offer-name">1.5GB 3-Hour Renewable</div>
                             <div class="offer-validity">Valid for 3 hours</div>
-                            <div class="offer-description">Auto-renewable 3-hour bundle</div>
+                            <div class="offer-description">Auto-renews every 3 hours</div>
                         </div>
                         <div class="offer-price">KSh 52</div>
                     </div>
@@ -834,7 +674,7 @@
             <div class="offer-category">
                 <div class="category-header">
                     <div class="category-icon">📅</div>
-                    <div class="category-title">Monthly Offers</div>
+                    <div class="category-title">Monthly Packages</div>
                 </div>
                 
                 <div class="offer-item">
@@ -842,7 +682,7 @@
                         <div class="offer-details">
                             <div class="offer-name">1.2GB Monthly</div>
                             <div class="offer-validity">Valid for 30 days</div>
-                            <div class="offer-description">Monthly data bundle</div>
+                            <div class="offer-description">Monthly data package</div>
                         </div>
                         <div class="offer-price">KSh 250</div>
                     </div>
@@ -862,8 +702,8 @@
                         <div class="offer-price">KSh 500</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('minutes', '300 Minutes Monthly', 500, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('minutes', '300 Minutes Monthly', 500, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('monthly', '300 Minutes Monthly', 500, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('monthly', '300 Minutes Monthly', 500, true)">Buy for Another</button>
                     </div>
                 </div>
 
@@ -872,28 +712,28 @@
                         <div class="offer-details">
                             <div class="offer-name">800 Minutes Monthly</div>
                             <div class="offer-validity">Valid for 30 days</div>
-                            <div class="offer-description">Extended calling bundle</div>
+                            <div class="offer-description">Premium calling bundle</div>
                         </div>
                         <div class="offer-price">KSh 1001</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('minutes', '800 Minutes Monthly', 1001, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('minutes', '800 Minutes Monthly', 1001, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('monthly', '800 Minutes Monthly', 1001, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('monthly', '800 Minutes Monthly', 1001, true)">Buy for Another</button>
                     </div>
                 </div>
 
                 <div class="offer-item">
                     <div class="offer-header">
                         <div class="offer-details">
-                            <div class="offer-name">8GB + 400 Minutes</div>
+                            <div class="offer-name">8GB + 400 Minutes Combo</div>
                             <div class="offer-validity">Valid for 30 days</div>
-                            <div class="offer-description">Data + voice combo</div>
+                            <div class="offer-description">Ultimate monthly combo</div>
                         </div>
                         <div class="offer-price">KSh 999</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('monthly', '8GB + 400 Minutes', 999, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('monthly', '8GB + 400 Minutes', 999, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('monthly', '8GB + 400 Minutes Combo', 999, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('monthly', '8GB + 400 Minutes Combo', 999, true)">Buy for Another</button>
                     </div>
                 </div>
 
@@ -917,7 +757,7 @@
                         <div class="offer-details">
                             <div class="offer-name">10GB Monthly</div>
                             <div class="offer-validity">Valid for 30 days</div>
-                            <div class="offer-description">Large monthly bundle</div>
+                            <div class="offer-description">Large monthly data bundle</div>
                         </div>
                         <div class="offer-price">KSh 1000</div>
                     </div>
@@ -953,128 +793,60 @@
                 <div class="offer-item">
                     <div class="offer-header">
                         <div class="offer-details">
-                            <div class="offer-name">50 Minutes</div>
+                            <div class="offer-name">50 Minutes Till Midnight</div>
                             <div class="offer-validity">Valid till midnight</div>
                             <div class="offer-description">Evening calling bundle</div>
                         </div>
                         <div class="offer-price">KSh 51</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('minutes', '50 Minutes', 51, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('minutes', '50 Minutes', 51, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('minutes', '50 Minutes Till Midnight', 51, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('minutes', '50 Minutes Till Midnight', 51, true)">Buy for Another</button>
                     </div>
                 </div>
 
                 <div class="offer-item">
                     <div class="offer-header">
                         <div class="offer-details">
-                            <div class="offer-name">200 Minutes</div>
+                            <div class="offer-name">200 Minutes Weekly</div>
                             <div class="offer-validity">Valid for 7 days</div>
                             <div class="offer-description">Weekly calling bundle</div>
                         </div>
                         <div class="offer-price">KSh 250</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('minutes', '200 Minutes', 250, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('minutes', '200 Minutes', 250, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('minutes', '200 Minutes Weekly', 250, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('minutes', '200 Minutes Weekly', 250, true)">Buy for Another</button>
                     </div>
                 </div>
 
                 <div class="offer-item">
                     <div class="offer-header">
                         <div class="offer-details">
-                            <div class="offer-name">300 Minutes</div>
+                            <div class="offer-name">300 Minutes Monthly</div>
                             <div class="offer-validity">Valid for 30 days</div>
                             <div class="offer-description">Monthly calling bundle</div>
                         </div>
                         <div class="offer-price">KSh 500</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('minutes', '300 Minutes', 500, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('minutes', '300 Minutes', 500, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('minutes', '300 Minutes Monthly', 500, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('minutes', '300 Minutes Monthly', 500, true)">Buy for Another</button>
                     </div>
                 </div>
 
                 <div class="offer-item">
                     <div class="offer-header">
                         <div class="offer-details">
-                            <div class="offer-name">800 Minutes</div>
+                            <div class="offer-name">800 Minutes Monthly</div>
                             <div class="offer-validity">Valid for 30 days</div>
-                            <div class="offer-description">Extended calling bundle</div>
+                            <div class="offer-description">Premium monthly calling</div>
                         </div>
                         <div class="offer-price">KSh 1001</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('minutes', '800 Minutes', 1001, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('minutes', '800 Minutes', 1001, true)">Buy for Another</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Airtime -->
-            <div class="offer-category">
-                <div class="category-header">
-                    <div class="category-icon">💰</div>
-                    <div class="category-title">Airtime</div>
-                </div>
-                
-                <div class="offer-item">
-                    <div class="offer-header">
-                        <div class="offer-details">
-                            <div class="offer-name">KSh 50 Airtime</div>
-                            <div class="offer-validity">No expiry</div>
-                            <div class="offer-description">3% discount applied</div>
-                        </div>
-                        <div class="offer-price">KSh 48.50</div>
-                    </div>
-                    <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('airtime', 'KSh 50 Airtime', 48.50, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('airtime', 'KSh 50 Airtime', 48.50, true)">Buy for Another</button>
-                    </div>
-                </div>
-
-                <div class="offer-item">
-                    <div class="offer-header">
-                        <div class="offer-details">
-                            <div class="offer-name">KSh 100 Airtime</div>
-                            <div class="offer-validity">No expiry</div>
-                            <div class="offer-description">3% discount applied</div>
-                        </div>
-                        <div class="offer-price">KSh 97</div>
-                    </div>
-                    <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('airtime', 'KSh 100 Airtime', 97, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('airtime', 'KSh 100 Airtime', 97, true)">Buy for Another</button>
-                    </div>
-                </div>
-
-                <div class="offer-item">
-                    <div class="offer-header">
-                        <div class="offer-details">
-                            <div class="offer-name">KSh 500 Airtime</div>
-                            <div class="offer-validity">No expiry</div>
-                            <div class="offer-description">3% discount applied</div>
-                        </div>
-                        <div class="offer-price">KSh 485</div>
-                    </div>
-                    <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('airtime', 'KSh 500 Airtime', 485, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('airtime', 'KSh 500 Airtime', 485, true)">Buy for Another</button>
-                    </div>
-                </div>
-
-                <div class="offer-item">
-                    <div class="offer-header">
-                        <div class="offer-details">
-                            <div class="offer-name">KSh 1000 Airtime</div>
-                            <div class="offer-validity">No expiry</div>
-                            <div class="offer-description">5% discount applied</div>
-                        </div>
-                        <div class="offer-price">KSh 950</div>
-                    </div>
-                    <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('airtime', 'KSh 1000 Airtime', 950, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('airtime', 'KSh 1000 Airtime', 950, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('minutes', '800 Minutes Monthly', 1001, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('minutes', '800 Minutes Monthly', 1001, true)">Buy for Another</button>
                     </div>
                 </div>
             </div>
@@ -1104,15 +876,15 @@
                 <div class="offer-item">
                     <div class="offer-header">
                         <div class="offer-details">
-                            <div class="offer-name">2000 Bingwa Points</div>
+                            <div class="offer-name">2500 Bingwa Points</div>
                             <div class="offer-validity">No expiry</div>
-                            <div class="offer-description">Loyalty points for rewards</div>
+                            <div class="offer-description">Premium loyalty points</div>
                         </div>
-                        <div class="offer-price">KSh 400</div>
+                        <div class="offer-price">KSh 500</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('bonga', '2000 Bingwa Points', 400, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('bonga', '2000 Bingwa Points', 400, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('bonga', '2500 Bingwa Points', 500, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('bonga', '2500 Bingwa Points', 500, true)">Buy for Another</button>
                     </div>
                 </div>
 
@@ -1121,7 +893,7 @@
                         <div class="offer-details">
                             <div class="offer-name">5000 Bingwa Points</div>
                             <div class="offer-validity">No expiry</div>
-                            <div class="offer-description">Loyalty points for rewards</div>
+                            <div class="offer-description">Ultimate loyalty package</div>
                         </div>
                         <div class="offer-price">KSh 1000</div>
                     </div>
@@ -1131,53 +903,110 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Airtime -->
+            <div class="offer-category">
+                <div class="category-header">
+                    <div class="category-icon">💰</div>
+                    <div class="category-title">Airtime <span class="discount-badge">Up to 5% Off</span></div>
+                </div>
+                
+                <div class="offer-item">
+                    <div class="offer-header">
+                        <div class="offer-details">
+                            <div class="offer-name">KSh 100 Airtime <span class="discount-badge">3% Off</span></div>
+                            <div class="offer-validity">No expiry</div>
+                            <div class="offer-description">Direct airtime top-up with discount</div>
+                        </div>
+                        <div class="offer-price">KSh 97</div>
+                    </div>
+                    <div class="offer-buttons">
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('airtime', 'KSh 100 Airtime', 97, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('airtime', 'KSh 100 Airtime', 97, true)">Buy for Another</button>
+                    </div>
+                </div>
+
+                <div class="offer-item">
+                    <div class="offer-header">
+                        <div class="offer-details">
+                            <div class="offer-name">KSh 200 Airtime <span class="discount-badge">3% Off</span></div>
+                            <div class="offer-validity">No expiry</div>
+                            <div class="offer-description">Direct airtime top-up with discount</div>
+                        </div>
+                        <div class="offer-price">KSh 194</div>
+                    </div>
+                    <div class="offer-buttons">
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('airtime', 'KSh 200 Airtime', 194, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('airtime', 'KSh 200 Airtime', 194, true)">Buy for Another</button>
+                    </div>
+                </div>
+
+                <div class="offer-item">
+                    <div class="offer-header">
+                        <div class="offer-details">
+                            <div class="offer-name">KSh 500 Airtime <span class="discount-badge">3% Off</span></div>
+                            <div class="offer-validity">No expiry</div>
+                            <div class="offer-description">Direct airtime top-up with discount</div>
+                        </div>
+                        <div class="offer-price">KSh 485</div>
+                    </div>
+                    <div class="offer-buttons">
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('airtime', 'KSh 500 Airtime', 485, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('airtime', 'KSh 500 Airtime', 485, true)">Buy for Another</button>
+                    </div>
+                </div>
+
+                <div class="offer-item">
+                    <div class="offer-header">
+                        <div class="offer-details">
+                            <div class="offer-name">KSh 1000 Airtime <span class="discount-badge">5% Off</span></div>
+                            <div class="offer-validity">No expiry</div>
+                            <div class="offer-description">Premium airtime with better discount</div>
+                        </div>
+                        <div class="offer-price">KSh 950</div>
+                    </div>
+                    <div class="offer-buttons">
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('airtime', 'KSh 1000 Airtime', 950, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('airtime', 'KSh 1000 Airtime', 950, true)">Buy for Another</button>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <div id="statusMessage"></div>
 
         <!-- FAQ Section -->
         <div class="faq-section">
-            <div class="faq-header">
-                <div class="faq-title">❓ Frequently Asked Questions</div>
+            <div class="faq-title">❓ Frequently Asked Questions</div>
+            
+            <div class="faq-item">
+                <div class="faq-question">How to buy manually?</div>
+                <div class="faq-answer">Pay exact amount to Till: 4288958</div>
             </div>
-            <div class="faq-grid">
-                <div class="faq-item">
-                    <div class="faq-question">How to buy manually?</div>
-                    <div class="faq-answer">Pay exact amount to till: <span class="till-number">4288958</span></div>
-                </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">How to become an affiliate?</div>
-                    <div class="faq-answer">Contact customer support for affiliate program details and requirements.</div>
-                </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">How long does bundle delivery take?</div>
-                    <div class="faq-answer">Bundles are delivered instantly after successful payment confirmation.</div>
-                </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">What payment methods are accepted?</div>
-                    <div class="faq-answer">We accept M-Pesa payments and manual till payments for all services.</div>
-                </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">How do renewable bundles work?</div>
-                    <div class="faq-answer">Renewable bundles automatically renew at the specified interval until you opt out.</div>
-                </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">What are Bingwa Points?</div>
-                    <div class="faq-answer">Loyalty points that can be redeemed for rewards. Rate: 1000 points = KSh 200</div>
-                </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">Is my payment information secure?</div>
-                    <div class="faq-answer">Yes, all transactions are secured with bank-level encryption and security protocols.</div>
-                </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">Can I cancel a transaction?</div>
-                    <div class="faq-answer">Transactions can only be cancelled before payment completion. Contact support for assistance.</div>
-                </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">How to become an affiliate?</div>
+                <div class="faq-answer">Contact customer support for affiliate program details</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">How long does it take to receive my bundle?</div>
+                <div class="faq-answer">Bundles are delivered instantly after successful payment confirmation</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Can I buy bundles for other networks?</div>
+                <div class="faq-answer">Yes, our platform supports all major networks in Kenya</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">What payment methods do you accept?</div>
+                <div class="faq-answer">We accept M-Pesa, Airtel Money, and direct till payments</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Is my payment information secure?</div>
+                <div class="faq-answer">Yes, all transactions are encrypted and processed through secure payment gateways</div>
             </div>
         </div>
 
@@ -1187,7 +1016,22 @@
                 <button class="refresh-btn" onclick="loadTransactionHistory()">🔄 Refresh</button>
             </div>
             <div id="transactionHistory">
-                <div class="loading">Enter your phone number to view transaction history</div>
+                <div class="loading">Click on any "Buy Now" button to start viewing your transaction history</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Phone Input -->
+    <div id="phoneModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Enter Your Phone Number</h3>
+                <p>We need your phone number to process the payment</p>
+            </div>
+            <input type="tel" id="payerPhoneInput" class="modal-input" placeholder="Your phone number (e.g., 0712345678)">
+            <div class="modal-buttons">
+                <button class="modal-btn modal-cancel" onclick="closePhoneModal()">Cancel</button>
+                <button class="modal-btn modal-confirm" onclick="confirmPhoneNumber()">Continue</button>
             </div>
         </div>
     </div>
@@ -1201,7 +1045,7 @@
             </div>
             <input type="tel" id="recipientPhoneInput" class="modal-input" placeholder="Recipient's phone number (e.g., 0712345678)">
             <div class="modal-buttons">
-                <button class="modal-btn modal-cancel" onclick="closeModal()">Cancel</button>
+                <button class="modal-btn modal-cancel" onclick="closeRecipientModal()">Cancel</button>
                 <button class="modal-btn modal-confirm" onclick="confirmPurchase()">Confirm Purchase</button>
             </div>
         </div>
@@ -1209,32 +1053,49 @@
 
     <script>
         let currentOffer = null;
+        let userPhone = null;
 
         // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
-            setupPhoneInputs();
+            // No automatic loading of transaction history
         });
 
-        function setupPhoneInputs() {
-            const payerPhone = document.getElementById('payerPhone');
-            
-            payerPhone.addEventListener('input', function() {
-                if (this.value.length >= 10) {
-                    loadTransactionHistory();
-                }
-            });
+        function buyOffer(type, offerName, price, forAnother) {
+            currentOffer = { type, offerName, price, forAnother };
+
+            if (!userPhone) {
+                // Show phone input modal
+                document.getElementById('phoneModal').style.display = 'block';
+                document.getElementById('payerPhoneInput').value = '';
+                document.getElementById('payerPhoneInput').focus();
+            } else {
+                proceedWithOffer(forAnother);
+            }
         }
 
-        function buyOffer(type, offerName, price, forAnother) {
-            const payerPhone = document.getElementById('payerPhone').value;
+        function closePhoneModal() {
+            document.getElementById('phoneModal').style.display = 'none';
+            currentOffer = null;
+        }
+
+        function confirmPhoneNumber() {
+            const phone = document.getElementById('payerPhoneInput').value;
             
-            if (!payerPhone || payerPhone.length < 10) {
-                showMessage('❌ Please enter your phone number first', 'error');
+            if (!phone || phone.length < 10) {
+                showMessage('❌ Please enter a valid phone number', 'error');
                 return;
             }
 
-            currentOffer = { type, offerName, price };
+            userPhone = phone;
+            closePhoneModal();
+            
+            // Load transaction history for the first time
+            loadTransactionHistory();
+            
+            proceedWithOffer(currentOffer.forAnother);
+        }
 
+        function proceedWithOffer(forAnother) {
             if (forAnother) {
                 // Show modal for recipient phone number
                 document.getElementById('recipientModal').style.display = 'block';
@@ -1242,17 +1103,16 @@
                 document.getElementById('recipientPhoneInput').focus();
             } else {
                 // Buy for self
-                processPurchase(payerPhone, payerPhone);
+                processPurchase(userPhone, userPhone);
             }
         }
 
-        function closeModal() {
+        function closeRecipientModal() {
             document.getElementById('recipientModal').style.display = 'none';
             currentOffer = null;
         }
 
         function confirmPurchase() {
-            const payerPhone = document.getElementById('payerPhone').value;
             const recipientPhone = document.getElementById('recipientPhoneInput').value;
             
             if (!recipientPhone || recipientPhone.length < 10) {
@@ -1260,8 +1120,8 @@
                 return;
             }
 
-            closeModal();
-            processPurchase(payerPhone, recipientPhone);
+            closeRecipientModal();
+            processPurchase(userPhone, recipientPhone);
         }
 
         async function processPurchase(payerPhone, recipientPhone) {
@@ -1312,18 +1172,17 @@
         }
 
         async function loadTransactionHistory() {
-            const payerPhone = document.getElementById('payerPhone').value;
             const historyContainer = document.getElementById('transactionHistory');
             
-            if (!payerPhone || payerPhone.length < 10) {
-                historyContainer.innerHTML = '<div class="loading">Enter your phone number to view transaction history</div>';
+            if (!userPhone) {
+                historyContainer.innerHTML = '<div class="loading">Click on any "Buy Now" button to start viewing your transaction history</div>';
                 return;
             }
             
             historyContainer.innerHTML = '<div class="loading">Loading transaction history...</div>';
             
             try {
-                const response = await fetch(`/api/transactions/${encodeURIComponent(payerPhone)}`);
+                const response = await fetch(`/api/transactions/${encodeURIComponent(userPhone)}`);
                 const data = await response.json();
                 
                 if (data.success && data.transactions) {
@@ -1381,9 +1240,14 @@
 
         // Close modal when clicking outside
         window.onclick = function(event) {
-            const modal = document.getElementById('recipientModal');
-            if (event.target === modal) {
-                closeModal();
+            const phoneModal = document.getElementById('phoneModal');
+            const recipientModal = document.getElementById('recipientModal');
+            
+            if (event.target === phoneModal) {
+                closePhoneModal();
+            }
+            if (event.target === recipientModal) {
+                closeRecipientModal();
             }
         }
     </script>
