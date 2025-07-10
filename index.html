@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bingwa - Mobile Data & Services</title>
+    <title>SokoniMBS - Mobile Data & Services</title>
     <style>
         * {
             margin: 0;
@@ -22,6 +22,24 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .brand-logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, #fff, #f0f8ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .header {
@@ -177,6 +195,45 @@
             font-weight: 700;
             color: #667eea;
             margin-left: 15px;
+        }
+
+        .hot-offer {
+            position: relative;
+            border: 2px solid #ff6b6b;
+            background: linear-gradient(135deg, #ffe8e8, #ffcccc);
+        }
+
+        .hot-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: linear-gradient(135deg, #ff6b6b, #ff5252);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .savings-badge {
+            background: linear-gradient(135deg, #4caf50, #45a049);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .discount-info {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
+            color: #856404;
         }
 
         .offer-buttons {
@@ -433,11 +490,20 @@
                 margin: 10% auto;
                 width: 95%;
             }
+
+            .top-bar {
+                flex-direction: column;
+                gap: 10px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <div class="top-bar">
+            <div class="brand-logo">SokoniMBS</div>
+        </div>
+
         <div class="header">
             <h1>🌟 Bingwa</h1>
             <p>Your trusted partner for mobile data and services</p>
@@ -451,128 +517,190 @@
         </div>
 
         <div class="offers-grid">
-            <!-- Data Bundles -->
+            <!-- Hot Offers -->
             <div class="offer-category">
                 <div class="category-header">
-                    <div class="category-icon">📊</div>
-                    <div class="category-title">Data Bundles</div>
+                    <div class="category-icon">🔥</div>
+                    <div class="category-title">Hot Offers</div>
                 </div>
                 
+                <div class="offer-item hot-offer">
+                    <div class="hot-badge">HOT</div>
+                    <div class="offer-header">
+                        <div class="offer-details">
+                            <div class="offer-name">1.25GB Till Midnight</div>
+                            <div class="offer-validity">Valid till midnight</div>
+                            <div class="offer-description">Perfect for evening browsing and entertainment</div>
+                        </div>
+                        <div class="offer-price">KSh 55</div>
+                    </div>
+                    <div class="offer-buttons">
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('data', '1.25GB Till Midnight', 55, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('data', '1.25GB Till Midnight', 55, true)">Buy for Another</button>
+                    </div>
+                </div>
+
                 <div class="offer-item">
                     <div class="offer-header">
                         <div class="offer-details">
-                            <div class="offer-name">1GB Daily</div>
+                            <div class="offer-name">1.2GB Monthly</div>
+                            <div class="offer-validity">Valid for 30 days</div>
+                            <div class="offer-description">Long-term data bundle</div>
+                        </div>
+                        <div class="offer-price">KSh 250</div>
+                    </div>
+                    <div class="offer-buttons">
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('data', '1.2GB Monthly', 250, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('data', '1.2GB Monthly', 250, true)">Buy for Another</button>
+                    </div>
+                </div>
+
+                <div class="offer-item">
+                    <div class="offer-header">
+                        <div class="offer-details">
+                            <div class="offer-name">350MB Weekly</div>
+                            <div class="offer-validity">Valid for 7 days</div>
+                            <div class="offer-description">Weekly data bundle</div>
+                        </div>
+                        <div class="offer-price">KSh 49</div>
+                    </div>
+                    <div class="offer-buttons">
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('data', '350MB Weekly', 49, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('data', '350MB Weekly', 49, true)">Buy for Another</button>
+                    </div>
+                </div>
+
+                <div class="offer-item">
+                    <div class="offer-header">
+                        <div class="offer-details">
+                            <div class="offer-name">1GB Hourly</div>
+                            <div class="offer-validity">Valid for 1 hour</div>
+                            <div class="offer-description">Quick data boost</div>
+                        </div>
+                        <div class="offer-price">KSh 19</div>
+                    </div>
+                    <div class="offer-buttons">
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('data', '1GB Hourly', 19, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('data', '1GB Hourly', 19, true)">Buy for Another</button>
+                    </div>
+                </div>
+
+                <div class="offer-item">
+                    <div class="offer-header">
+                        <div class="offer-details">
+                            <div class="offer-name">250MB Daily</div>
                             <div class="offer-validity">Valid for 24 hours</div>
-                            <div class="offer-description">Perfect for daily browsing and social media</div>
+                            <div class="offer-description">Daily data bundle</div>
                         </div>
                         <div class="offer-price">KSh 20</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('data', '1GB Daily', 20, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('data', '1GB Daily', 20, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('data', '250MB Daily', 20, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('data', '250MB Daily', 20, true)">Buy for Another</button>
                     </div>
                 </div>
 
                 <div class="offer-item">
                     <div class="offer-header">
                         <div class="offer-details">
-                            <div class="offer-name">2GB Weekly</div>
+                            <div class="offer-name">1GB Daily Premium</div>
+                            <div class="offer-validity">Valid for 24 hours</div>
+                            <div class="offer-description">Premium daily bundle</div>
+                        </div>
+                        <div class="offer-price">KSh 99</div>
+                    </div>
+                    <div class="offer-buttons">
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('data', '1GB Daily Premium', 99, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('data', '1GB Daily Premium', 99, true)">Buy for Another</button>
+                    </div>
+                </div>
+
+                <div class="offer-item">
+                    <div class="offer-header">
+                        <div class="offer-details">
+                            <div class="offer-name">2.5GB Weekly</div>
                             <div class="offer-validity">Valid for 7 days</div>
-                            <div class="offer-description">Great for moderate weekly usage</div>
-                        </div>
-                        <div class="offer-price">KSh 50</div>
-                    </div>
-                    <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('data', '2GB Weekly', 50, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('data', '2GB Weekly', 50, true)">Buy for Another</button>
-                    </div>
-                </div>
-
-                <div class="offer-item">
-                    <div class="offer-header">
-                        <div class="offer-details">
-                            <div class="offer-name">5GB Monthly</div>
-                            <div class="offer-validity">Valid for 30 days</div>
-                            <div class="offer-description">Ideal for regular internet users</div>
-                        </div>
-                        <div class="offer-price">KSh 150</div>
-                    </div>
-                    <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('data', '5GB Monthly', 150, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('data', '5GB Monthly', 150, true)">Buy for Another</button>
-                    </div>
-                </div>
-
-                <div class="offer-item">
-                    <div class="offer-header">
-                        <div class="offer-details">
-                            <div class="offer-name">10GB Monthly</div>
-                            <div class="offer-validity">Valid for 30 days</div>
-                            <div class="offer-description">Perfect for heavy data users</div>
+                            <div class="offer-description">Weekly power bundle</div>
                         </div>
                         <div class="offer-price">KSh 300</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('data', '10GB Monthly', 300, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('data', '10GB Monthly', 300, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('data', '2.5GB Weekly', 300, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('data', '2.5GB Weekly', 300, true)">Buy for Another</button>
+                    </div>
+                </div>
+
+                <div class="offer-item">
+                    <div class="offer-header">
+                        <div class="offer-details">
+                            <div class="offer-name">6GB Weekly</div>
+                            <div class="offer-validity">Valid for 7 days</div>
+                            <div class="offer-description">Ultimate weekly bundle</div>
+                        </div>
+                        <div class="offer-price">KSh 700</div>
+                    </div>
+                    <div class="offer-buttons">
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('data', '6GB Weekly', 700, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('data', '6GB Weekly', 700, true)">Buy for Another</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Renewable Bundles -->
+            <!-- Renewable Offers -->
             <div class="offer-category">
                 <div class="category-header">
                     <div class="category-icon">🔄</div>
-                    <div class="category-title">Renewable Bundles</div>
+                    <div class="category-title">Renewable Offers</div>
                 </div>
                 
                 <div class="offer-item">
                     <div class="offer-header">
                         <div class="offer-details">
-                            <div class="offer-name">1GB Renewable</div>
-                            <div class="offer-validity">Auto-renews daily</div>
-                            <div class="offer-description">Automatically renews every day</div>
+                            <div class="offer-name">2GB Daily Renewable</div>
+                            <div class="offer-validity">Valid for 24 hours</div>
+                            <div class="offer-description">Auto-renews daily</div>
+                            <span class="savings-badge">Save 20%</span>
                         </div>
-                        <div class="offer-price">KSh 25</div>
+                        <div class="offer-price">KSh 110</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('renewable', '1GB Renewable', 25, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('renewable', '1GB Renewable', 25, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('renewable', '2GB Daily Renewable', 110, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('renewable', '2GB Daily Renewable', 110, true)">Buy for Another</button>
                     </div>
                 </div>
 
                 <div class="offer-item">
                     <div class="offer-header">
                         <div class="offer-details">
-                            <div class="offer-name">3GB Renewable</div>
-                            <div class="offer-validity">Auto-renews weekly</div>
-                            <div class="offer-description">Automatically renews every week</div>
+                            <div class="offer-name">1GB Hourly Renewable</div>
+                            <div class="offer-validity">Valid for 1 hour</div>
+                            <div class="offer-description">Auto-renews hourly</div>
                         </div>
-                        <div class="offer-price">KSh 70</div>
+                        <div class="offer-price">KSh 23</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('renewable', '3GB Renewable', 70, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('renewable', '3GB Renewable', 70, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('renewable', '1GB Hourly Renewable', 23, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('renewable', '1GB Hourly Renewable', 23, true)">Buy for Another</button>
                     </div>
                 </div>
 
                 <div class="offer-item">
                     <div class="offer-header">
                         <div class="offer-details">
-                            <div class="offer-name">7GB Renewable</div>
-                            <div class="offer-validity">Auto-renews monthly</div>
-                            <div class="offer-description">Automatically renews every month</div>
+                            <div class="offer-name">1.5GB 3-Hour Renewable</div>
+                            <div class="offer-validity">Valid for 3 hours</div>
+                            <div class="offer-description">Auto-renews every 3 hours</div>
                         </div>
-                        <div class="offer-price">KSh 200</div>
+                        <div class="offer-price">KSh 52</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('renewable', '7GB Renewable', 200, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('renewable', '7GB Renewable', 200, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('renewable', '1.5GB 3-Hour Renewable', 52, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('renewable', '1.5GB 3-Hour Renewable', 52, true)">Buy for Another</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Monthly Packages -->
+            <!-- Monthly Offers -->
             <div class="offer-category">
                 <div class="category-header">
                     <div class="category-icon">📅</div>
@@ -582,113 +710,226 @@
                 <div class="offer-item">
                     <div class="offer-header">
                         <div class="offer-details">
-                            <div class="offer-name">15GB Monthly</div>
+                            <div class="offer-name">1.2GB Monthly</div>
                             <div class="offer-validity">Valid for 30 days</div>
-                            <div class="offer-description">Great value for power users</div>
+                            <div class="offer-description">Monthly data bundle</div>
+                        </div>
+                        <div class="offer-price">KSh 250</div>
+                    </div>
+                    <div class="offer-buttons">
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('monthly', '1.2GB Monthly', 250, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('monthly', '1.2GB Monthly', 250, true)">Buy for Another</button>
+                    </div>
+                </div>
+
+                <div class="offer-item">
+                    <div class="offer-header">
+                        <div class="offer-details">
+                            <div class="offer-name">300 Minutes Monthly</div>
+                            <div class="offer-validity">Valid for 30 days</div>
+                            <div class="offer-description">Monthly voice bundle</div>
                         </div>
                         <div class="offer-price">KSh 500</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('monthly', '15GB Monthly', 500, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('monthly', '15GB Monthly', 500, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('minutes', '300 Minutes Monthly', 500, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('minutes', '300 Minutes Monthly', 500, true)">Buy for Another</button>
                     </div>
                 </div>
 
                 <div class="offer-item">
                     <div class="offer-header">
                         <div class="offer-details">
-                            <div class="offer-name">25GB Monthly</div>
+                            <div class="offer-name">800 Minutes Monthly</div>
                             <div class="offer-validity">Valid for 30 days</div>
-                            <div class="offer-description">Perfect for families and businesses</div>
+                            <div class="offer-description">Premium voice bundle</div>
                         </div>
-                        <div class="offer-price">KSh 800</div>
+                        <div class="offer-price">KSh 1001</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('monthly', '25GB Monthly', 800, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('monthly', '25GB Monthly', 800, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('minutes', '800 Minutes Monthly', 1001, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('minutes', '800 Minutes Monthly', 1001, true)">Buy for Another</button>
                     </div>
                 </div>
 
                 <div class="offer-item">
                     <div class="offer-header">
                         <div class="offer-details">
-                            <div class="offer-name">50GB Monthly</div>
+                            <div class="offer-name">8GB + 400 Minutes Combo</div>
                             <div class="offer-validity">Valid for 30 days</div>
-                            <div class="offer-description">Ultimate package for unlimited usage</div>
+                            <div class="offer-description">Ultimate combo package</div>
                         </div>
-                        <div class="offer-price">KSh 1500</div>
+                        <div class="offer-price">KSh 999</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('monthly', '50GB Monthly', 1500, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('monthly', '50GB Monthly', 1500, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('monthly', '8GB + 400 Minutes Combo', 999, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('monthly', '8GB + 400 Minutes Combo', 999, true)">Buy for Another</button>
+                    </div>
+                </div>
+
+                <div class="offer-item">
+                    <div class="offer-header">
+                        <div class="offer-details">
+                            <div class="offer-name">2.5GB Monthly</div>
+                            <div class="offer-validity">Valid for 30 days</div>
+                            <div class="offer-description">Monthly data bundle</div>
+                        </div>
+                        <div class="offer-price">KSh 500</div>
+                    </div>
+                    <div class="offer-buttons">
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('monthly', '2.5GB Monthly', 500, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('monthly', '2.5GB Monthly', 500, true)">Buy for Another</button>
+                    </div>
+                </div>
+
+                <div class="offer-item">
+                    <div class="offer-header">
+                        <div class="offer-details">
+                            <div class="offer-name">10GB Monthly</div>
+                            <div class="offer-validity">Valid for 30 days</div>
+                            <div class="offer-description">Premium monthly bundle</div>
+                        </div>
+                        <div class="offer-price">KSh 1000</div>
+                    </div>
+                    <div class="offer-buttons">
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('monthly', '10GB Monthly', 1000, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('monthly', '10GB Monthly', 1000, true)">Buy for Another</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Voice & SMS -->
+            <!-- Minutes Offers -->
             <div class="offer-category">
                 <div class="category-header">
                     <div class="category-icon">📞</div>
-                    <div class="category-title">Voice & SMS</div>
+                    <div class="category-title">Minutes Offers</div>
                 </div>
                 
                 <div class="offer-item">
                     <div class="offer-header">
                         <div class="offer-details">
-                            <div class="offer-name">100 Minutes</div>
+                            <div class="offer-name">45 Minutes</div>
+                            <div class="offer-validity">Valid for 3 hours</div>
+                            <div class="offer-description">Quick talk time</div>
+                        </div>
+                        <div class="offer-price">KSh 22</div>
+                    </div>
+                    <div class="offer-buttons">
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('minutes', '45 Minutes', 22, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('minutes', '45 Minutes', 22, true)">Buy for Another</button>
+                    </div>
+                </div>
+
+                <div class="offer-item">
+                    <div class="offer-header">
+                        <div class="offer-details">
+                            <div class="offer-name">50 Minutes Till Midnight</div>
+                            <div class="offer-validity">Valid till midnight</div>
+                            <div class="offer-description">Evening talk time</div>
+                        </div>
+                        <div class="offer-price">KSh 51</div>
+                    </div>
+                    <div class="offer-buttons">
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('minutes', '50 Minutes Till Midnight', 51, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('minutes', '50 Minutes Till Midnight', 51, true)">Buy for Another</button>
+                    </div>
+                </div>
+
+                <div class="offer-item">
+                    <div class="offer-header">
+                        <div class="offer-details">
+                            <div class="offer-name">200 Minutes Weekly</div>
                             <div class="offer-validity">Valid for 7 days</div>
-                            <div class="offer-description">Talk time for a week</div>
+                            <div class="offer-description">Weekly talk bundle</div>
                         </div>
-                        <div class="offer-price">KSh 50</div>
+                        <div class="offer-price">KSh 250</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('minutes', '100 Minutes', 50, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('minutes', '100 Minutes', 50, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('minutes', '200 Minutes Weekly', 250, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('minutes', '200 Minutes Weekly', 250, true)">Buy for Another</button>
                     </div>
                 </div>
 
                 <div class="offer-item">
                     <div class="offer-header">
                         <div class="offer-details">
-                            <div class="offer-name">300 Minutes</div>
+                            <div class="offer-name">300 Minutes Monthly</div>
                             <div class="offer-validity">Valid for 30 days</div>
-                            <div class="offer-description">Monthly talk time bundle</div>
+                            <div class="offer-description">Monthly talk bundle</div>
                         </div>
-                        <div class="offer-price">KSh 120</div>
+                        <div class="offer-price">KSh 500</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('minutes', '300 Minutes', 120, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('minutes', '300 Minutes', 120, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('minutes', '300 Minutes Monthly', 500, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('minutes', '300 Minutes Monthly', 500, true)">Buy for Another</button>
                     </div>
                 </div>
 
                 <div class="offer-item">
                     <div class="offer-header">
                         <div class="offer-details">
-                            <div class="offer-name">100 SMS</div>
+                            <div class="offer-name">800 Minutes Monthly</div>
                             <div class="offer-validity">Valid for 30 days</div>
-                            <div class="offer-description">Text messaging bundle</div>
+                            <div class="offer-description">Premium talk bundle</div>
                         </div>
-                        <div class="offer-price">KSh 30</div>
+                        <div class="offer-price">KSh 1001</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('sms', '100 SMS', 30, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('sms', '100 SMS', 30, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('minutes', '800 Minutes Monthly', 1001, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('minutes', '800 Minutes Monthly', 1001, true)">Buy for Another</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bingwa Sokoni Sales -->
+            <div class="offer-category">
+                <div class="category-header">
+                    <div class="category-icon">🎁</div>
+                    <div class="category-title">Bingwa Sokoni Sales</div>
+                </div>
+                
+                <div class="offer-item">
+                    <div class="offer-header">
+                        <div class="offer-details">
+                            <div class="offer-name">1000 Bingwa Points</div>
+                            <div class="offer-validity">No expiry</div>
+                            <div class="offer-description">Loyalty points for rewards (Rate: 1000 points = KSh 200)</div>
+                        </div>
+                        <div class="offer-price">KSh 200</div>
+                    </div>
+                    <div class="offer-buttons">
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('bonga', '1000 Bingwa Points', 200, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('bonga', '1000 Bingwa Points', 200, true)">Buy for Another</button>
                     </div>
                 </div>
 
                 <div class="offer-item">
                     <div class="offer-header">
                         <div class="offer-details">
-                            <div class="offer-name">500 SMS</div>
-                            <div class="offer-validity">Valid for 30 days</div>
-                            <div class="offer-description">Large SMS bundle for heavy texters</div>
+                            <div class="offer-name">2000 Bingwa Points</div>
+                            <div class="offer-validity">No expiry</div>
+                            <div class="offer-description">Double loyalty points for rewards</div>
                         </div>
-                        <div class="offer-price">KSh 100</div>
+                        <div class="offer-price">KSh 400</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('sms', '500 SMS', 100, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('sms', '500 SMS', 100, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('bonga', '2000 Bingwa Points', 400, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('bonga', '2000 Bingwa Points', 400, true)">Buy for Another</button>
+                    </div>
+                </div>
+
+                <div class="offer-item">
+                    <div class="offer-header">
+                        <div class="offer-details">
+                            <div class="offer-name">5000 Bingwa Points</div>
+                            <div class="offer-validity">No expiry</div>
+                            <div class="offer-description">Premium loyalty points package</div>
+                        </div>
+                        <div class="offer-price">KSh 1000</div>
+                    </div>
+                    <div class="offer-buttons">
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('bonga', '5000 Bingwa Points', 1000, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('bonga', '5000 Bingwa Points', 1000, true)">Buy for Another</button>
                     </div>
                 </div>
             </div>
@@ -700,18 +941,24 @@
                     <div class="category-title">Airtime</div>
                 </div>
                 
+                <div class="discount-info">
+                    <strong>Airtime Discounts:</strong><br>
+                    • Below KSh 500: 3% discount<br>
+                    • KSh 501 and above: 5% discount
+                </div>
+                
                 <div class="offer-item">
                     <div class="offer-header">
                         <div class="offer-details">
                             <div class="offer-name">KSh 50 Airtime</div>
                             <div class="offer-validity">No expiry</div>
-                            <div class="offer-description">Direct airtime top-up</div>
+                            <div class="offer-description">Direct airtime top-up (3% discount applied)</div>
                         </div>
-                        <div class="offer-price">KSh 50</div>
+                        <div class="offer-price">KSh 48.50</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('airtime', 'KSh 50 Airtime', 50, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('airtime', 'KSh 50 Airtime', 50, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('airtime', 'KSh 50 Airtime', 48.50, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('airtime', 'KSh 50 Airtime', 48.50, true)">Buy for Another</button>
                     </div>
                 </div>
 
@@ -720,13 +967,13 @@
                         <div class="offer-details">
                             <div class="offer-name">KSh 100 Airtime</div>
                             <div class="offer-validity">No expiry</div>
-                            <div class="offer-description">Direct airtime top-up</div>
+                            <div class="offer-description">Direct airtime top-up (3% discount applied)</div>
                         </div>
-                        <div class="offer-price">KSh 100</div>
+                        <div class="offer-price">KSh 97</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('airtime', 'KSh 100 Airtime', 100, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('airtime', 'KSh 100 Airtime', 100, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('airtime', 'KSh 100 Airtime', 97, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('airtime', 'KSh 100 Airtime', 97, true)">Buy for Another</button>
                     </div>
                 </div>
 
@@ -735,13 +982,13 @@
                         <div class="offer-details">
                             <div class="offer-name">KSh 200 Airtime</div>
                             <div class="offer-validity">No expiry</div>
-                            <div class="offer-description">Direct airtime top-up</div>
+                            <div class="offer-description">Direct airtime top-up (3% discount applied)</div>
                         </div>
-                        <div class="offer-price">KSh 200</div>
+                        <div class="offer-price">KSh 194</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('airtime', 'KSh 200 Airtime', 200, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('airtime', 'KSh 200 Airtime', 200, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('airtime', 'KSh 200 Airtime', 194, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('airtime', 'KSh 200 Airtime', 194, true)">Buy for Another</button>
                     </div>
                 </div>
 
@@ -750,66 +997,43 @@
                         <div class="offer-details">
                             <div class="offer-name">KSh 500 Airtime</div>
                             <div class="offer-validity">No expiry</div>
-                            <div class="offer-description">Direct airtime top-up</div>
+                            <div class="offer-description">Direct airtime top-up (3% discount applied)</div>
                         </div>
-                        <div class="offer-price">KSh 500</div>
+                        <div class="offer-price">KSh 485</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('airtime', 'KSh 500 Airtime', 500, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('airtime', 'KSh 500 Airtime', 500, true)">Buy for Another</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Bonga Points -->
-            <div class="offer-category">
-                <div class="category-header">
-                    <div class="category-icon">🎁</div>
-                    <div class="category-title">Bonga Points</div>
-                </div>
-                
-                <div class="offer-item">
-                    <div class="offer-header">
-                        <div class="offer-details">
-                            <div class="offer-name">500 Bonga Points</div>
-                            <div class="offer-validity">No expiry</div>
-                            <div class="offer-description">Loyalty points for rewards</div>
-                        </div>
-                        <div class="offer-price">KSh 25</div>
-                    </div>
-                    <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('bonga', '500 Bonga Points', 25, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('bonga', '500 Bonga Points', 25, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('airtime', 'KSh 500 Airtime', 485, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('airtime', 'KSh 500 Airtime', 485, true)">Buy for Another</button>
                     </div>
                 </div>
 
                 <div class="offer-item">
                     <div class="offer-header">
                         <div class="offer-details">
-                            <div class="offer-name">1000 Bonga Points</div>
+                            <div class="offer-name">KSh 1000 Airtime</div>
                             <div class="offer-validity">No expiry</div>
-                            <div class="offer-description">Loyalty points for rewards</div>
+                            <div class="offer-description">Direct airtime top-up (5% discount applied)</div>
                         </div>
-                        <div class="offer-price">KSh 50</div>
+                        <div class="offer-price">KSh 950</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('bonga', '1000 Bonga Points', 50, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('bonga', '1000 Bonga Points', 50, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('airtime', 'KSh 1000 Airtime', 950, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('airtime', 'KSh 1000 Airtime', 950, true)">Buy for Another</button>
                     </div>
                 </div>
 
                 <div class="offer-item">
                     <div class="offer-header">
                         <div class="offer-details">
-                            <div class="offer-name">2000 Bonga Points</div>
+                            <div class="offer-name">KSh 2000 Airtime</div>
                             <div class="offer-validity">No expiry</div>
-                            <div class="offer-description">Loyalty points for rewards</div>
+                            <div class="offer-description">Direct airtime top-up (5% discount applied)</div>
                         </div>
-                        <div class="offer-price">KSh 100</div>
+                        <div class="offer-price">KSh 1900</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('bonga', '2000 Bonga Points', 100, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('bonga', '2000 Bonga Points', 100, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('airtime', 'KSh 2000 Airtime', 1900, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('airtime', 'KSh 2000 Airtime', 1900, true)">Buy for Another</button>
                     </div>
                 </div>
             </div>
