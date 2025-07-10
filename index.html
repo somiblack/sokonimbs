@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SokoniMBS - Mobile Data & Services</title>
+    <title>SokoniMBS - Bingwa Mobile Services</title>
     <style>
         * {
             margin: 0;
@@ -13,9 +13,10 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
             min-height: 100vh;
             color: #333;
+            overflow-x: hidden;
         }
 
         .container {
@@ -24,48 +25,130 @@
             padding: 20px;
         }
 
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            color: white;
+        .brand-header {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 10px 20px;
+            border-radius: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+            z-index: 100;
         }
 
-        .brand-logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            background: linear-gradient(45deg, #fff, #f0f8ff);
+        .brand-header h3 {
+            color: #667eea;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin: 80px 0 60px 0;
+            position: relative;
+            padding: 40px 20px;
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff, #f093fb, #667eea);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-            color: white;
-        }
-
-        .header h1 {
-            font-size: 3rem;
-            margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: glow 2s ease-in-out infinite alternate;
         }
 
-        .header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.3)); }
+            to { filter: drop-shadow(0 0 30px rgba(240, 147, 251, 0.5)); }
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .floating-icon {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.3;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-icon:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .floating-icon:nth-child(2) { top: 20%; right: 15%; animation-delay: 1s; }
+        .floating-icon:nth-child(3) { bottom: 30%; left: 20%; animation-delay: 2s; }
+        .floating-icon:nth-child(4) { bottom: 20%; right: 10%; animation-delay: 3s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
         }
 
         .phone-input-section {
-            background: rgba(255, 255, 255, 0.95);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(240, 147, 251, 0.1));
             padding: 30px;
-            border-radius: 20px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .phone-input-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
         }
 
         .phone-input-section h2 {
@@ -73,6 +156,8 @@
             margin-bottom: 20px;
             color: #333;
             font-size: 1.8rem;
+            position: relative;
+            z-index: 2;
         }
 
         .input-group {
@@ -80,92 +165,186 @@
             gap: 15px;
             margin-bottom: 20px;
             flex-wrap: wrap;
+            position: relative;
+            z-index: 2;
         }
 
         .input-group input {
             flex: 1;
-            padding: 15px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
+            padding: 18px;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            border-radius: 15px;
             font-size: 1rem;
             transition: all 0.3s ease;
             min-width: 200px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
         }
 
         .input-group input:focus {
             outline: none;
             border-color: #667eea;
-            box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.4);
+            transform: translateY(-2px);
         }
 
         .offers-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
         }
 
         .offer-category {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            backdrop-filter: blur(10px);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(240, 147, 251, 0.05));
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            backdrop-filter: blur(15px);
+            transition: all 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .offer-category::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .offer-category:hover::before {
+            left: 100%;
         }
 
         .offer-category:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
         }
 
         .category-header {
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #f0f0f0;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.2);
+            position: relative;
+            z-index: 2;
         }
 
         .category-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
+            width: 60px;
+            height: 60px;
+            border-radius: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-right: 15px;
-            font-size: 1.5rem;
+            margin-right: 20px;
+            font-size: 1.8rem;
             color: white;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         .category-title {
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: #333;
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .offer-item {
-            padding: 20px;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, #f8f9ff, #e8ecff);
-            border-radius: 12px;
-            border: 1px solid #e0e6ff;
-            transition: all 0.3s ease;
+            padding: 25px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #f8f9ff, #e8ecff, rgba(240, 147, 251, 0.1));
+            border-radius: 18px;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .offer-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .offer-item:hover::before {
+            transform: scaleX(1);
         }
 
         .offer-item:hover {
-            background: linear-gradient(135deg, #e8ecff, #d4e0ff);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+            background: linear-gradient(135deg, #e8ecff, #d4e0ff, rgba(240, 147, 251, 0.15));
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.25);
+            border-color: #667eea;
+        }
+
+        .hot-offer {
+            position: relative;
+            border: 2px solid #ff6b6b;
+            background: linear-gradient(135deg, #fff5f5, #ffe8e8, rgba(255, 107, 107, 0.1));
+        }
+
+        .hot-badge {
+            position: absolute;
+            top: -10px;
+            right: 15px;
+            background: linear-gradient(135deg, #ff6b6b, #ff5252);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-5px); }
+            60% { transform: translateY(-3px); }
+        }
+
+        .savings-badge {
+            position: absolute;
+            top: -8px;
+            left: 15px;
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            box-shadow: 0 3px 10px rgba(40, 167, 69, 0.3);
         }
 
         .offer-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .offer-details {
@@ -173,105 +352,109 @@
         }
 
         .offer-name {
-            font-weight: 600;
-            font-size: 1.1rem;
-            margin-bottom: 5px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
             color: #333;
         }
 
         .offer-validity {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: #666;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            font-weight: 500;
         }
 
         .offer-description {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: #888;
+            line-height: 1.4;
         }
 
         .offer-price {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #667eea;
-            margin-left: 15px;
+            font-size: 1.4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-left: 20px;
+            text-align: right;
         }
 
-        .hot-offer {
-            position: relative;
-            border: 2px solid #ff6b6b;
-            background: linear-gradient(135deg, #ffe8e8, #ffcccc);
-        }
-
-        .hot-badge {
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            background: linear-gradient(135deg, #ff6b6b, #ff5252);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 0.7rem;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        .savings-badge {
-            background: linear-gradient(135deg, #4caf50, #45a049);
-            color: white;
-            padding: 3px 8px;
-            border-radius: 10px;
-            font-size: 0.7rem;
-            font-weight: bold;
-            margin-left: 10px;
+        .original-price {
+            font-size: 0.9rem;
+            color: #999;
+            text-decoration: line-through;
+            display: block;
+            margin-bottom: 5px;
         }
 
         .discount-info {
-            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
-            border: 1px solid #ffc107;
-            border-radius: 8px;
-            padding: 10px;
-            margin-bottom: 15px;
-            font-size: 0.85rem;
-            color: #856404;
+            font-size: 0.8rem;
+            color: #28a745;
+            font-weight: 600;
+            margin-top: 5px;
         }
 
         .offer-buttons {
             display: flex;
-            gap: 10px;
-            margin-top: 15px;
+            gap: 12px;
+            margin-top: 20px;
         }
 
         .buy-btn {
             flex: 1;
-            padding: 12px 20px;
+            padding: 15px 25px;
             border: none;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            font-weight: 600;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .buy-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+        }
+
+        .buy-btn:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
         .buy-now-btn {
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
         }
 
         .buy-now-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(102, 126, 234, 0.4);
         }
 
         .buy-another-btn {
             background: linear-gradient(135deg, #28a745, #20c997);
             color: white;
+            box-shadow: 0 8px 20px rgba(40, 167, 69, 0.3);
         }
 
         .buy-another-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(40, 167, 69, 0.4);
         }
 
         .buy-btn:disabled {
@@ -281,112 +464,204 @@
             box-shadow: none;
         }
 
-        .history-section {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
+        .faq-section {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(240, 147, 251, 0.05));
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .faq-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .faq-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        .faq-subtitle {
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .faq-item {
+            background: linear-gradient(135deg, #f8f9ff, #e8ecff);
             padding: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            backdrop-filter: blur(10px);
+            border-radius: 18px;
+            border-left: 5px solid #667eea;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .faq-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);
+        }
+
+        .faq-question {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .faq-question::before {
+            content: '❓';
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .faq-answer {
+            color: #666;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .faq-answer strong {
+            color: #667eea;
+            font-weight: 700;
+        }
+
+        .history-section {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(240, 147, 251, 0.05));
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         .history-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #f0f0f0;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.2);
         }
 
         .history-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #333;
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .refresh-btn {
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
+            padding: 12px 25px;
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            font-weight: 600;
             transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
         }
 
         .refresh-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
         }
 
         .transaction-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px;
-            margin-bottom: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
             background: linear-gradient(135deg, #f8f9ff, #e8ecff);
-            border-radius: 12px;
-            border-left: 4px solid #667eea;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .transaction-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.2);
         }
 
         .transaction-details h4 {
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             color: #333;
+            font-weight: 600;
         }
 
         .transaction-details p {
             font-size: 0.9rem;
             color: #666;
-            margin-bottom: 2px;
+            margin-bottom: 4px;
         }
 
         .transaction-status {
-            padding: 5px 12px;
-            border-radius: 20px;
+            padding: 8px 16px;
+            border-radius: 25px;
             font-size: 0.8rem;
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
         }
 
         .status-pending {
-            background: #fff3cd;
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
             color: #856404;
         }
 
         .status-success {
-            background: #d4edda;
+            background: linear-gradient(135deg, #d4edda, #00b894);
             color: #155724;
         }
 
         .status-failed {
-            background: #f8d7da;
+            background: linear-gradient(135deg, #f8d7da, #e17055);
             color: #721c24;
         }
 
         .loading {
             text-align: center;
-            padding: 20px;
+            padding: 30px;
             color: #666;
+            font-size: 1.1rem;
         }
 
         .error {
-            background: #f8d7da;
+            background: linear-gradient(135deg, #f8d7da, #e17055);
             color: #721c24;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 10px 0;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 15px 0;
             border: 1px solid #f5c6cb;
+            font-weight: 600;
         }
 
         .success {
-            background: #d4edda;
+            background: linear-gradient(135deg, #d4edda, #00b894);
             color: #155724;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 10px 0;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 15px 0;
             border: 1px solid #c3e6cb;
+            font-weight: 600;
         }
 
         .modal {
@@ -397,55 +672,63 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.5);
+            background-color: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
         }
 
         .modal-content {
-            background-color: white;
-            margin: 15% auto;
-            padding: 30px;
-            border-radius: 15px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(240, 147, 251, 0.05));
+            margin: 10% auto;
+            padding: 40px;
+            border-radius: 25px;
             width: 90%;
             max-width: 500px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         .modal-header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
 
         .modal-header h3 {
             color: #333;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            font-weight: 700;
         }
 
         .modal-input {
             width: 100%;
-            padding: 15px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
+            padding: 18px;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            border-radius: 15px;
             font-size: 1rem;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            background: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s ease;
         }
 
         .modal-input:focus {
             outline: none;
             border-color: #667eea;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
         }
 
         .modal-buttons {
             display: flex;
-            gap: 15px;
+            gap: 20px;
         }
 
         .modal-btn {
             flex: 1;
-            padding: 15px;
+            padding: 18px;
             border: none;
-            border-radius: 10px;
+            border-radius: 15px;
             font-size: 1rem;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
         }
@@ -453,6 +736,12 @@
         .modal-confirm {
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .modal-confirm:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(102, 126, 234, 0.4);
         }
 
         .modal-cancel {
@@ -461,16 +750,29 @@
             border: 2px solid #ddd;
         }
 
+        .modal-cancel:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 15px;
             }
 
-            .header h1 {
-                font-size: 2rem;
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
             }
 
             .offers-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .faq-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -487,30 +789,52 @@
             }
 
             .modal-content {
-                margin: 10% auto;
+                margin: 5% auto;
                 width: 95%;
+                padding: 30px;
             }
 
-            .top-bar {
-                flex-direction: column;
-                gap: 10px;
+            .brand-header {
+                position: relative;
+                top: auto;
+                left: auto;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+
+            .hero-section {
+                margin-top: 20px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="top-bar">
-            <div class="brand-logo">SokoniMBS</div>
-        </div>
+    <div class="brand-header">
+        <h3>🏪 SokoniMBS</h3>
+    </div>
 
-        <div class="header">
-            <h1>🌟 Bingwa</h1>
-            <p>Your trusted partner for mobile data and services</p>
+    <div class="container">
+        <div class="hero-section">
+            <div class="hero-background"></div>
+            <div class="floating-elements">
+                <div class="floating-icon">📱</div>
+                <div class="floating-icon">💎</div>
+                <div class="floating-icon">🚀</div>
+                <div class="floating-icon">⭐</div>
+            </div>
+            <div class="hero-content">
+                <h1 class="hero-title">🌟 Bingwa</h1>
+                <p class="hero-subtitle">Your Ultimate Mobile Services Destination</p>
+                <p class="hero-description">
+                    Experience the future of mobile connectivity with our premium data bundles, 
+                    voice packages, and exclusive offers. Fast, reliable, and affordable - 
+                    everything you need in one place.
+                </p>
+            </div>
         </div>
 
         <div class="phone-input-section">
-            <h2>📱 Enter Your Phone Number</h2>
+            <h2>📱 Enter Your Phone Number to Get Started</h2>
             <div class="input-group">
                 <input type="tel" id="payerPhone" placeholder="Your phone number (e.g., 0712345678)" required>
             </div>
@@ -525,12 +849,12 @@
                 </div>
                 
                 <div class="offer-item hot-offer">
-                    <div class="hot-badge">HOT</div>
+                    <div class="hot-badge">🔥 HOT</div>
                     <div class="offer-header">
                         <div class="offer-details">
                             <div class="offer-name">1.25GB Till Midnight</div>
                             <div class="offer-validity">Valid till midnight</div>
-                            <div class="offer-description">Perfect for evening browsing and entertainment</div>
+                            <div class="offer-description">Perfect for late night browsing and entertainment</div>
                         </div>
                         <div class="offer-price">KSh 55</div>
                     </div>
@@ -545,7 +869,7 @@
                         <div class="offer-details">
                             <div class="offer-name">1.2GB Monthly</div>
                             <div class="offer-validity">Valid for 30 days</div>
-                            <div class="offer-description">Long-term data bundle</div>
+                            <div class="offer-description">Great value monthly data package</div>
                         </div>
                         <div class="offer-price">KSh 250</div>
                     </div>
@@ -560,7 +884,7 @@
                         <div class="offer-details">
                             <div class="offer-name">350MB Weekly</div>
                             <div class="offer-validity">Valid for 7 days</div>
-                            <div class="offer-description">Weekly data bundle</div>
+                            <div class="offer-description">Perfect for light weekly usage</div>
                         </div>
                         <div class="offer-price">KSh 49</div>
                     </div>
@@ -573,15 +897,15 @@
                 <div class="offer-item">
                     <div class="offer-header">
                         <div class="offer-details">
-                            <div class="offer-name">1GB Hourly</div>
+                            <div class="offer-name">1GB Express</div>
                             <div class="offer-validity">Valid for 1 hour</div>
-                            <div class="offer-description">Quick data boost</div>
+                            <div class="offer-description">Quick data boost for urgent needs</div>
                         </div>
                         <div class="offer-price">KSh 19</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('data', '1GB Hourly', 19, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('data', '1GB Hourly', 19, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('data', '1GB Express', 19, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('data', '1GB Express', 19, true)">Buy for Another</button>
                     </div>
                 </div>
 
@@ -590,7 +914,7 @@
                         <div class="offer-details">
                             <div class="offer-name">250MB Daily</div>
                             <div class="offer-validity">Valid for 24 hours</div>
-                            <div class="offer-description">Daily data bundle</div>
+                            <div class="offer-description">Daily data for basic needs</div>
                         </div>
                         <div class="offer-price">KSh 20</div>
                     </div>
@@ -605,7 +929,7 @@
                         <div class="offer-details">
                             <div class="offer-name">1GB Daily Premium</div>
                             <div class="offer-validity">Valid for 24 hours</div>
-                            <div class="offer-description">Premium daily bundle</div>
+                            <div class="offer-description">Premium daily data package</div>
                         </div>
                         <div class="offer-price">KSh 99</div>
                     </div>
@@ -620,7 +944,7 @@
                         <div class="offer-details">
                             <div class="offer-name">2.5GB Weekly</div>
                             <div class="offer-validity">Valid for 7 days</div>
-                            <div class="offer-description">Weekly power bundle</div>
+                            <div class="offer-description">Great for moderate weekly usage</div>
                         </div>
                         <div class="offer-price">KSh 300</div>
                     </div>
@@ -635,7 +959,7 @@
                         <div class="offer-details">
                             <div class="offer-name">6GB Weekly</div>
                             <div class="offer-validity">Valid for 7 days</div>
-                            <div class="offer-description">Ultimate weekly bundle</div>
+                            <div class="offer-description">Perfect for heavy weekly users</div>
                         </div>
                         <div class="offer-price">KSh 700</div>
                     </div>
@@ -654,53 +978,53 @@
                 </div>
                 
                 <div class="offer-item">
+                    <div class="savings-badge">Save 20%</div>
                     <div class="offer-header">
                         <div class="offer-details">
-                            <div class="offer-name">2GB Daily Renewable</div>
+                            <div class="offer-name">2GB Renewable</div>
                             <div class="offer-validity">Valid for 24 hours</div>
-                            <div class="offer-description">Auto-renews daily</div>
-                            <span class="savings-badge">Save 20%</span>
+                            <div class="offer-description">Auto-renewable daily data with savings</div>
                         </div>
                         <div class="offer-price">KSh 110</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('renewable', '2GB Daily Renewable', 110, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('renewable', '2GB Daily Renewable', 110, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('renewable', '2GB Renewable', 110, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('renewable', '2GB Renewable', 110, true)">Buy for Another</button>
                     </div>
                 </div>
 
                 <div class="offer-item">
                     <div class="offer-header">
                         <div class="offer-details">
-                            <div class="offer-name">1GB Hourly Renewable</div>
+                            <div class="offer-name">1GB Express Renewable</div>
                             <div class="offer-validity">Valid for 1 hour</div>
-                            <div class="offer-description">Auto-renews hourly</div>
+                            <div class="offer-description">Quick renewable data boost</div>
                         </div>
                         <div class="offer-price">KSh 23</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('renewable', '1GB Hourly Renewable', 23, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('renewable', '1GB Hourly Renewable', 23, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('renewable', '1GB Express Renewable', 23, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('renewable', '1GB Express Renewable', 23, true)">Buy for Another</button>
                     </div>
                 </div>
 
                 <div class="offer-item">
                     <div class="offer-header">
                         <div class="offer-details">
-                            <div class="offer-name">1.5GB 3-Hour Renewable</div>
+                            <div class="offer-name">1.5GB Short Renewable</div>
                             <div class="offer-validity">Valid for 3 hours</div>
-                            <div class="offer-description">Auto-renews every 3 hours</div>
+                            <div class="offer-description">Perfect for short-term heavy usage</div>
                         </div>
                         <div class="offer-price">KSh 52</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('renewable', '1.5GB 3-Hour Renewable', 52, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('renewable', '1.5GB 3-Hour Renewable', 52, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('renewable', '1.5GB Short Renewable', 52, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('renewable', '1.5GB Short Renewable', 52, true)">Buy for Another</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Monthly Offers -->
+            <!-- Monthly Packages -->
             <div class="offer-category">
                 <div class="category-header">
                     <div class="category-icon">📅</div>
@@ -712,7 +1036,7 @@
                         <div class="offer-details">
                             <div class="offer-name">1.2GB Monthly</div>
                             <div class="offer-validity">Valid for 30 days</div>
-                            <div class="offer-description">Monthly data bundle</div>
+                            <div class="offer-description">Monthly data package</div>
                         </div>
                         <div class="offer-price">KSh 250</div>
                     </div>
@@ -727,28 +1051,28 @@
                         <div class="offer-details">
                             <div class="offer-name">300 Minutes Monthly</div>
                             <div class="offer-validity">Valid for 30 days</div>
-                            <div class="offer-description">Monthly voice bundle</div>
+                            <div class="offer-description">Monthly voice package</div>
                         </div>
                         <div class="offer-price">KSh 500</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('minutes', '300 Minutes Monthly', 500, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('minutes', '300 Minutes Monthly', 500, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('monthly', '300 Minutes Monthly', 500, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('monthly', '300 Minutes Monthly', 500, true)">Buy for Another</button>
                     </div>
                 </div>
 
                 <div class="offer-item">
                     <div class="offer-header">
                         <div class="offer-details">
-                            <div class="offer-name">800 Minutes Monthly</div>
+                            <div class="offer-name">800 Minutes Premium</div>
                             <div class="offer-validity">Valid for 30 days</div>
-                            <div class="offer-description">Premium voice bundle</div>
+                            <div class="offer-description">Premium monthly voice package</div>
                         </div>
                         <div class="offer-price">KSh 1001</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('minutes', '800 Minutes Monthly', 1001, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('minutes', '800 Minutes Monthly', 1001, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('monthly', '800 Minutes Premium', 1001, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('monthly', '800 Minutes Premium', 1001, true)">Buy for Another</button>
                     </div>
                 </div>
 
@@ -772,7 +1096,7 @@
                         <div class="offer-details">
                             <div class="offer-name">2.5GB Monthly</div>
                             <div class="offer-validity">Valid for 30 days</div>
-                            <div class="offer-description">Monthly data bundle</div>
+                            <div class="offer-description">Monthly data package</div>
                         </div>
                         <div class="offer-price">KSh 500</div>
                     </div>
@@ -787,7 +1111,7 @@
                         <div class="offer-details">
                             <div class="offer-name">10GB Monthly</div>
                             <div class="offer-validity">Valid for 30 days</div>
-                            <div class="offer-description">Premium monthly bundle</div>
+                            <div class="offer-description">Large monthly data package</div>
                         </div>
                         <div class="offer-price">KSh 1000</div>
                     </div>
@@ -808,15 +1132,15 @@
                 <div class="offer-item">
                     <div class="offer-header">
                         <div class="offer-details">
-                            <div class="offer-name">45 Minutes</div>
+                            <div class="offer-name">45 Minutes Express</div>
                             <div class="offer-validity">Valid for 3 hours</div>
-                            <div class="offer-description">Quick talk time</div>
+                            <div class="offer-description">Quick talk time for urgent calls</div>
                         </div>
                         <div class="offer-price">KSh 22</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('minutes', '45 Minutes', 22, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('minutes', '45 Minutes', 22, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('minutes', '45 Minutes Express', 22, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('minutes', '45 Minutes Express', 22, true)">Buy for Another</button>
                     </div>
                 </div>
 
@@ -825,7 +1149,7 @@
                         <div class="offer-details">
                             <div class="offer-name">50 Minutes Till Midnight</div>
                             <div class="offer-validity">Valid till midnight</div>
-                            <div class="offer-description">Evening talk time</div>
+                            <div class="offer-description">Evening talk time package</div>
                         </div>
                         <div class="offer-price">KSh 51</div>
                     </div>
@@ -840,7 +1164,7 @@
                         <div class="offer-details">
                             <div class="offer-name">200 Minutes Weekly</div>
                             <div class="offer-validity">Valid for 7 days</div>
-                            <div class="offer-description">Weekly talk bundle</div>
+                            <div class="offer-description">Weekly talk time bundle</div>
                         </div>
                         <div class="offer-price">KSh 250</div>
                     </div>
@@ -855,7 +1179,7 @@
                         <div class="offer-details">
                             <div class="offer-name">300 Minutes Monthly</div>
                             <div class="offer-validity">Valid for 30 days</div>
-                            <div class="offer-description">Monthly talk bundle</div>
+                            <div class="offer-description">Monthly talk time package</div>
                         </div>
                         <div class="offer-price">KSh 500</div>
                     </div>
@@ -868,15 +1192,15 @@
                 <div class="offer-item">
                     <div class="offer-header">
                         <div class="offer-details">
-                            <div class="offer-name">800 Minutes Monthly</div>
+                            <div class="offer-name">800 Minutes Premium</div>
                             <div class="offer-validity">Valid for 30 days</div>
-                            <div class="offer-description">Premium talk bundle</div>
+                            <div class="offer-description">Premium monthly talk time</div>
                         </div>
                         <div class="offer-price">KSh 1001</div>
                     </div>
                     <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('minutes', '800 Minutes Monthly', 1001, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('minutes', '800 Minutes Monthly', 1001, true)">Buy for Another</button>
+                        <button class="buy-btn buy-now-btn" onclick="buyOffer('minutes', '800 Minutes Premium', 1001, false)">Buy Now</button>
+                        <button class="buy-btn buy-another-btn" onclick="buyOffer('minutes', '800 Minutes Premium', 1001, true)">Buy for Another</button>
                     </div>
                 </div>
             </div>
@@ -893,7 +1217,7 @@
                         <div class="offer-details">
                             <div class="offer-name">1000 Bingwa Points</div>
                             <div class="offer-validity">No expiry</div>
-                            <div class="offer-description">Loyalty points for rewards (Rate: 1000 points = KSh 200)</div>
+                            <div class="offer-description">Loyalty points for exclusive rewards</div>
                         </div>
                         <div class="offer-price">KSh 200</div>
                     </div>
@@ -908,7 +1232,7 @@
                         <div class="offer-details">
                             <div class="offer-name">2000 Bingwa Points</div>
                             <div class="offer-validity">No expiry</div>
-                            <div class="offer-description">Double loyalty points for rewards</div>
+                            <div class="offer-description">Double loyalty points package</div>
                         </div>
                         <div class="offer-price">KSh 400</div>
                     </div>
@@ -934,42 +1258,25 @@
                 </div>
             </div>
 
-            <!-- Airtime -->
+            <!-- Airtime with Discounts -->
             <div class="offer-category">
                 <div class="category-header">
                     <div class="category-icon">💰</div>
-                    <div class="category-title">Airtime</div>
+                    <div class="category-title">Airtime (Discounted)</div>
                 </div>
                 
-                <div class="discount-info">
-                    <strong>Airtime Discounts:</strong><br>
-                    • Below KSh 500: 3% discount<br>
-                    • KSh 501 and above: 5% discount
-                </div>
-                
-                <div class="offer-item">
-                    <div class="offer-header">
-                        <div class="offer-details">
-                            <div class="offer-name">KSh 50 Airtime</div>
-                            <div class="offer-validity">No expiry</div>
-                            <div class="offer-description">Direct airtime top-up (3% discount applied)</div>
-                        </div>
-                        <div class="offer-price">KSh 48.50</div>
-                    </div>
-                    <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('airtime', 'KSh 50 Airtime', 48.50, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('airtime', 'KSh 50 Airtime', 48.50, true)">Buy for Another</button>
-                    </div>
-                </div>
-
                 <div class="offer-item">
                     <div class="offer-header">
                         <div class="offer-details">
                             <div class="offer-name">KSh 100 Airtime</div>
                             <div class="offer-validity">No expiry</div>
-                            <div class="offer-description">Direct airtime top-up (3% discount applied)</div>
+                            <div class="offer-description">Direct airtime top-up</div>
                         </div>
-                        <div class="offer-price">KSh 97</div>
+                        <div class="offer-price">
+                            <span class="original-price">KSh 100</span>
+                            KSh 97
+                            <div class="discount-info">3% discount</div>
+                        </div>
                     </div>
                     <div class="offer-buttons">
                         <button class="buy-btn buy-now-btn" onclick="buyOffer('airtime', 'KSh 100 Airtime', 97, false)">Buy Now</button>
@@ -982,9 +1289,13 @@
                         <div class="offer-details">
                             <div class="offer-name">KSh 200 Airtime</div>
                             <div class="offer-validity">No expiry</div>
-                            <div class="offer-description">Direct airtime top-up (3% discount applied)</div>
+                            <div class="offer-description">Direct airtime top-up</div>
                         </div>
-                        <div class="offer-price">KSh 194</div>
+                        <div class="offer-price">
+                            <span class="original-price">KSh 200</span>
+                            KSh 194
+                            <div class="discount-info">3% discount</div>
+                        </div>
                     </div>
                     <div class="offer-buttons">
                         <button class="buy-btn buy-now-btn" onclick="buyOffer('airtime', 'KSh 200 Airtime', 194, false)">Buy Now</button>
@@ -997,9 +1308,13 @@
                         <div class="offer-details">
                             <div class="offer-name">KSh 500 Airtime</div>
                             <div class="offer-validity">No expiry</div>
-                            <div class="offer-description">Direct airtime top-up (3% discount applied)</div>
+                            <div class="offer-description">Direct airtime top-up</div>
                         </div>
-                        <div class="offer-price">KSh 485</div>
+                        <div class="offer-price">
+                            <span class="original-price">KSh 500</span>
+                            KSh 485
+                            <div class="discount-info">3% discount</div>
+                        </div>
                     </div>
                     <div class="offer-buttons">
                         <button class="buy-btn buy-now-btn" onclick="buyOffer('airtime', 'KSh 500 Airtime', 485, false)">Buy Now</button>
@@ -1012,28 +1327,17 @@
                         <div class="offer-details">
                             <div class="offer-name">KSh 1000 Airtime</div>
                             <div class="offer-validity">No expiry</div>
-                            <div class="offer-description">Direct airtime top-up (5% discount applied)</div>
+                            <div class="offer-description">Large airtime top-up</div>
                         </div>
-                        <div class="offer-price">KSh 950</div>
+                        <div class="offer-price">
+                            <span class="original-price">KSh 1000</span>
+                            KSh 950
+                            <div class="discount-info">5% discount</div>
+                        </div>
                     </div>
                     <div class="offer-buttons">
                         <button class="buy-btn buy-now-btn" onclick="buyOffer('airtime', 'KSh 1000 Airtime', 950, false)">Buy Now</button>
                         <button class="buy-btn buy-another-btn" onclick="buyOffer('airtime', 'KSh 1000 Airtime', 950, true)">Buy for Another</button>
-                    </div>
-                </div>
-
-                <div class="offer-item">
-                    <div class="offer-header">
-                        <div class="offer-details">
-                            <div class="offer-name">KSh 2000 Airtime</div>
-                            <div class="offer-validity">No expiry</div>
-                            <div class="offer-description">Direct airtime top-up (5% discount applied)</div>
-                        </div>
-                        <div class="offer-price">KSh 1900</div>
-                    </div>
-                    <div class="offer-buttons">
-                        <button class="buy-btn buy-now-btn" onclick="buyOffer('airtime', 'KSh 2000 Airtime', 1900, false)">Buy Now</button>
-                        <button class="buy-btn buy-another-btn" onclick="buyOffer('airtime', 'KSh 2000 Airtime', 1900, true)">Buy for Another</button>
                     </div>
                 </div>
             </div>
@@ -1041,13 +1345,86 @@
 
         <div id="statusMessage"></div>
 
+        <!-- FAQ Section -->
+        <div class="faq-section">
+            <div class="faq-header">
+                <h2 class="faq-title">❓ Frequently Asked Questions</h2>
+                <p class="faq-subtitle">Everything you need to know about our services</p>
+            </div>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <div class="faq-question">How to buy manually?</div>
+                    <div class="faq-answer">
+                        You can make manual payments by sending the exact amount to our Till Number: <strong>4288958</strong>. 
+                        Make sure to include your phone number and the offer name in the transaction details.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">How to become an affiliate?</div>
+                    <div class="faq-answer">
+                        Interested in becoming an affiliate partner? Contact our customer support team for more information 
+                        about our affiliate program and how you can start earning with us.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">How long does it take to receive my bundle?</div>
+                    <div class="faq-answer">
+                        Most bundles are activated instantly after successful payment. In rare cases, it may take up to 
+                        5 minutes. If you don't receive your bundle within this time, please contact support.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Can I buy bundles for someone else?</div>
+                    <div class="faq-answer">
+                        Yes! Every offer has a "Buy for Another" option. Simply click the button and enter the recipient's 
+                        phone number. You'll pay from your phone, but the bundle will be sent to their number.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">What payment methods do you accept?</div>
+                    <div class="faq-answer">
+                        We accept M-Pesa payments through STK push for instant transactions, and manual payments 
+                        through our Till Number <strong>4288958</strong> for your convenience.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">How do renewable bundles work?</div>
+                    <div class="faq-answer">
+                        Renewable bundles automatically renew when they expire, as long as you have sufficient balance. 
+                        You can opt out anytime by contacting customer support or through your network settings.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">What are Bingwa Points used for?</div>
+                    <div class="faq-answer">
+                        Bingwa Points are loyalty rewards that can be redeemed for exclusive offers, discounts, and special 
+                        bundles. The more points you accumulate, the better rewards you can access.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Is my transaction history secure?</div>
+                    <div class="faq-answer">
+                        Absolutely! Your transaction history is encrypted and only visible to you when you enter your phone number. 
+                        We follow strict security protocols to protect your personal information.
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="history-section">
             <div class="history-header">
                 <div class="history-title">📋 Transaction History</div>
                 <button class="refresh-btn" onclick="loadTransactionHistory()">🔄 Refresh</button>
             </div>
             <div id="transactionHistory">
-                <div class="loading">Enter your phone number to view transaction history</div>
+                <div class="loading">Enter your phone number above to view transaction history</div>
             </div>
         </div>
     </div>
@@ -1176,7 +1553,7 @@
             const historyContainer = document.getElementById('transactionHistory');
             
             if (!payerPhone || payerPhone.length < 10) {
-                historyContainer.innerHTML = '<div class="loading">Enter your phone number to view transaction history</div>';
+                historyContainer.innerHTML = '<div class="loading">Enter your phone number above to view transaction history</div>';
                 return;
             }
             
