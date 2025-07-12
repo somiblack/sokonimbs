@@ -15,13 +15,17 @@ app.use(express.json());
 app.use(express.static('.'));
 
 // Initialize Supabase client
-const supabaseUrl = process.env.VITE_SUPABASE_URL || 'https://lyeypdcwsxbrjethaefj.supabase.co';
-const supabaseKey = process.env.SUPABASE_ANON_KEY;
+const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseKey) {
   console.error('Missing Supabase configuration. Please check your environment variables.');
+  console.error('Required: SUPABASE_URL and SUPABASE_ANON_KEY');
   process.exit(1);
 }
+
+console.log('Supabase URL:', supabaseUrl);
+console.log('Supabase Key configured:', !!supabaseKey);
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
