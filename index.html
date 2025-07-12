@@ -1086,6 +1086,12 @@
                 return;
             }
 
+            // Check if currentOffer exists
+            if (!currentOffer) {
+                showMessage('❌ No offer selected. Please try again.', 'error');
+                closePhoneModal();
+                return;
+            }
             userPhone = phone;
             closePhoneModal();
             
@@ -1096,6 +1102,12 @@
         }
 
         function proceedWithOffer(forAnother) {
+            // Additional safety check
+            if (!currentOffer) {
+                showMessage('❌ No offer selected. Please try again.', 'error');
+                return;
+            }
+            
             if (forAnother) {
                 // Show modal for recipient phone number
                 document.getElementById('recipientModal').style.display = 'block';
