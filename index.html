@@ -1155,6 +1155,12 @@
                 if (data.ResponseCode === '0') {
                     const recipient = payerPhone === recipientPhone ? 'yourself' : recipientPhone;
                     showMessage(`✅ Payment request sent successfully! Buying ${currentOffer.offerName} for ${recipient}. Please complete the payment on your phone.`, 'success');
+                    
+                    // Start checking transaction status
+                    if (data.CheckoutRequestID) {
+                        checkTransactionStatus(data.CheckoutRequestID, data.AccountReference);
+                    }
+                    
                     // Refresh transaction history after successful request
                     setTimeout(() => {
                         loadTransactionHistory();
@@ -1169,6 +1175,46 @@
             } finally {
                 currentOffer = null;
             }
+        }
+
+        // Function to check transaction status
+        function checkTransactionStatus(requestId, accountRef) {
+            let attempts = 0;
+            const maxAttempts = 12; // Check for 2 minutes (12 * 10 seconds)
+            
+            const statusInterval = setInterval(() => {
+                attempts++;
+                
+                fetch(`/api/transaction-status/${requestId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Status check:', data);
+                        
+                        if (data.success && data.transaction) {
+                            const status = data.transaction.status;
+                            
+                            if (status === 'SUCCESS') {
+                                clearInterval(statusInterval);
+                                alert('🎉 Payment completed successfully! Your bundle will be activated shortly.');
+                            } else if (status === 'FAILED' || status === 'CANCELLED') {
+                                clearInterval(statusInterval);
+                                alert('❌ Payment was not completed. Please try again.');
+                            }
+                        }
+                        
+                        // Stop checking after max attempts
+                        if (attempts >= maxAttempts) {
+                            clearInterval(statusInterval);
+                            console.log('Status check timeout - stopped checking');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Status check error:', error);
+                        if (attempts >= maxAttempts) {
+                            clearInterval(statusInterval);
+                        }
+                    });
+            }, 10000); // Check every 10 seconds
         }
 
         async function loadTransactionHistory() {
