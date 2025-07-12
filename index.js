@@ -16,7 +16,7 @@ app.use(express.static('.'));
 
 // Initialize Supabase client
 const supabaseUrl = 'https://lyeypdcwsxbrjethaefj.supabase.co';
-const supabaseKey = process.env.SUPABASE_KEY || 'M391YLV6GngX3Myc2iwMX9lI';
+const supabaseKey = process.env.SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Initialize TinyPesa API
