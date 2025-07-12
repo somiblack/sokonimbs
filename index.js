@@ -15,8 +15,14 @@ app.use(express.json());
 app.use(express.static('.'));
 
 // Initialize Supabase client
-const supabaseUrl = 'https://lyeypdcwsxbrjethaefj.supabase.co';
+const supabaseUrl = process.env.VITE_SUPABASE_URL || 'https://lyeypdcwsxbrjethaefj.supabase.co';
 const supabaseKey = process.env.SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || !supabaseKey) {
+  console.error('Missing Supabase configuration. Please check your environment variables.');
+  process.exit(1);
+}
+
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Initialize TinyPesa API
