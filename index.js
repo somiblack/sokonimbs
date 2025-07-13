@@ -16,12 +16,11 @@ app.use(express.static('.'));
 
 // Initialize Supabase client
 const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseKey) {
-  console.error('Missing Supabase configuration. Please check your environment variables.');
-  console.error('Required: SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY');
-  process.exit(1);
+  console.warn('Missing Supabase configuration. Some features may not work properly.');
+  console.warn('Please set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in your .env file');
 }
 
 console.log('Supabase URL:', supabaseUrl);
