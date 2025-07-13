@@ -13,10 +13,18 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 25%, #45b7d1 50%, #96ceb4 75%, #feca57 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
             min-height: 100vh;
             color: #333;
             overflow-x: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .container {
@@ -484,7 +492,7 @@
     <div class="container">
         <div class="header">
             <div class="brand-name">SokoniMBS</div>
-            <h1>🌟 Your Mobile Services Hub</h1>
+            <h1>🏪 Soko ya MBS</h1>
             <p>Fast, reliable, and affordable mobile data & services</p>
         </div>
 
