@@ -83,7 +83,7 @@ app.post('/stk-push', async (req, res) => {
     const accountRef = `TXN${Date.now()}${Math.random().toString(36).substr(2, 5).toUpperCase()}`;
 
     // Insert transaction into database with PENDING status
-    const { data, error } = await supabase
+    const { data, error } = await global.supabase
       .from('transactions')
       .insert([
         {
@@ -134,7 +134,7 @@ app.post('/stk-push', async (req, res) => {
       updateData.status = 'FAILED';
     }
 
-    await supabase
+    await global.supabase
       .from('transactions')
       .update(updateData)
       .eq('account_ref', accountRef);
@@ -217,7 +217,7 @@ app.post('/callback/daraja', async (req, res) => {
       responseDescription = `Payment completed successfully. M-Pesa Receipt: ${mpesaReceiptNumber}`;
     }
     
-    const { data, error } = await supabase
+    const { data, error } = await global.supabase
       .from('transactions')
       .update({
         status: transactionStatus,
@@ -256,7 +256,7 @@ app.get('/api/transaction-status/:requestId', async (req, res) => {
     const statusResponse = await daraja.querySTKStatus(requestId);
     
     // Also get transaction from database
-    const { data, error } = await supabase
+    const { data, error } = await global.supabase
       .from('transactions')
       .select('*')
       .eq('checkout_request_id', requestId)
@@ -299,14 +299,14 @@ app.get('/api/transactions/:phone', async (req, res) => {
     }
 
     // Set the current user phone for RLS
-    await supabase.rpc('set_config', {
+    await global.supabase.rpc('set_config', {
       setting_name: 'app.current_user_phone',
       setting_value: formattedPhone,
       is_local: true
     });
 
     // Query transactions for the user
-    const { data, error } = await supabase
+    const { data, error } = await global.supabase
       .from('transactions')
       .select('*')
       .or(`payer_phone.eq.${formattedPhone},recipient_phone.eq.${formattedPhone}`)
