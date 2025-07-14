@@ -4,7 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const { createClient } = require('@supabase/supabase-js');
-const TinyPesaAPI = require('./lib/tinypesa');
+const DarajaAPI = require('./lib/daraja');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -28,8 +28,8 @@ console.log('Supabase Key configured:', !!supabaseKey);
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-// Initialize TinyPesa API
-const tinyPesa = new TinyPesaAPI();
+// Initialize Daraja API
+const daraja = new DarajaAPI();
 
 // Serve the main HTML file
 app.get('/', (req, res) => {
@@ -42,9 +42,9 @@ app.post('/stk-push', async (req, res) => {
     const { phone, amount, type, offerName, recipientPhone, points } = req.body;
     
     // Validate and format phone numbers
-    const formattedPhone = tinyPesa.formatPhoneNumber(phone);
+    const formattedPhone = daraja.formatPhoneNumber(phone);
     
-    if (!tinyPesa.isValidPhoneNumber(formattedPhone)) {
+    if (!daraja.isValidPhoneNumber(formattedPhone)) {
       return res.status(400).json({
         ResponseCode: '1',
         ResponseDescription: 'Invalid phone number format. Please use a valid Kenyan mobile number.'
@@ -53,8 +53,8 @@ app.post('/stk-push', async (req, res) => {
 
     let formattedRecipientPhone = formattedPhone;
     if (recipientPhone) {
-      formattedRecipientPhone = tinyPesa.formatPhoneNumber(recipientPhone);
-      if (!tinyPesa.isValidPhoneNumber(formattedRecipientPhone)) {
+      formattedRecipientPhone = daraja.formatPhoneNumber(recipientPhone);
+      if (!daraja.isValidPhoneNumber(formattedRecipientPhone)) {
         return res.status(400).json({
           ResponseCode: '1',
           ResponseDescription: 'Invalid recipient phone number format.'
@@ -99,24 +99,29 @@ app.post('/stk-push', async (req, res) => {
       });
     }
 
-    // Initiate TinyPesa STK Push
-    const stkResponse = await tinyPesa.stkPush({
+    // Generate callback URL
+    const callbackURL = `${req.protocol}://${req.get('host')}/callback/daraja`;
+
+    // Initiate Daraja STK Push
+    const stkResponse = await daraja.stkPush({
       amount: numericAmount,
-      msisdn: formattedPhone,
-      account_no: accountRef
+      phoneNumber: formattedPhone,
+      accountReference: accountRef,
+      transactionDesc: `Payment for ${offerName}`,
+      callbackURL: callbackURL
     });
 
-    console.log('TinyPesa Response:', stkResponse);
+    console.log('Daraja Response:', stkResponse);
 
-    // Update transaction with TinyPesa response
+    // Update transaction with Daraja response
     const updateData = {
-      response_code: stkResponse.success ? '0' : '1',
-      response_description: stkResponse.message || stkResponse.error || 'Unknown response'
+      response_code: stkResponse.ResponseCode || '1',
+      response_description: stkResponse.ResponseDescription || stkResponse.errorMessage || 'Unknown response'
     };
 
-    if (stkResponse.success) {
-      updateData.checkout_request_id = stkResponse.request_id;
-      updateData.merchant_request_id = stkResponse.request_id; // TinyPesa uses same ID
+    if (stkResponse.ResponseCode === '0') {
+      updateData.checkout_request_id = stkResponse.CheckoutRequestID;
+      updateData.merchant_request_id = stkResponse.MerchantRequestID;
     } else {
       updateData.status = 'FAILED';
     }
@@ -127,19 +132,19 @@ app.post('/stk-push', async (req, res) => {
       .eq('account_ref', accountRef);
 
     // Return response to client
-    if (stkResponse.success) {
+    if (stkResponse.ResponseCode === '0') {
       res.json({
         ResponseCode: '0',
-        ResponseDescription: 'Payment request sent successfully',
-        CheckoutRequestID: stkResponse.request_id,
-        MerchantRequestID: stkResponse.request_id,
-        CustomerMessage: `Payment request sent to ${formattedPhone}. Please complete the payment on your phone.`,
+        ResponseDescription: stkResponse.ResponseDescription,
+        CheckoutRequestID: stkResponse.CheckoutRequestID,
+        MerchantRequestID: stkResponse.MerchantRequestID,
+        CustomerMessage: stkResponse.CustomerMessage || `Payment request sent to ${formattedPhone}. Please complete the payment on your phone.`,
         AccountReference: accountRef
       });
     } else {
       res.status(400).json({
-        ResponseCode: '1',
-        ResponseDescription: stkResponse.error || 'Failed to initiate payment',
+        ResponseCode: stkResponse.ResponseCode || '1',
+        ResponseDescription: stkResponse.ResponseDescription || stkResponse.errorMessage || 'Failed to initiate payment',
         ErrorDetails: stkResponse
       });
     }
@@ -153,33 +158,66 @@ app.post('/stk-push', async (req, res) => {
   }
 });
 
-// Callback endpoint for TinyPesa
-app.post('/callback/tinypesa', async (req, res) => {
+// Callback endpoint for Daraja API
+app.post('/callback/daraja', async (req, res) => {
   try {
-    console.log('TinyPesa Callback received:', req.body);
+    console.log('Daraja Callback received:', JSON.stringify(req.body, null, 2));
     
-    const callbackData = req.body;
-    const { account_no, msisdn, amount, receipt, status } = callbackData;
+    const { Body } = req.body;
+    const { stkCallback } = Body;
+    
+    const { MerchantRequestID, CheckoutRequestID, ResultCode, ResultDesc } = stkCallback;
 
-    if (!account_no) {
-      console.error('No account reference in callback');
-      return res.status(400).json({ error: 'Missing account reference' });
+    if (!CheckoutRequestID) {
+      console.error('No checkout request ID in callback');
+      return res.status(400).json({ error: 'Missing checkout request ID' });
     }
 
-    // Update transaction status based on callback
-    const transactionStatus = status === 'success' ? 'SUCCESS' : 'FAILED';
+    // Extract callback metadata if available
+    let callbackMetadata = {};
+    let mpesaReceiptNumber = null;
+    let transactionDate = null;
+    let phoneNumber = null;
+    
+    if (stkCallback.CallbackMetadata && stkCallback.CallbackMetadata.Item) {
+      stkCallback.CallbackMetadata.Item.forEach(item => {
+        switch (item.Name) {
+          case 'Amount':
+            callbackMetadata.amount = item.Value;
+            break;
+          case 'MpesaReceiptNumber':
+            mpesaReceiptNumber = item.Value;
+            callbackMetadata.receipt = item.Value;
+            break;
+          case 'TransactionDate':
+            transactionDate = item.Value;
+            callbackMetadata.transactionDate = item.Value;
+            break;
+          case 'PhoneNumber':
+            phoneNumber = item.Value;
+            callbackMetadata.phoneNumber = item.Value;
+            break;
+        }
+      });
+    }
+
+    // Determine transaction status based on result code
+    const transactionStatus = ResultCode === 0 ? 'SUCCESS' : 'FAILED';
+    
+    let responseDescription = ResultDesc;
+    if (ResultCode === 0 && mpesaReceiptNumber) {
+      responseDescription = `Payment completed successfully. M-Pesa Receipt: ${mpesaReceiptNumber}`;
+    }
     
     const { data, error } = await supabase
       .from('transactions')
       .update({
         status: transactionStatus,
-        callback_data: callbackData,
-        response_description: status === 'success' 
-          ? `Payment completed successfully. Receipt: ${receipt}` 
-          : 'Payment failed or was cancelled',
+        callback_data: req.body,
+        response_description: responseDescription,
         updated_at: new Date().toISOString()
       })
-      .eq('account_ref', account_no)
+      .eq('checkout_request_id', CheckoutRequestID)
       .select();
 
     if (error) {
@@ -188,7 +226,7 @@ app.post('/callback/tinypesa', async (req, res) => {
     }
 
     if (!data || data.length === 0) {
-      console.error('Transaction not found for account_no:', account_no);
+      console.error('Transaction not found for CheckoutRequestID:', CheckoutRequestID);
       return res.status(404).json({ error: 'Transaction not found' });
     }
 
@@ -206,8 +244,8 @@ app.get('/api/transaction-status/:requestId', async (req, res) => {
   try {
     const { requestId } = req.params;
     
-    // Check status with TinyPesa
-    const statusResponse = await tinyPesa.checkStatus(requestId);
+    // Check status with Daraja API
+    const statusResponse = await daraja.querySTKStatus(requestId);
     
     // Also get transaction from database
     const { data, error } = await supabase
@@ -226,7 +264,7 @@ app.get('/api/transaction-status/:requestId', async (req, res) => {
 
     res.json({
       success: true,
-      tinypesa_status: statusResponse,
+      daraja_status: statusResponse,
       transaction: data
     });
 
