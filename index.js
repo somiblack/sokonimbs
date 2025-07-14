@@ -18,15 +18,23 @@ app.use(express.static('.'));
 const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
 
-if (!supabaseUrl || !supabaseKey) {
+if (!supabaseUrl || !supabaseKey || supabaseUrl.includes('your_supabase_url_here') || supabaseUrl === 'https://demo-project.supabase.co') {
   console.warn('Missing Supabase configuration. Some features may not work properly.');
   console.warn('Please set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in your .env file');
+  // Create a mock Supabase client to prevent crashes
+  global.supabase = {
+    from: () => ({
+      insert: () => ({ select: () => Promise.resolve({ data: [{ id: 'demo', account_ref: 'DEMO123' }], error: null }) }),
+      update: () => ({ eq: () => Promise.resolve({ data: [], error: null }) }),
+      select: () => ({ eq: () => ({ single: () => Promise.resolve({ data: null, error: { code: 'PGRST116' } }) }) }),
+      or: () => ({ order: () => ({ limit: () => Promise.resolve({ data: [], error: null }) }) })
+    }),
+    rpc: () => Promise.resolve({ data: null, error: null })
+  };
+} else {
+  global.supabase = createClient(supabaseUrl, supabaseKey);
 }
 
-console.log('Supabase URL:', supabaseUrl);
-console.log('Supabase Key configured:', !!supabaseKey);
-
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Initialize Daraja API
 const daraja = new DarajaAPI();
