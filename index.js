@@ -4,7 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const { createClient } = require('@supabase/supabase-js');
-const DarajaAPI = require('./lib/daraja');
+const LipiaAPI = require('./lib/lipia');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -36,8 +36,8 @@ if (!supabaseUrl || !supabaseKey || supabaseUrl.includes('your_supabase_url_here
 }
 
 
-// Initialize Daraja API
-const daraja = new DarajaAPI();
+// Initialize Lipia API
+const lipia = new LipiaAPI();
 
 // Serve the main HTML file
 app.get('/', (req, res) => {
@@ -50,22 +50,22 @@ app.post('/stk-push', async (req, res) => {
     const { phone, amount, type, offerName, recipientPhone, points } = req.body;
     
     // Validate and format phone numbers
-    const formattedPhone = daraja.formatPhoneNumber(phone);
+    const formattedPhone = lipia.formatPhoneNumber(phone);
     
-    if (!daraja.isValidPhoneNumber(formattedPhone)) {
+    if (!lipia.isValidPhoneNumber(formattedPhone)) {
       return res.status(400).json({
-        ResponseCode: '1',
-        ResponseDescription: 'Invalid phone number format. Please use a valid Kenyan mobile number.'
+        success: false,
+        message: 'Invalid phone number format. Please use a valid Kenyan mobile number.'
       });
     }
 
     let formattedRecipientPhone = formattedPhone;
     if (recipientPhone) {
-      formattedRecipientPhone = daraja.formatPhoneNumber(recipientPhone);
-      if (!daraja.isValidPhoneNumber(formattedRecipientPhone)) {
+      formattedRecipientPhone = lipia.formatPhoneNumber(recipientPhone);
+      if (!lipia.isValidPhoneNumber(formattedRecipientPhone)) {
         return res.status(400).json({
-          ResponseCode: '1',
-          ResponseDescription: 'Invalid recipient phone number format.'
+          success: false,
+          message: 'Invalid recipient phone number format.'
         });
       }
     }
@@ -74,8 +74,8 @@ app.post('/stk-push', async (req, res) => {
     const numericAmount = parseFloat(amount);
     if (isNaN(numericAmount) || numericAmount <= 0) {
       return res.status(400).json({
-        ResponseCode: '1',
-        ResponseDescription: 'Invalid amount. Amount must be greater than 0.'
+        success: false,
+        message: 'Invalid amount. Amount must be greater than 0.'
       });
     }
 
@@ -102,34 +102,30 @@ app.post('/stk-push', async (req, res) => {
     if (error) {
       console.error('Database error:', error);
       return res.status(500).json({
-        ResponseCode: '1',
-        ResponseDescription: 'Failed to process request'
+        success: false,
+        message: 'Failed to process request'
       });
     }
 
-    // Generate callback URL
-    const callbackURL = `${req.protocol}://${req.get('host')}/callback/daraja`;
-
-    // Initiate Daraja STK Push
-    const stkResponse = await daraja.stkPush({
+    // Initiate Lipia STK Push
+    const stkResponse = await lipia.stkPush({
       amount: numericAmount,
       phoneNumber: formattedPhone,
       accountReference: accountRef,
-      transactionDesc: `Payment for ${offerName}`,
-      callbackURL: callbackURL
+      transactionDesc: `Payment for ${offerName}`
     });
 
-    console.log('Daraja Response:', stkResponse);
+    console.log('Lipia Response:', stkResponse);
 
-    // Update transaction with Daraja response
+    // Update transaction with Lipia response
     const updateData = {
-      response_code: stkResponse.ResponseCode || '1',
-      response_description: stkResponse.ResponseDescription || stkResponse.errorMessage || 'Unknown response'
+      response_code: stkResponse.success ? '0' : '1',
+      response_description: stkResponse.message || 'Unknown response'
     };
 
-    if (stkResponse.ResponseCode === '0') {
-      updateData.checkout_request_id = stkResponse.CheckoutRequestID;
-      updateData.merchant_request_id = stkResponse.MerchantRequestID;
+    if (stkResponse.success) {
+      updateData.checkout_request_id = stkResponse.reference || accountRef;
+      updateData.merchant_request_id = stkResponse.reference || accountRef;
     } else {
       updateData.status = 'FAILED';
     }
@@ -140,105 +136,37 @@ app.post('/stk-push', async (req, res) => {
       .eq('account_ref', accountRef);
 
     // Return response to client
-    if (stkResponse.ResponseCode === '0') {
+    if (stkResponse.success) {
       res.json({
-        ResponseCode: '0',
-        ResponseDescription: stkResponse.ResponseDescription,
-        CheckoutRequestID: stkResponse.CheckoutRequestID,
-        MerchantRequestID: stkResponse.MerchantRequestID,
-        CustomerMessage: stkResponse.CustomerMessage || `Payment request sent to ${formattedPhone}. Please complete the payment on your phone.`,
+        success: true,
+        message: stkResponse.message,
+        reference: stkResponse.reference || accountRef,
+        CustomerMessage: `Payment request sent to ${formattedPhone}. Please complete the payment on your phone.`,
         AccountReference: accountRef
       });
     } else {
       res.status(400).json({
-        ResponseCode: stkResponse.ResponseCode || '1',
-        ResponseDescription: stkResponse.ResponseDescription || stkResponse.errorMessage || 'Failed to initiate payment',
-        ErrorDetails: stkResponse
+        success: false,
+        message: stkResponse.message || 'Failed to initiate payment',
+        error: stkResponse.error
       });
     }
 
   } catch (error) {
     console.error('STK Push error:', error);
     res.status(500).json({
-      ResponseCode: '1',
-      ResponseDescription: 'Internal server error'
+      success: false,
+      message: 'Internal server error'
     });
   }
 });
 
-// Callback endpoint for Daraja API
-app.post('/callback/daraja', async (req, res) => {
+// Callback endpoint for Lipia API (if needed in future)
+app.post('/callback/lipia', async (req, res) => {
   try {
-    console.log('Daraja Callback received:', JSON.stringify(req.body, null, 2));
+    console.log('Lipia Callback received:', JSON.stringify(req.body, null, 2));
     
-    const { Body } = req.body;
-    const { stkCallback } = Body;
-    
-    const { MerchantRequestID, CheckoutRequestID, ResultCode, ResultDesc } = stkCallback;
-
-    if (!CheckoutRequestID) {
-      console.error('No checkout request ID in callback');
-      return res.status(400).json({ error: 'Missing checkout request ID' });
-    }
-
-    // Extract callback metadata if available
-    let callbackMetadata = {};
-    let mpesaReceiptNumber = null;
-    let transactionDate = null;
-    let phoneNumber = null;
-    
-    if (stkCallback.CallbackMetadata && stkCallback.CallbackMetadata.Item) {
-      stkCallback.CallbackMetadata.Item.forEach(item => {
-        switch (item.Name) {
-          case 'Amount':
-            callbackMetadata.amount = item.Value;
-            break;
-          case 'MpesaReceiptNumber':
-            mpesaReceiptNumber = item.Value;
-            callbackMetadata.receipt = item.Value;
-            break;
-          case 'TransactionDate':
-            transactionDate = item.Value;
-            callbackMetadata.transactionDate = item.Value;
-            break;
-          case 'PhoneNumber':
-            phoneNumber = item.Value;
-            callbackMetadata.phoneNumber = item.Value;
-            break;
-        }
-      });
-    }
-
-    // Determine transaction status based on result code
-    const transactionStatus = ResultCode === 0 ? 'SUCCESS' : 'FAILED';
-    
-    let responseDescription = ResultDesc;
-    if (ResultCode === 0 && mpesaReceiptNumber) {
-      responseDescription = `Payment completed successfully. M-Pesa Receipt: ${mpesaReceiptNumber}`;
-    }
-    
-    const { data, error } = await global.supabase
-      .from('transactions')
-      .update({
-        status: transactionStatus,
-        callback_data: req.body,
-        response_description: responseDescription,
-        updated_at: new Date().toISOString()
-      })
-      .eq('checkout_request_id', CheckoutRequestID)
-      .select();
-
-    if (error) {
-      console.error('Failed to update transaction:', error);
-      return res.status(500).json({ error: 'Failed to update transaction' });
-    }
-
-    if (!data || data.length === 0) {
-      console.error('Transaction not found for CheckoutRequestID:', CheckoutRequestID);
-      return res.status(404).json({ error: 'Transaction not found' });
-    }
-
-    console.log('Transaction updated successfully:', data[0]);
+    // Process callback data as needed
     res.json({ success: true, message: 'Callback processed successfully' });
 
   } catch (error) {
@@ -252,10 +180,7 @@ app.get('/api/transaction-status/:requestId', async (req, res) => {
   try {
     const { requestId } = req.params;
     
-    // Check status with Daraja API
-    const statusResponse = await daraja.querySTKStatus(requestId);
-    
-    // Also get transaction from database
+    // Get transaction from database
     const { data, error } = await global.supabase
       .from('transactions')
       .select('*')
@@ -272,7 +197,6 @@ app.get('/api/transaction-status/:requestId', async (req, res) => {
 
     res.json({
       success: true,
-      daraja_status: statusResponse,
       transaction: data
     });
 
