@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SokoniMBS - Mobile Data & Services</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 25%, #45b7d1 50%, #96ceb4 75%, #feca57 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+            color: white;
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            z-index: -1;
+        }
+
+        .brand-name {
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, #fff, #f0f8ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .offers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .offer-category, .faq-section, .history-section, .modal-content, .offer-item {
+            position: relative;
+            background: linear-gradient(135deg, rgba(20,20,22,0.82) 60%, rgba(40,40,44,0.72) 100%);
+            border-radius: 28px;
+            box-shadow:
+              0 2px 24px 0 rgba(0,0,0,0.55),
+              0 0 0 2px rgba(255,255,255,0.08) inset;
+            backdrop-filter: blur(32px) brightness(1.15) saturate(1.5);
+            -webkit-backdrop-filter: blur(32px) brightness(1.15) saturate(1.5);
+            border: 2.5px solid rgba(255,255,255,0.12);
+            transition: box-shadow 0.5s cubic-bezier(.4,2,.6,1), transform 0.3s;
+            overflow: hidden;
+        }
+        .offer-category:hover, .faq-section:hover, .history-section:hover, .modal-content:hover, .offer-item:hover {
+            box-shadow:
+              0 8px 40px 0 rgba(0,0,0,0.65),
+              0 0 0 4px rgba(255,255,255,0.12) inset;
+            transform: translateY(-4px) scale(1.04);
+        }
+        .offer-category::before, .faq-section::before, .history-section::before, .modal-content::before, .offer-item::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background:
+              repeating-linear-gradient(120deg, rgba(255,255,255,0.10) 0 8%, rgba(255,255,255,0.02) 12% 20%, rgba(0,0,0,0) 22% 100%),
+              linear-gradient(120deg, rgba(255,255,255,0.18) 0%, rgba(0,0,0,0) 80%);
+            opacity: 0.85;
+            mix-blend-mode: lighten;
+            border-radius: inherit;
+            z-index: 2;
+        }
+        /* Remove shimmer and shine animations */
+        .offer-category::after, .faq-section::after, .history-section::after, .modal-content::after, .offer-item::after {
+            display: none !important;
+        }
+        .offer-item {
+            background: rgba(255,255,255,0.18);
+            border-radius: 16px;
+            border: 1.5px solid rgba(255,255,255,0.22);
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.16);
+            margin-bottom: 18px;
+            padding: 18px 16px;
+            transition: box-shadow 0.3s, transform 0.3s;
+        }
+        .offer-item:hover {
+            box-shadow: 0 10px 28px rgba(102, 126, 234, 0.22);
+            transform: translateY(-2px) scale(1.03);
+        }
+        .category-header {
+            margin-bottom: 18px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(240,240,240,0.7);
+        }
+        .category-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            font-size: 1.5rem;
+        }
+        .category-title {
+            font-size: 1.25rem;
+        }
+        .offer-name {
+            font-size: 1.08rem;
+        }
+        .offer-price {
+            font-size: 1.25rem;
+        }
+        .offer-buttons {
+            gap: 12px;
+        }
+        .buy-btn {
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 12px 0;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.08);
+            transition: background 0.3s, color 0.3s, box-shadow 0.3s, transform 0.2s;
+        }
+        .buy-now-btn, .modal-confirm {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+        }
+        .buy-now-btn:hover, .modal-confirm:hover {
+            background: linear-gradient(135deg, #764ba2, #667eea);
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.18);
+            transform: translateY(-1px) scale(1.03);
+        }
+        .buy-another-btn {
+            background: linear-gradient(135deg, #20c997, #28a745);
+            color: #fff;
+        }
+        .buy-another-btn:hover {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            box-shadow: 0 4px 16px rgba(40, 167, 69, 0.18);
+            transform: translateY(-1px) scale(1.03);
+        }
+        .buy-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        .faq-title, .history-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+        .faq-item {
+            background: rgba(255,255,255,0.28);
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+            margin-bottom: 14px;
+            padding: 16px 14px;
+        }
+        .faq-question {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .faq-answer {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .transaction-item {
+            background: rgba(255,255,255,0.28);
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+            margin-bottom: 10px;
+            padding: 16px 14px;
+        }
+
+        .transaction-details h4 {
+            margin-bottom: 4px;
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        .transaction-details p {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 2px;
+        }
+
+        .transaction-status {
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-failed {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 15px;
+            color: #666;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 8px 0;
+            border: 1px solid #f5c6cb;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 8px 0;
+            border: 1px solid #c3e6cb;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 8% auto;
+            padding: 25px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 1.3rem;
+        }
+
+        .modal-header p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        .modal-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-confirm {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .modal-cancel {
+            background: #f8f9fa;
+            color: #333;
+            border: 2px solid #ddd;
+        }
+
+        .modal-cancel:hover {
+            background: #e2e6ea;
+            color: #222;
+            transform: scale(1.03);
+        }
+
+        .discount-badge {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .offers-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .offer-buttons {
+                flex-direction: column;
+            }
+
+            .modal-content {
+                margin: 5% auto;
+                width: 95%;
+            }
+
+            .brand-name {
+                font-size: 1.2rem;
+                top: 5px;
+                left: 10px;
+            }
+            .offer-category, .faq-section, .history-section, .modal-content {
+                padding: 16px 6px;
+                border-radius: 16px;
+            }
+            .offer-item {
+                padding: 12px 8px;
+                border-radius: 10px;
+            }
+        }
+
+        @keyframes card-in {
+          0% {
+            opacity: 0;
+            transform: translateY(40px) scale(0.94) rotateX(8deg);
+            box-shadow: 0 8px 32px 0 rgba(80,80,255,0.08);
+          }
+          80% {
+            opacity: 1;
+            transform: translateY(-4px) scale(1.02) rotateX(0deg);
+            box-shadow: 0 16px 40px 0 rgba(80,80,255,0.16);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0) scale(1) rotateX(0deg);
+            box-shadow: 0 8px 32px 0 rgba(80,80,255,0.10);
+          }
+        }
+        .offer-card {
+          opacity: 0;
+          transform: translateY(40px) scale(0.94) rotateX(8deg);
+          transition: box-shadow 0.18s, border 0.18s;
+          will-change: opacity, transform;
+        }
+        .offer-card.visible {
+          animation: card-in 0.12s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        .offer-card.stagger-1,
+        .offer-card.stagger-2,
+        .offer-card.stagger-3,
+        .offer-card.stagger-4,
+        .offer-card.stagger-5,
+        .offer-card.stagger-6,
+        .offer-card.stagger-7,
+        .offer-card.stagger-8,
+        .offer-card.stagger-9,
+        .offer-card.stagger-10 { animation-delay: 0s; }
+        .offer-card:active { transform: scale(0.97); }
+
+        /* Socials enhanced styles */
+        .social-btn {
+          position: relative;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 56px;
+          height: 56px;
+          border-radius: 50%;
+          box-shadow: 0 4px 24px 0 rgba(0,0,0,0.10), 0 1.5px 8px 0 rgba(0,0,0,0.08);
+          transition: transform 0.22s cubic-bezier(.4,2,.6,1), box-shadow 0.22s, background 0.22s;
+          font-size: 1.5rem;
+          margin: 0 0.25rem;
+          opacity: 0;
+          transform: translateY(30px) scale(0.95);
+          animation: social-fade-in-up 0.7s cubic-bezier(.4,2,.6,1) forwards;
+          outline: none;
+        }
+        .social-btn:nth-child(1) { animation-delay: 0.1s; }
+        .social-btn:nth-child(2) { animation-delay: 0.22s; }
+        .social-btn:nth-child(3) { animation-delay: 0.34s; }
+        .social-btn:nth-child(4) { animation-delay: 0.46s; }
+        @keyframes social-fade-in-up {
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .social-btn:hover {
+          z-index: 2;
+          transform: scale(1.13) rotate(-6deg);
+          box-shadow: 0 8px 32px 0 rgba(0,0,0,0.18), 0 2px 12px 0 rgba(0,0,0,0.12);
+        }
+        .social-btn.facebook { background: linear-gradient(135deg, #1877F2 60%, #3b5998 100%); border: 2.5px solid #fff; }
+        .social-btn.x { background: linear-gradient(135deg, #000 60%, #222 100%); border: 2.5px solid #fff; }
+        .social-btn.instagram { background: linear-gradient(135deg, #f58529 0%, #dd2a7b 50%, #fdc468 100%); border: 2.5px solid #fff; }
+        .social-btn.whatsapp { background: linear-gradient(135deg, #25D366 60%, #128C7E 100%); border: 2.5px solid #fff; }
+        .social-btn:after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          border-radius: 50%;
+          pointer-events: none;
+          box-shadow: 0 0 0 0 rgba(0,0,0,0.08);
+          transition: box-shadow 0.22s;
+        }
+        /* Animated brand glow on hover */
+        .social-btn.facebook:hover:after {
+          animation: social-glow-facebook 1.2s infinite alternate;
+        }
+        .social-btn.x:hover:after {
+          animation: social-glow-x 1.2s infinite alternate;
+        }
+        .social-btn.instagram:hover:after {
+          animation: social-glow-instagram 1.2s infinite alternate;
+        }
+        .social-btn.whatsapp:hover:after {
+          animation: social-glow-whatsapp 1.2s infinite alternate;
+        }
+        @keyframes social-glow-facebook {
+          from { box-shadow: 0 0 0 0 rgba(24,119,242,0.18), 0 0 0 0 #fff0; }
+          to   { box-shadow: 0 0 24px 8px rgba(24,119,242,0.38), 0 0 0 0 #fff0; }
+        }
+        @keyframes social-glow-x {
+          from { box-shadow: 0 0 0 0 rgba(0,0,0,0.18), 0 0 0 0 #fff0; }
+          to   { box-shadow: 0 0 24px 8px rgba(0,0,0,0.38), 0 0 0 0 #fff0; }
+        }
+        @keyframes social-glow-instagram {
+          from { box-shadow: 0 0 0 0 rgba(245,133,41,0.18), 0 0 0 0 #fff0; }
+          to   { box-shadow: 0 0 24px 8px rgba(221,42,123,0.38), 0 0 0 0 #fff0; }
+        }
+        @keyframes social-glow-whatsapp {
+          from { box-shadow: 0 0 0 0 rgba(37,211,102,0.18), 0 0 0 0 #fff0; }
+          to   { box-shadow: 0 0 24px 8px rgba(37,211,102,0.38), 0 0 0 0 #fff0; }
+        }
+        .offer-category::after, .faq-section::after, .history-section::after, .modal-content::after, .offer-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(120deg, rgba(255,255,255,0.32) 0%, rgba(80,180,255,0.38) 60%, rgba(255,255,255,0.18) 100%);
+            opacity: 0.95;
+            mix-blend-mode: lighten;
+            background-size: 350% 100%;
+            animation: shimmer 1.2s infinite linear;
+            border-radius: inherit;
+            z-index: 2;
+        }
+        @keyframes shimmer {
+            0% { background-position: -350% 0; }
+            100% { background-position: 350% 0; }
+        }
+    </style>
+</head>
+<body class="relative min-h-screen p-4 overflow-x-hidden bg-gradient-to-br from-blue-50 to-yellow-100 dark:from-gray-900 dark:to-black">
+  <!-- Animated gradient overlay -->
+  <div class="pointer-events-none fixed inset-0 z-0">
+    <div class="absolute inset-0 w-full h-full bg-gradient-to-tr from-blue-200/20 via-pink-100/10 to-yellow-100/20 dark:from-indigo-900/30 dark:via-fuchsia-900/10 dark:to-cyan-900/20 animate-gradient-move"></div>
+        </div>
+  <style>
+    @keyframes gradient-move {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .animate-gradient-move {
+      background-size: 200% 200%;
+      animation: gradient-move 18s ease-in-out infinite;
+    }
+  </style>
+  <!-- Light mode online network background -->
+  <div aria-hidden="true" class="pointer-events-none fixed inset-0 z-0 block dark:hidden">
+    <svg class="absolute left-0 top-0 w-full h-full" viewBox="0 0 1440 900" fill="none">
+      <!-- Network lines -->
+      <g stroke="#38bdf8" stroke-width="2.5" opacity="0.28">
+        <line x1="200" y1="100" x2="600" y2="300" />
+        <line x1="600" y1="300" x2="1200" y2="200" />
+        <line x1="200" y1="100" x2="400" y2="600" />
+        <line x1="400" y1="600" x2="900" y2="800" />
+        <line x1="900" y1="800" x2="1200" y2="200" />
+        <line x1="600" y1="300" x2="400" y2="600" />
+        <line x1="900" y1="800" x2="600" y2="300" />
+      </g>
+      <!-- Pulsing nodes -->
+      <g>
+        <circle cx="200" cy="100" r="14" fill="#38bdf8" opacity="0.35">
+          <animate attributeName="r" values="14;20;14" dur="2.5s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.35;0.6;0.35" dur="2.5s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="600" cy="300" r="18" fill="#fbbf24" opacity="0.22">
+          <animate attributeName="r" values="18;24;18" dur="2.8s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.22;0.5;0.22" dur="2.8s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="1200" cy="200" r="12" fill="#a78bfa" opacity="0.28">
+          <animate attributeName="r" values="12;18;12" dur="2.2s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.28;0.6;0.28" dur="2.2s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="400" cy="600" r="16" fill="#34d399" opacity="0.22">
+          <animate attributeName="r" values="16;22;16" dur="2.7s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.22;0.5;0.22" dur="2.7s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="900" cy="800" r="20" fill="#f472b6" opacity="0.18">
+          <animate attributeName="r" values="20;28;20" dur="2.9s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.18;0.4;0.18" dur="2.9s" repeatCount="indefinite" />
+        </circle>
+      </g>
+      <!-- Animated data packets (dots) -->
+      <circle r="7" fill="#38bdf8" opacity="0.7">
+        <animateMotion dur="5s" repeatCount="indefinite" path="M200,100 L600,300 L1200,200" />
+      </circle>
+      <rect width="10" height="10" rx="3" fill="#fbbf24" opacity="0.7">
+        <animateMotion dur="7s" repeatCount="indefinite" path="M400,600 L900,800 L1200,200" />
+      </rect>
+      <circle r="6" fill="#a78bfa" opacity="0.7">
+        <animateMotion dur="6s" repeatCount="indefinite" path="M600,300 L400,600" />
+      </circle>
+      <!-- Connection flashes -->
+      <rect width="60" height="4" rx="2" fill="#38bdf8" opacity="0.0">
+        <animate attributeName="opacity" values="0;0.7;0" dur="3.5s" repeatCount="indefinite" />
+        <animateMotion dur="7s" repeatCount="indefinite" path="M600,300 L1200,200" />
+      </rect>
+    </svg>
+    <!-- More, larger, and faster-blinking bubbles -->
+    <div class="absolute inset-0">
+      <span class="bubble absolute left-[10vw] top-[20vh] w-24 h-24 bg-blue-200/40 rounded-full blur-2xl animate-bubble-blink"></span>
+      <span class="bubble absolute left-[60vw] top-[10vh] w-32 h-32 bg-teal-300/30 rounded-full blur-2xl animate-bubble-blink2"></span>
+      <span class="bubble absolute left-[80vw] top-[60vh] w-28 h-28 bg-purple-300/30 rounded-full blur-2xl animate-bubble-blink3"></span>
+      <span class="bubble absolute left-[30vw] top-[70vh] w-20 h-20 bg-yellow-200/30 rounded-full blur-2xl animate-bubble-blink"></span>
+      <span class="bubble absolute left-[50vw] top-[40vh] w-24 h-24 bg-pink-200/30 rounded-full blur-2xl animate-bubble-blink2"></span>
+      <span class="bubble absolute left-[20vw] top-[50vh] w-16 h-16 bg-blue-300/30 rounded-full blur-2xl animate-bubble-blink3"></span>
+      <span class="bubble absolute left-[70vw] top-[30vh] w-20 h-20 bg-green-200/30 rounded-full blur-2xl animate-bubble-blink"></span>
+                </div>
+                        </div>
+  <!-- Dark mode online network background -->
+  <div aria-hidden="true" class="pointer-events-none fixed inset-0 z-0 hidden dark:block">
+    <svg class="absolute left-0 top-0 w-full h-full" viewBox="0 0 1440 900" fill="none">
+      <g stroke="#6366f1" stroke-width="2.5" opacity="0.18">
+        <line x1="200" y1="100" x2="600" y2="300" />
+        <line x1="600" y1="300" x2="1200" y2="200" />
+        <line x1="200" y1="100" x2="400" y2="600" />
+        <line x1="400" y1="600" x2="900" y2="800" />
+        <line x1="900" y1="800" x2="1200" y2="200" />
+        <line x1="600" y1="300" x2="400" y2="600" />
+        <line x1="900" y1="800" x2="600" y2="300" />
+      </g>
+      <g>
+        <circle cx="200" cy="100" r="16" fill="#6366f1" opacity="0.32">
+          <animate attributeName="r" values="16;22;16" dur="2.5s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.32;0.7;0.32" dur="2.5s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="600" cy="300" r="20" fill="#0ea5e9" opacity="0.22">
+          <animate attributeName="r" values="20;26;20" dur="2.8s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.22;0.6;0.22" dur="2.8s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="1200" cy="200" r="14" fill="#06b6d4" opacity="0.28">
+          <animate attributeName="r" values="14;20;14" dur="2.2s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.28;0.7;0.28" dur="2.2s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="400" cy="600" r="18" fill="#22d3ee" opacity="0.22">
+          <animate attributeName="r" values="18;24;18" dur="2.7s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.22;0.6;0.22" dur="2.7s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="900" cy="800" r="22" fill="#a78bfa" opacity="0.18">
+          <animate attributeName="r" values="22;30;22" dur="2.9s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.18;0.5;0.18" dur="2.9s" repeatCount="indefinite" />
+        </circle>
+      </g>
+      <!-- Animated data packets (dots) -->
+      <circle r="9" fill="#6366f1" opacity="0.7">
+        <animateMotion dur="5s" repeatCount="indefinite" path="M200,100 L600,300 L1200,200" />
+      </circle>
+      <rect width="12" height="12" rx="3" fill="#0ea5e9" opacity="0.7">
+        <animateMotion dur="7s" repeatCount="indefinite" path="M400,600 L900,800 L1200,200" />
+      </rect>
+      <circle r="8" fill="#a78bfa" opacity="0.7">
+        <animateMotion dur="6s" repeatCount="indefinite" path="M600,300 L400,600" />
+      </circle>
+      <!-- Connection flashes -->
+      <rect width="80" height="5" rx="2.5" fill="#6366f1" opacity="0.0">
+        <animate attributeName="opacity" values="0;0.9;0" dur="3.5s" repeatCount="indefinite" />
+        <animateMotion dur="7s" repeatCount="indefinite" path="M600,300 L1200,200" />
+      </rect>
+    </svg>
+    <div class="absolute inset-0">
+      <span class="bubble absolute left-[10vw] top-[20vh] w-24 h-24 bg-blue-900/40 rounded-full blur-2xl animate-bubble-blink"></span>
+      <span class="bubble absolute left-[60vw] top-[10vh] w-32 h-32 bg-cyan-800/30 rounded-full blur-2xl animate-bubble-blink2"></span>
+      <span class="bubble absolute left-[80vw] top-[60vh] w-28 h-28 bg-purple-900/30 rounded-full blur-2xl animate-bubble-blink3"></span>
+      <span class="bubble absolute left-[30vw] top-[70vh] w-20 h-20 bg-yellow-900/30 rounded-full blur-2xl animate-bubble-blink"></span>
+      <span class="bubble absolute left-[50vw] top-[40vh] w-24 h-24 bg-pink-900/30 rounded-full blur-2xl animate-bubble-blink2"></span>
+      <span class="bubble absolute left-[20vw] top-[50vh] w-16 h-16 bg-blue-800/30 rounded-full blur-2xl animate-bubble-blink3"></span>
+      <span class="bubble absolute left-[70vw] top-[30vh] w-20 h-20 bg-green-900/30 rounded-full blur-2xl animate-bubble-blink"></span>
+                    </div>
+                    </div>
+  <style>
+    @keyframes bubble-blink {
+      0%, 100% { opacity: 0.28; }
+      50% { opacity: 0.55; }
+    }
+    @keyframes bubble-blink2 {
+      0%, 100% { opacity: 0.18; }
+      50% { opacity: 0.38; }
+    }
+    @keyframes bubble-blink3 {
+      0%, 100% { opacity: 0.15; }
+      50% { opacity: 0.32; }
+    }
+    .animate-bubble-blink { animation: bubble-blink 3.5s infinite; }
+    .animate-bubble-blink2 { animation: bubble-blink2 4.2s infinite; }
+    .animate-bubble-blink3 { animation: bubble-blink3 5.5s infinite; }
+  </style>
+    <header class="text-center mb-8 relative">
+        <h1 class="text-3xl font-bold text-blue-900 dark:text-blue-200">SokoniMBS KE</h1>
+        <p class="text-sm text-gray-600 dark:text-gray-400">Your trusted source for bundles, calls & airtime deals</p>
+    </header>
+
+    <section class="mb-8">
+        <h2 class="text-xl font-semibold text-blue-900 dark:text-blue-200 mb-4">🔥 Hot Offers</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col items-start bg-white/80 dark:bg-gray-900/80 border-2 border-pink-500 transition relative" data-aos="fade-up" data-aos-duration="400" data-aos-offset="200" data-aos-delay="0">
+                <div class="absolute top-2 right-2"><span class="discount-badge bg-pink-500 text-white" style="font-size:0.8rem;">Trending</span></div>
+                <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">1.25GB till Midnight</h3>
+                <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">@ Ksh 55</p>
+                <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-pink-500 to-blue-600 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="openBuyModal('1.25GB till Midnight', 'Ksh 55')">Buy Now</button>
+            </div>
+            <div class="backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col items-start bg-white/80 dark:bg-gray-900/80 border-2 border-yellow-400 transition relative" data-aos="fade-up" data-aos-duration="400" data-aos-offset="200" data-aos-delay="50">
+                <div class="absolute top-2 right-2"><span class="discount-badge bg-yellow-400 text-yellow-900" style="font-size:0.8rem;">Popular</span></div>
+                <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">250 Mbs (24 Hrs)</h3>
+                <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">@ Ksh 20</p>
+                <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-yellow-400 to-pink-400 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="openBuyModal('250 Mbs (24 Hrs)', 'Ksh 20')">Buy Now</button>
+            </div>
+            <div class="backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col items-start bg-white/80 dark:bg-gray-900/80 transition" data-aos="fade-up" data-aos-duration="400" data-aos-offset="200" data-aos-delay="100">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">1.2GB (30 Days)</h3>
+                <p class="text-sm text-gray-300 mb-2">@ Ksh 250 ✨</p>
+                <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-green-500 to-blue-600 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="openBuyModal('1.2GB (30 Days)', 'Ksh 250')">Buy Now</button>
+                    </div>
+            <div class="backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col items-start bg-white/80 dark:bg-gray-900/80 transition" data-aos="fade-up" data-aos-duration="400" data-aos-offset="200" data-aos-delay="200">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">1GB (24 Hrs)</h3>
+                <p class="text-sm text-gray-300 mb-2">@ Ksh 99 ✨</p>
+                <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-green-500 to-blue-600 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="openBuyModal('1GB (24 Hrs)', 'Ksh 99')">Buy Now</button>
+                        </div>
+            <div class="backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col items-start bg-white/80 dark:bg-gray-900/80 transition" data-aos="fade-up" data-aos-duration="400" data-aos-offset="200" data-aos-delay="300">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">2.5GB (7 Days)</h3>
+                <p class="text-sm text-gray-300 mb-2">@ Ksh 300 🔥</p>
+                <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-green-500 to-blue-600 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="openBuyModal('2.5GB (7 Days)', 'Ksh 300')">Buy Now</button>
+                    </div>
+            <div class="backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col items-start bg-white/80 dark:bg-gray-900/80 transition" data-aos="fade-up" data-aos-duration="400" data-aos-offset="200" data-aos-delay="400">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">6GB (7 Days)</h3>
+                <p class="text-sm text-gray-300 mb-2">@ Ksh 700 🔥</p>
+                <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-green-500 to-blue-600 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="openBuyModal('6GB (7 Days)', 'Ksh 700')">Buy Now</button>
+                    </div>
+                </div>
+    </section>
+
+    <section class="mb-8">
+      <h2 class="text-xl font-semibold text-blue-900 dark:text-blue-200 mb-4">🔄 Renewable Offers</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col items-start bg-white/80 dark:bg-gray-900/80 transition" data-aos="fade-up" data-aos-duration="400" data-aos-offset="200" data-aos-delay="0">
+          <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">2GB (24 Hrs)</h3>
+          <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">@ Ksh 110</p>
+          <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-green-500 to-blue-600 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="openBuyModal('2GB (24 Hrs) - Renewable', 'Ksh 110')">Buy Now</button>
+                        </div>
+        <div class="backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col items-start bg-white/80 dark:bg-gray-900/80 transition" data-aos="fade-up" data-aos-duration="400" data-aos-offset="200" data-aos-delay="50">
+          <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">1.5GB (3 Hrs)</h3>
+          <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">@ Ksh 52</p>
+          <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-green-500 to-blue-600 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="openBuyModal('1.5GB (3 Hrs) - Renewable', 'Ksh 52')">Buy Now</button>
+                    </div>
+        <div class="backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col items-start bg-white/80 dark:bg-gray-900/80 transition" data-aos="fade-up" data-aos-duration="400" data-aos-offset="200" data-aos-delay="100">
+          <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">1GB (1 Hr)</h3>
+          <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">@ Ksh 22</p>
+          <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-green-500 to-blue-600 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="openBuyModal('1GB (1 Hr) - Renewable', 'Ksh 22')">Buy Now</button>
+                    </div>
+                </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="text-xl font-semibold text-blue-900 dark:text-blue-200 mb-4">📆 Monthly Packages</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col items-start bg-white/80 dark:bg-gray-900/80 transition" data-aos="fade-up" data-aos-duration="400" data-aos-offset="200" data-aos-delay="0">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">1.2GB (30 Days)</h3>
+                <p class="text-sm text-gray-300 mb-2">@ Ksh 250</p>
+                <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-pink-600 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="openBuyModal('1.2GB (30 Days)', 'Ksh 250')">Buy Now</button>
+                        </div>
+            <div class="backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col items-start bg-white/80 dark:bg-gray-900/80 transition" data-aos="fade-up" data-aos-duration="400" data-aos-offset="200" data-aos-delay="50">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">300 Minutes (30 Days)</h3>
+                <p class="text-sm text-gray-300 mb-2">@ Ksh 500</p>
+                <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-pink-600 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="showNotification('To purchase, contact +254112223307')">Buy Now</button>
+                    </div>
+            <div class="backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col items-start bg-white/80 dark:bg-gray-900/80 transition" data-aos="fade-up" data-aos-duration="400" data-aos-offset="200" data-aos-delay="100">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">800 Minutes (30 Days)</h3>
+                <p class="text-sm text-gray-300 mb-2">@ Ksh 1002</p>
+                <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-pink-600 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="openBuyModal('800 Minutes (30 Days)', 'Ksh 1002')">Buy Now</button>
+                    </div>
+            <div class="backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col items-start bg-white/80 dark:bg-gray-900/80 transition" data-aos="fade-up" data-aos-duration="400" data-aos-offset="200" data-aos-delay="150">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">8GB + 400 Min (30 Days)</h3>
+                <p class="text-sm text-gray-300 mb-2">@ Ksh 1000</p>
+                <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-pink-600 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="openBuyModal('8GB + 400 Min (30 Days)', 'Ksh 1000')">Buy Now</button>
+                </div>
+            <div class="backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col items-start bg-white/80 dark:bg-gray-900/80 transition" data-aos="fade-up" data-aos-duration="400" data-aos-offset="200" data-aos-delay="200">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">2.5GB (30 Days)</h3>
+                <p class="text-sm text-gray-300 mb-2">@ Ksh 500</p>
+                <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-pink-600 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="openBuyModal('2.5GB (30 Days)', 'Ksh 500')">Buy Now</button>
+                        </div>
+            <div class="backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col items-start bg-white/80 dark:bg-gray-900/80 transition" data-aos="fade-up" data-aos-duration="400" data-aos-offset="200" data-aos-delay="250">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">10GB (30 Days)</h3>
+                <p class="text-sm text-gray-300 mb-2">@ Ksh 1001</p>
+                <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-pink-600 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="openBuyModal('10GB (30 Days)', 'Ksh 1001')">Buy Now</button>
+                    </div>
+            <!-- Special, catchy exclusive offer card in Monthly Packages section -->
+            <div class="relative backdrop-blur-md p-4 rounded-2xl shadow-2xl flex flex-col items-start bg-gradient-to-br from-pink-400 via-yellow-200 to-blue-300 dark:from-purple-900 dark:via-blue-900 dark:to-pink-900 border-4 border-yellow-400 dark:border-pink-600 scale-105 animate-exclusive-offer" data-aos="zoom-in" data-aos-duration="900" data-aos-offset="120" data-aos-delay="0">
+              <span class="absolute -top-4 left-4 bg-gradient-to-r from-yellow-400 to-pink-500 text-white dark:from-pink-600 dark:to-yellow-400 px-4 py-1 rounded-full text-xs font-bold shadow-lg flex items-center gap-1 z-10">
+                ✨ Exclusive
+              </span>
+              <span class="text-3xl mb-2">🎁</span>
+              <h3 class="text-lg font-extrabold text-gray-900 dark:text-yellow-200">8GB + 400 Mins + Unlimited SMS</h3>
+              <p class="text-base text-gray-800 dark:text-gray-100 mb-2 font-semibold">@ Ksh 800 <span class="text-green-600 dark:text-green-400 font-bold">(Save 200)</span></p>
+              <button class="mt-auto px-6 py-3 rounded-xl font-bold text-lg text-white bg-gradient-to-r from-pink-500 to-yellow-400 dark:from-pink-600 dark:to-yellow-400 shadow-lg hover:scale-110 transition-all focus:outline-none" onclick="showNotification('To purchase, contact +254112223307')">Buy Now</button>
+                    </div>
+            <style>
+            @keyframes exclusive-offer {
+              0%, 100% { box-shadow: 0 0 32px 0 #fbbf24, 0 0 0 0 #fff0; }
+              50% { box-shadow: 0 0 48px 8px #fbbf24, 0 0 0 0 #fff0; }
+            }
+            .animate-exclusive-offer { animation: exclusive-offer 2.5s infinite; }
+            </style>
+                </div>
+    </section>
+
+    <section class="mb-8">
+        <h2 class="text-xl font-semibold text-blue-900 dark:text-blue-200 mb-4">📞 Calls & Airtime Offers</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col items-start bg-white/80 dark:bg-gray-900/80 transition" data-aos="fade-up" data-aos-duration="400" data-aos-offset="200" data-aos-delay="0">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">Sh25 (20 Mins, midnight)</h3>
+                <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-yellow-500 to-red-600 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="showNotification('To purchase, contact +254112223307')">Buy Now</button>
+                        </div>
+            <div class="backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col items-start bg-white/80 dark:bg-gray-900/80 transition" data-aos="fade-up" data-aos-duration="400" data-aos-offset="200" data-aos-delay="50">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">Sh51 (50 Mins, Midnight)</h3>
+                <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-yellow-500 to-red-600 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="showNotification('To purchase, contact +254112223307')">Buy Now</button>
+                    </div>
+            <div class="backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col items-start bg-white/80 dark:bg-gray-900/80 transition" data-aos="fade-up" data-aos-duration="400" data-aos-offset="200" data-aos-delay="100">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">Sh105 (100 Mins, midnight)</h3>
+                <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-yellow-500 to-red-600 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="showNotification('To purchase, contact +254112223307')">Buy Now</button>
+                    </div>
+            <div class="backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col items-start bg-white/80 dark:bg-gray-900/80 transition" data-aos="fade-up" data-aos-duration="400" data-aos-offset="200" data-aos-delay="150">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">Sh23 (40 Bob airtime for 24hrs)</h3>
+                <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-yellow-500 to-red-600 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="showNotification('To purchase, contact +254112223307')">Buy Now</button>
+                </div>
+            <div class="backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col items-start bg-white/80 dark:bg-gray-900/80 transition" data-aos="fade-up" data-aos-duration="400" data-aos-offset="200" data-aos-delay="200">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">Sh52 (100 Bob airtime for 24hrs)</h3>
+                <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-yellow-500 to-red-600 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="showNotification('To purchase, contact +254112223307')">Buy Now</button>
+                        </div>
+            <div class="backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col items-start bg-white/80 dark:bg-gray-900/80 transition" data-aos="fade-up" data-aos-duration="400" data-aos-offset="200" data-aos-delay="250">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">Sh104 (200 Bob airtime for 24hrs)</h3>
+                <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-yellow-500 to-red-600 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="showNotification('To purchase, contact +254112223307')">Buy Now</button>
+                    </div>
+            <div class="backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col items-start bg-white/80 dark:bg-gray-900/80 transition" data-aos="fade-up" data-aos-duration="400" data-aos-offset="200" data-aos-delay="300">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">Sh53 (150 Minutes valid 5hrs)</h3>
+                <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-yellow-500 to-red-600 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="showNotification('To purchase, contact +254112223307')">Buy Now</button>
+                    </div>
+                </div>
+    </section>
+
+    <footer class="text-center text-xs text-gray-500 mt-10">
+        © 2025 SokoniMBS KE. All rights reserved.
+    </footer>
+
+    <!-- Contact Us Panel -->
+<section class="max-w-2xl mx-auto mt-16 mb-8 p-6 rounded-2xl shadow-lg bg-white/80 dark:bg-gray-900/80 backdrop-blur-md flex flex-col items-center">
+  <h2 class="text-2xl font-bold text-blue-900 dark:text-blue-200 mb-2">Contact Us</h2>
+  <div class="flex flex-col items-center gap-1 mb-4">
+    <div class="text-gray-700 dark:text-gray-200 flex items-center gap-2"><span class="font-semibold">Phone:</span> <a href="tel:+254704166953" class="hover:underline text-blue-600 dark:text-blue-300">+254704166953</a></div>
+    <div class="text-gray-700 dark:text-gray-200 flex items-center gap-2"><span class="font-semibold">Email:</span> <a href="mailto:1codedgrid@gmail.com" class="hover:underline text-blue-600 dark:text-blue-300">1codedgrid@gmail.com</a></div>
+                        </div>
+  <div class="flex gap-4 mt-2 justify-center">
+    <a href="#" class="social-btn facebook" aria-label="Facebook">
+      <svg class="w-8 h-8" viewBox="0 0 32 32" fill="none"><rect x="2" y="2" width="28" height="28" rx="7" fill="url(#fb-gradient)"/><defs><linearGradient id="fb-gradient" x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#8fd3f4"/><stop offset="1" stop-color="#1877F2"/></linearGradient></defs><path d="M21 10.5h-2.25A.75.75 0 0 0 18 11.25v1.5h3l-.375 2.25H18v6h-2.25v-6h-1.5v-2.25h1.5v-1.13A2.25 2.25 0 0 1 18 8.5h3v2Z" fill="#fff"/></svg>
+    </a>
+    <a href="https://x.com/1CodedGrid" target="_blank" rel="noopener" class="social-btn x" aria-label="X (Twitter)">
+      <svg class="w-8 h-8" viewBox="0 0 32 32" fill="none"><rect x="2" y="2" width="28" height="28" rx="7" fill="url(#x-gradient)"/><defs><linearGradient id="x-gradient" x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#e0eafc"/><stop offset="1" stop-color="#000"/></linearGradient></defs><path d="M22.04 9.96h-1.41l-4.63 5.5-4.63-5.5H9.96l5.5 6.57-5.5 5.5h1.41l4.63-5.5 4.63 5.5h1.41l-5.5-5.5 5.5-6.57Z" fill="#fff"/></svg>
+    </a>
+    <a href="https://www.instagram.com/1codedgrid/" target="_blank" rel="noopener" class="social-btn instagram" aria-label="Instagram">
+      <svg class="w-8 h-8" viewBox="0 0 32 32" fill="none"><rect x="2" y="2" width="28" height="28" rx="7" fill="url(#ig-gradient2)"/><defs><linearGradient id="ig-gradient2" x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#fcb7ff"/><stop offset="0.5" stop-color="#dd2a7b"/><stop offset="1" stop-color="#fdc468"/></linearGradient></defs><circle cx="16" cy="16" r="6" stroke="#fff" stroke-width="1.5" fill="none"/><circle cx="22" cy="10" r="1.3" fill="#fff"/><rect x="6" y="6" width="20" height="20" rx="8" stroke="#fff" stroke-width="1.5" fill="none"/></svg>
+    </a>
+    <a href="https://wa.me/254704166953" target="_blank" rel="noopener" class="social-btn whatsapp" aria-label="WhatsApp">
+      <svg class="w-8 h-8" viewBox="0 0 32 32" fill="none"><rect x="2" y="2" width="28" height="28" rx="7" fill="url(#wa-gradient)"/><defs><linearGradient id="wa-gradient" x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#b2f7ef"/><stop offset="1" stop-color="#25D366"/></linearGradient></defs><path d="M22.5 18.5c-.4-.2-2.3-1.1-2.7-1.2-.4-.1-.6-.2-.9.2-.3.4-1 1.2-1.2 1.4-.2.2-.5.3-.8.1-.3-.2-1.7-.6-3.2-2-.9-.8-2-2.1-2.2-2.5-.2-.4 0-.6.2-.8.2-.2.4-.5.6-.7.2-.2.3-.4.4-.7.1-.2.1-.5 0-.7-.1-.2-.9-2.1-1.2-2.8-.3-.7-.6-.6-.9-.6-.2 0-.5 0-.8 0-.3 0-.7.1-1.1.5-.4.4-1.4 1.3-1.4 3.2 0 1.9 1.4 3.7 1.6 4 .2.3 2.8 4.2 6.8 5.7.9.3 1.7.6 2.3.8.9.3 1.8.2 2.5.1.8-.1 2.3-1 2.6-1.8.3-.9.3-1.7.2-1.8-.1-.2-.4-.3-.8-.5z" fill="#fff"/></svg>
+    </a>
+  </div>
+</section>
+
+    <!-- Modal for Phone Input -->
+    <div id="buyModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 dark:bg-black/80 backdrop-blur transition-opacity duration-300 hidden">
+        <div class="relative w-full max-w-md mx-auto p-6 rounded-3xl shadow-2xl bg-white/80 dark:bg-gray-900/90 backdrop-blur-2xl border border-white border-opacity-20 animate-fadeIn">
+            <button onclick="closeBuyModal()" class="absolute top-3 right-3 text-gray-900 dark:text-gray-100 text-2xl font-bold bg-white/30 dark:bg-gray-700/60 rounded-full w-9 h-9 flex items-center justify-center hover:bg-opacity-30 transition">&times;</button>
+            <div class="text-center">
+                <h3 id="modalOfferTitle" class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2"></h3>
+                <p id="modalOfferPrice" class="text-lg text-blue-900 dark:text-blue-200 mb-6"></p>
+                <!-- Options -->
+                <div id="buyModalOptions" class="flex flex-col gap-4 items-center">
+                    <button class="w-full py-3 px-6 rounded-xl font-bold text-lg text-white bg-gradient-to-r from-green-500 to-blue-600 shadow-lg backdrop-blur-md bg-opacity-80 hover:scale-105 transition-all focus:outline-none focus:ring-2 focus:ring-blue-400" onclick="showPhoneInput()">Buy for Your Number</button>
+                    <button class="w-full py-3 px-6 rounded-xl font-bold text-lg text-blue-900 dark:text-blue-200 border-2 border-blue-400 dark:border-blue-300 bg-white/30 dark:bg-gray-700/60 shadow-md backdrop-blur-md hover:bg-opacity-30 hover:scale-105 transition-all focus:outline-none focus:ring-2 focus:ring-blue-400" onclick="window.location.href='https://bingwahybrid.com/be3a7ea16f'">Buy for Another Number</button>
+                        </div>
+                <!-- Phone input -->
+                <div id="buyModalPhone" class="hidden flex-col gap-4 items-center mt-2">
+                    <input id="userPhoneInput" type="tel" maxlength="10" pattern="07[0-9]{8}" placeholder="Your phone (07XXXXXXXX)" class="w-full mb-3 px-4 py-3 rounded-lg border border-blue-300 dark:border-blue-700 bg-white/70 dark:bg-gray-800/80 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                    <input id="userAmountInput" type="number" min="1" placeholder="Amount" class="w-full mb-3 px-4 py-3 rounded-lg border border-blue-300 dark:border-blue-700 bg-white/70 dark:bg-gray-800/80 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                    <div id="payNowError" class="text-red-500 text-sm mb-2"></div>
+                    <button class="w-full py-3 px-6 rounded-xl font-bold text-lg text-white bg-gradient-to-r from-green-500 to-blue-600 shadow-lg hover:scale-105 transition-all focus:outline-none focus:ring-2 focus:ring-blue-400" onclick="payNow()">Pay Now</button>
+                    <button class="w-full py-2 px-4 mt-2 rounded-lg text-blue-700 dark:text-blue-300 bg-white/40 dark:bg-gray-700/40 border border-blue-200 dark:border-blue-700 hover:bg-blue-50 dark:hover:bg-gray-800 transition" onclick="document.getElementById('buyModalPhone').classList.add('hidden');document.getElementById('buyModalOptions').classList.remove('hidden');">Back</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+    <!-- Add Supabase client initialization -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm"></script>
+    <script>
+      const supabaseUrl = 'https://lyeypdcwsxbrjethaefj.supabase.co';
+      const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx5ZXlwZGN3c3hicmpldGhhZWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIwNjQ4NTUsImV4cCI6MjA2NzY0MDg1NX0.DG8rvOYhdW8NEJWqG-Q-D_F0zMQWVZgPsBpCzQg2h78';
+      const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+      // ... existing modal and theme logic ...
+
+      // Fetch and display transaction history
+      async function fetchAndShowHistory(phone) {
+        window.currentHistoryPhone = phone;
+        const historySection = document.getElementById('transactionHistory');
+        historySection.innerHTML = '<div class="text-gray-400 dark:text-gray-500 text-center py-4">Loading...</div>';
+        const { data, error } = await supabase
+          .from('transactions')
+          .select('*')
+          .eq('phone', phone)
+          .order('created_at', { ascending: false });
+        if (error) {
+          historySection.innerHTML = '<div class="text-red-500 text-center py-4">Failed to load history.</div>';
+                return;
+            }
+        if (!data || data.length === 0) {
+          historySection.innerHTML = '<div class="text-gray-400 dark:text-gray-500 text-center py-4">No transactions found.</div>';
+                return;
+            }
+        historySection.innerHTML = data.map(tx => `
+          <div class="mb-3 p-4 rounded-xl bg-white/70 dark:bg-gray-800/80 shadow flex flex-col gap-1">
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-gray-900 dark:text-gray-100">${tx.offer_name || 'Offer'}</span>
+              <span class="text-blue-700 dark:text-blue-300 font-bold">Ksh ${tx.amount}</span>
+                        </div>
+            <div class="text-xs text-gray-500 dark:text-gray-400">${new Date(tx.created_at).toLocaleString()}</div>
+            <div class="text-xs"><span class="font-semibold">Status:</span> <span class="${tx.status === 'success' ? 'text-green-600 dark:text-green-400' : tx.status === 'failed' ? 'text-red-500 dark:text-red-400' : 'text-yellow-600 dark:text-yellow-400'}">${tx.status}</span></div>
+                    </div>
+        `).join('');
+      }
+    </script>
+
+    <!-- Add phone input for transaction history -->
+    <section class="mb-8">
+      <h2 class="text-xl font-semibold text-blue-900 dark:text-blue-200 mb-4">📋 Transaction History</h2>
+      <div class="flex flex-col sm:flex-row gap-2 mb-4 items-center">
+        <input id="historyPhoneInput" type="tel" maxlength="10" pattern="07[0-9]{8}" placeholder="Enter your phone (07XXXXXXXX)" class="w-full sm:w-64 px-4 py-2 rounded-lg border border-blue-300 dark:border-blue-700 bg-white/70 dark:bg-gray-800/80 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+        <button onclick="fetchAndShowHistory(document.getElementById('historyPhoneInput').value)" class="px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-green-500 text-white font-semibold shadow hover:scale-105 transition-all">Show History</button>
+                        </div>
+      <div id="transactionHistory" class="min-h-[60px]"></div>
+    </section>
+
+    <!-- Responsive blurred blobs -->
+    <div class="pointer-events-none fixed inset-0 z-0 block dark:hidden">
+      <span class="absolute left-[5vw] top-[10vh] w-40 h-40 sm:w-72 sm:h-72 bg-blue-200/30 rounded-full blur-2xl sm:blur-3xl"></span>
+      <span class="absolute left-[60vw] top-[8vh] w-56 h-56 sm:w-96 sm:h-96 bg-pink-200/30 rounded-full blur-2xl sm:blur-3xl"></span>
+      <span class="absolute left-[80vw] top-[60vh] w-44 h-44 sm:w-80 sm:h-80 bg-yellow-200/30 rounded-full blur-2xl sm:blur-3xl"></span>
+      <span class="absolute left-[30vw] top-[70vh] w-36 h-36 sm:w-64 sm:h-64 bg-green-200/30 rounded-full blur-2xl sm:blur-3xl"></span>
+                        </div>
+    <div class="pointer-events-none fixed inset-0 z-0 hidden dark:block">
+      <span class="absolute left-[5vw] top-[10vh] w-40 h-40 sm:w-72 sm:h-72 bg-blue-900/30 rounded-full blur-2xl sm:blur-3xl"></span>
+      <span class="absolute left-[60vw] top-[8vh] w-56 h-56 sm:w-96 sm:h-96 bg-purple-900/30 rounded-full blur-2xl sm:blur-3xl"></span>
+      <span class="absolute left-[80vw] top-[60vh] w-44 h-44 sm:w-80 sm:h-80 bg-pink-900/30 rounded-full blur-2xl sm:blur-3xl"></span>
+      <span class="absolute left-[30vw] top-[70vh] w-36 h-36 sm:w-64 sm:h-64 bg-cyan-900/30 rounded-full blur-2xl sm:blur-3xl"></span>
+                    </div>
+    <!-- Responsive offer grid -->
+    <!-- (already uses grid-cols-1 sm:grid-cols-2 lg:grid-cols-3) -->
+    <!-- Faster AOS animation for offer cards -->
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <script>
+      AOS.init({ duration: 80, offset: 0, easing: 'ease-out-cubic', once: false, mirror: true });
+    </script>
+    <!-- Buy modal entrance animation -->
+    <style>
+      @keyframes modal-pop {
+        0% { opacity: 0; transform: scale(0.85) translateY(40px); }
+        100% { opacity: 1; transform: scale(1) translateY(0); }
+      }
+      .modal-entrance {
+        animation: modal-pop 0.35s cubic-bezier(0.4,0,0.2,1);
+      }
+    </style>
+    <!-- Add modal-entrance class to buyModal content -->
+    <div id="buyModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 dark:bg-black/80 backdrop-blur transition-opacity duration-300 hidden">
+      <div class="relative w-full max-w-md mx-auto p-6 rounded-3xl shadow-2xl bg-white/80 dark:bg-gray-900/90 backdrop-blur-2xl border border-white border-opacity-20 modal-entrance">
+        <button onclick="closeBuyModal()" class="absolute top-3 right-3 text-gray-900 dark:text-gray-100 text-2xl font-bold bg-white/30 dark:bg-gray-700/60 rounded-full w-9 h-9 flex items-center justify-center hover:bg-opacity-30 transition">&times;</button>
+        <div class="text-center">
+          <h3 id="modalOfferTitle" class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2"></h3>
+          <p id="modalOfferPrice" class="text-lg text-blue-900 dark:text-blue-200 mb-6"></p>
+          <!-- Options -->
+          <div id="buyModalOptions" class="flex flex-col gap-4 items-center">
+            <button class="w-full py-3 px-6 rounded-xl font-bold text-lg text-white bg-gradient-to-r from-green-500 to-blue-600 shadow-lg backdrop-blur-md bg-opacity-80 hover:scale-105 transition-all focus:outline-none focus:ring-2 focus:ring-blue-400" onclick="showPhoneInput()">Buy for Your Number</button>
+            <button class="w-full py-3 px-6 rounded-xl font-bold text-lg text-blue-900 dark:text-blue-200 border-2 border-blue-400 dark:border-blue-300 bg-white/30 dark:bg-gray-700/60 shadow-md backdrop-blur-md hover:bg-opacity-30 hover:scale-105 transition-all focus:outline-none focus:ring-2 focus:ring-blue-400" onclick="window.location.href='https://bingwahybrid.com/be3a7ea16f'">Buy for Another Number</button>
+                    </div>
+          <!-- Phone input -->
+          <div id="buyModalPhone" class="hidden flex-col gap-4 items-center mt-2">
+            <input id="userPhoneInput" type="tel" maxlength="10" pattern="07[0-9]{8}" placeholder="Your phone (07XXXXXXXX)" class="w-full mb-3 px-4 py-3 rounded-lg border border-blue-300 dark:border-blue-700 bg-white/70 dark:bg-gray-800/80 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+            <input id="userAmountInput" type="number" min="1" placeholder="Amount" class="w-full mb-3 px-4 py-3 rounded-lg border border-blue-300 dark:border-blue-700 bg-white/70 dark:bg-gray-800/80 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+            <div id="payNowError" class="text-red-500 text-sm mb-2"></div>
+            <button class="w-full py-3 px-6 rounded-xl font-bold text-lg text-white bg-gradient-to-r from-green-500 to-blue-600 shadow-lg hover:scale-105 transition-all focus:outline-none focus:ring-2 focus:ring-blue-400" onclick="payNow()">Pay Now</button>
+            <button class="w-full py-2 px-4 mt-2 rounded-lg text-blue-700 dark:text-blue-300 bg-white/40 dark:bg-gray-700/40 border border-blue-200 dark:border-blue-700 hover:bg-blue-50 dark:hover:bg-gray-800 transition" onclick="document.getElementById('buyModalPhone').classList.add('hidden');document.getElementById('buyModalOptions').classList.remove('hidden');">Back</button>
+                </div>
+                        </div>
+                    </div>
+                </div>
+
+    <!-- For all offer cards, use: data-aos="fade-in" data-aos-duration="80" data-aos-offset="0" data-aos-delay="0" -->
+    <script>
+      let currentOffer = { title: '', price: '' };
+      function openBuyModal(title, price) {
+        currentOffer = { title, price };
+        document.getElementById('modalOfferTitle').textContent = title;
+        document.getElementById('modalOfferPrice').textContent = price;
+        document.getElementById('buyModalOptions').classList.remove('hidden');
+        document.getElementById('buyModalPhone').classList.add('hidden');
+        document.getElementById('buyModal').classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+      }
+      function closeBuyModal() {
+        document.getElementById('buyModal').classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+      }
+      function showPhoneInput() {
+        document.getElementById('buyModalOptions').classList.add('hidden');
+        document.getElementById('buyModalPhone').classList.remove('hidden');
+        document.getElementById('userPhoneInput').value = '';
+        document.getElementById('userPhoneInput').focus();
+        document.getElementById('payNowError').textContent = '';
+        let amt = currentOffer.price.match(/\d+/) ? currentOffer.price.match(/\d+/)[0] : '';
+        document.getElementById('userAmountInput').value = amt;
+      }
+      function payNow() {
+        const phone = document.getElementById('userPhoneInput').value.trim();
+        const amount = document.getElementById('userAmountInput').value.trim();
+        const error = document.getElementById('payNowError');
+        error.textContent = '';
+        if (!/^(07|01)\d{8}$/.test(phone)) {
+          error.textContent = 'Enter a valid phone number (07XXXXXXXX or 01XXXXXXXX)';
+                return;
+            }
+        if (!amount || isNaN(amount) || Number(amount) < 1) {
+          error.textContent = 'Enter a valid amount';
+                return;
+            }
+        // Show loading state
+        error.textContent = 'Processing payment...';
+        fetch('https://lipia-api.kreativelabske.com/api/request/stk', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+            'Authorization': 'Bearer ab3770f1a5293bcda1c7e0088432a4c124ebd429'
+          },
+          body: JSON.stringify({ phone, amount })
+        })
+          .then(res => res.json())
+                    .then(data => {
+            if (data.success || data.status === 'success' || data.ResponseCode === '0') {
+              document.getElementById('buyModalPhone').innerHTML = `
+                <div class="flex flex-col items-center py-8">
+                  <div class="text-green-500 mb-2">
+                    <svg xmlns='http://www.w3.org/2000/svg' class='h-16 w-16' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 13l4 4L19 7' /></svg>
+                  </div>
+                  <div class="text-green-600 dark:text-green-400 font-bold text-xl mb-2">Payment Request Sent!</div>
+                  <div class="text-gray-700 dark:text-gray-300">Please complete the payment on your phone.</div>
+                </div>
+              `;
+              setTimeout(closeBuyModal, 3500);
+                } else {
+              document.getElementById('buyModalPhone').innerHTML = `
+                <div class="flex flex-col items-center py-8">
+                  <div class="text-red-500 mb-2">
+                    <svg xmlns='http://www.w3.org/2000/svg' class='h-16 w-16' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12' /></svg>
+                        </div>
+                  <div class="text-red-600 dark:text-red-400 font-bold text-xl mb-2">Payment Failed</div>
+                  <div class="text-gray-700 dark:text-gray-300">${data.message || data.ResponseDescription || 'Payment failed. Please try again.'}</div>
+                  <button class="mt-6 px-6 py-2 rounded-lg bg-gradient-to-r from-green-500 to-blue-600 text-white font-semibold shadow hover:scale-105 transition-all" onclick="showPhoneInput()">Try Again</button>
+                        </div>
+              `;
+            }
+          })
+          .catch(() => {
+            document.getElementById('buyModalPhone').innerHTML = `
+              <div class="flex flex-col items-center py-8">
+                <div class="text-red-500 mb-2">
+                  <svg xmlns='http://www.w3.org/2000/svg' class='h-16 w-16' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12' /></svg>
+                </div>
+                <div class="text-red-600 dark:text-red-400 font-bold text-xl mb-2">Network Error</div>
+                <div class="text-gray-700 dark:text-gray-300">Network error. Please try again.</div>
+                <button class="mt-6 px-6 py-2 rounded-lg bg-gradient-to-r from-green-500 to-blue-600 text-white font-semibold shadow hover:scale-105 transition-all" onclick="showPhoneInput()">Try Again</button>
+                    </div>
+                `;
+          });
+        }
+    </script>
+
+    <!-- Notification bubble -->
+    <div id="notificationBubble" class="fixed top-6 right-6 z-50 hidden px-6 py-3 rounded-xl shadow-lg bg-blue-600 text-white dark:bg-blue-400 dark:text-gray-900 font-semibold text-base transition-all duration-300"></div>
+    <script>
+    function showNotification(message) {
+      const bubble = document.getElementById('notificationBubble');
+      bubble.textContent = message;
+      bubble.classList.remove('hidden');
+      bubble.classList.add('animate-bounce');
+            setTimeout(() => {
+        bubble.classList.add('hidden');
+        bubble.classList.remove('animate-bounce');
+      }, 3000);
+        }
+    </script>
+
+    <script>
+    function animateCardsOnScroll() {
+      const cards = Array.from(document.querySelectorAll('.offer-card'));
+      // Removed: cards.forEach(card => { card.classList.remove('visible'); for (let i = 1; i <= 10; i++) card.classList.remove('stagger-' + i); });
+
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const card = entry.target;
+            const parent = card.parentElement;
+            const siblings = Array.from(parent.querySelectorAll('.offer-card'));
+            const index = siblings.indexOf(card) + 1;
+            card.classList.add('visible', 'stagger-' + (index > 10 ? 10 : index));
+            obs.unobserve(card); // Unobserve so card stays visible permanently
+          }
+          // Do NOT remove .visible when leaving, so cards stay visible
+        });
+      }, {
+        threshold: 0,
+        rootMargin: '0px 0px 20% 0px'
+      });
+
+      cards.forEach(card => observer.observe(card));
+    }
+    document.addEventListener('DOMContentLoaded', animateCardsOnScroll);
+    </script>
+</body>
+</html>
