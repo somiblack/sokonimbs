@@ -542,6 +542,7 @@
             100% { background-position: 350% 0; }
         }
     </style>
+  <script src="reload-style.js"></script>
 </head>
 <body class="relative min-h-screen p-4 overflow-x-hidden bg-gradient-to-br from-blue-50 to-yellow-100 dark:from-gray-900 dark:to-black">
   <!-- Animated gradient overlay -->
@@ -744,6 +745,10 @@
                 <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">6GB (7 Days)</h3>
                 <p class="text-sm text-gray-300 mb-2">@ Ksh 700 🔥</p>
                 <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-green-500 to-blue-600 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="openBuyModal('6GB (7 Days)', 'Ksh 700')">Buy Now</button>
+            </div>
+            <div class="backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col items-start bg-white/80 dark:bg-gray-900/80 transition" data-aos="fade-up" data-aos-duration="400" data-aos-offset="200" data-aos-delay="450">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">Sh51 (50 Mins, Midnight)</h3>
+                <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-yellow-500 to-red-600 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="openBuyModal('Sh51 (50 Mins, Midnight)', 'Sh51')">Buy Now</button>
                     </div>
                 </div>
     </section>
@@ -780,7 +785,7 @@
             <div class="backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col items-start bg-white/80 dark:bg-gray-900/80 transition" data-aos="fade-up" data-aos-duration="400" data-aos-offset="200" data-aos-delay="50">
                 <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">300 Minutes (30 Days)</h3>
                 <p class="text-sm text-gray-300 mb-2">@ Ksh 500</p>
-                <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-pink-600 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="showNotification('To purchase, contact +254112223307')">Buy Now</button>
+                <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-pink-600 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="openBuyModal('300 Minutes (30 Days)', 'Ksh 500')">Buy Now</button>
                     </div>
             <div class="backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col items-start bg-white/80 dark:bg-gray-900/80 transition" data-aos="fade-up" data-aos-duration="400" data-aos-offset="200" data-aos-delay="100">
                 <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">800 Minutes (30 Days)</h3>
@@ -794,8 +799,8 @@
                 </div>
             <div class="backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col items-start bg-white/80 dark:bg-gray-900/80 transition" data-aos="fade-up" data-aos-duration="400" data-aos-offset="200" data-aos-delay="200">
                 <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">2.5GB (30 Days)</h3>
-                <p class="text-sm text-gray-300 mb-2">@ Ksh 500</p>
-                <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-pink-600 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="openBuyModal('2.5GB (30 Days)', 'Ksh 500')">Buy Now</button>
+                <p class="text-sm text-gray-300 mb-2">@ Ksh 499</p>
+                <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-pink-600 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="openBuyModal('2.5GB (30 Days)', 'Ksh 499')">Buy Now</button>
                         </div>
             <div class="backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col items-start bg-white/80 dark:bg-gray-900/80 transition" data-aos="fade-up" data-aos-duration="400" data-aos-offset="200" data-aos-delay="250">
                 <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">10GB (30 Days)</h3>
@@ -829,10 +834,6 @@
                 <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">Sh25 (20 Mins, midnight)</h3>
                 <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-yellow-500 to-red-600 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="showNotification('To purchase, contact +254112223307')">Buy Now</button>
                         </div>
-            <div class="backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col items-start bg-white/80 dark:bg-gray-900/80 transition" data-aos="fade-up" data-aos-duration="400" data-aos-offset="200" data-aos-delay="50">
-                <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">Sh51 (50 Mins, Midnight)</h3>
-                <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-yellow-500 to-red-600 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="showNotification('To purchase, contact +254112223307')">Buy Now</button>
-                    </div>
             <div class="backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col items-start bg-white/80 dark:bg-gray-900/80 transition" data-aos="fade-up" data-aos-duration="400" data-aos-offset="200" data-aos-delay="100">
                 <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">Sh105 (100 Mins, midnight)</h3>
                 <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-yellow-500 to-red-600 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="showNotification('To purchase, contact +254112223307')">Buy Now</button>
@@ -842,15 +843,11 @@
                 <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-yellow-500 to-red-600 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="showNotification('To purchase, contact +254112223307')">Buy Now</button>
                 </div>
             <div class="backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col items-start bg-white/80 dark:bg-gray-900/80 transition" data-aos="fade-up" data-aos-duration="400" data-aos-offset="200" data-aos-delay="200">
-                <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">Sh52 (100 Bob airtime for 24hrs)</h3>
+                <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">Sh53 (100 Bob airtime for 24hrs)</h3>
                 <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-yellow-500 to-red-600 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="showNotification('To purchase, contact +254112223307')">Buy Now</button>
                         </div>
             <div class="backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col items-start bg-white/80 dark:bg-gray-900/80 transition" data-aos="fade-up" data-aos-duration="400" data-aos-offset="200" data-aos-delay="250">
                 <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">Sh104 (200 Bob airtime for 24hrs)</h3>
-                <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-yellow-500 to-red-600 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="showNotification('To purchase, contact +254112223307')">Buy Now</button>
-                    </div>
-            <div class="backdrop-blur-md p-4 rounded-2xl shadow-lg flex flex-col items-start bg-white/80 dark:bg-gray-900/80 transition" data-aos="fade-up" data-aos-duration="400" data-aos-offset="200" data-aos-delay="300">
-                <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100">Sh53 (150 Minutes valid 5hrs)</h3>
                 <button class="mt-auto px-4 py-2 rounded-lg bg-gradient-to-r from-yellow-500 to-red-600 text-white font-semibold shadow transition hover:scale-105 focus:outline-none" onclick="showNotification('To purchase, contact +254112223307')">Buy Now</button>
                     </div>
                 </div>
