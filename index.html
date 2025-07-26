@@ -50,11 +50,11 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 25%, #45b7d1 50%, #96ceb4 75%, #feca57 100%);
+            background: linear-gradient(135deg, #181c24 0%, #232b36 25%, #1e293b 50%, #22303c 75%, #232b36 100%);
             background-size: 400% 400%;
             animation: gradientShift 8s ease infinite;
             min-height: 100vh;
-            color: #333;
+            color: #e5e7eb;
             overflow-x: hidden;
         }
 
@@ -427,25 +427,32 @@
 
             .offer-buttons {
                 flex-direction: column;
+                gap: 16px;
             }
 
+            .offer-card, .offer-category, .faq-section, .history-section, .modal-content {
+                padding: 18px 8px;
+                border-radius: 16px;
+                font-size: 1.08rem;
+            }
+            .offer-item {
+                padding: 14px 10px;
+                border-radius: 12px;
+                font-size: 1.08rem;
+            }
+            .buy-btn, .buy-now-btn, .modal-confirm, .modal-btn {
+                font-size: 1.12rem;
+                min-height: 48px;
+                padding: 14px 0;
+            }
             .modal-content {
                 margin: 5% auto;
-                width: 95%;
+                width: 98%;
             }
-
             .brand-name {
                 font-size: 1.2rem;
                 top: 5px;
                 left: 10px;
-            }
-            .offer-category, .faq-section, .history-section, .modal-content {
-                padding: 16px 6px;
-                border-radius: 16px;
-            }
-            .offer-item {
-                padding: 12px 8px;
-                border-radius: 10px;
             }
         }
 
@@ -597,7 +604,7 @@
   </style>
   <!-- Light mode online network background -->
   <div aria-hidden="true" class="pointer-events-none fixed inset-0 z-0 block dark:hidden">
-    <svg class="absolute left-0 top-0 w-full h-full" viewBox="0 0 1440 900" fill="none">
+    <svg id="offer-bg-3d" class="absolute left-0 top-0 w-full h-full" viewBox="0 0 1440 900" fill="none">
       <!-- Network lines -->
       <g stroke="#38bdf8" stroke-width="2.5" opacity="0.28">
         <line x1="200" y1="100" x2="600" y2="300" />
@@ -660,7 +667,7 @@
                         </div>
   <!-- Dark mode online network background -->
   <div aria-hidden="true" class="pointer-events-none fixed inset-0 z-0 hidden dark:block">
-    <svg class="absolute left-0 top-0 w-full h-full" viewBox="0 0 1440 900" fill="none">
+    <svg id="offer-bg-3d-dark" class="absolute left-0 top-0 w-full h-full" viewBox="0 0 1440 900" fill="none">
       <g stroke="#6366f1" stroke-width="2.5" opacity="0.18">
         <line x1="200" y1="100" x2="600" y2="300" />
         <line x1="600" y1="300" x2="1200" y2="200" />
@@ -736,8 +743,51 @@
     .animate-bubble-blink3 { animation: bubble-blink3 5.5s infinite; }
   </style>
     <header class="text-center mb-8 relative">
-        <h1 class="copper-title">SOKONIMBS</h1>
-        <p class="copper-subtitle">Flexible Data Offers: With or Without Okoa Jahazi</p>
+        <!-- Subtle Animated Flowing Lines Background -->
+        <div class="absolute inset-0 -z-10 w-full h-full pointer-events-none select-none">
+          <svg viewBox="0 0 1440 120" width="100%" height="120" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+            <defs>
+              <linearGradient id="lineGrad1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#4ecdc4"/>
+                <stop offset="100%" stop-color="#ff6b6b"/>
+              </linearGradient>
+              <linearGradient id="lineGrad2" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#ff6b6b"/>
+                <stop offset="100%" stop-color="#4ecdc4"/>
+              </linearGradient>
+            </defs>
+            <polyline stroke="url(#lineGrad1)" stroke-width="1.5" fill="none">
+              <animate attributeName="points" dur="8s" repeatCount="indefinite"
+                values="0,60 360,40 720,80 1080,40 1440,60;0,50 360,70 720,40 1080,70 1440,50;0,60 360,40 720,80 1080,40 1440,60"/>
+            </polyline>
+            <polyline stroke="url(#lineGrad2)" stroke-width="1" fill="none" opacity="0.7">
+              <animate attributeName="points" dur="10s" repeatCount="indefinite"
+                values="0,90 240,100 480,60 720,100 960,80 1200,100 1440,90;0,100 240,80 480,110 720,80 960,100 1200,80 1440,100;0,90 240,100 480,60 720,100 960,80 1200,100 1440,90"/>
+            </polyline>
+            <polyline stroke="#64748b" stroke-width="0.7" fill="none" opacity="0.4">
+              <animate attributeName="points" dur="12s" repeatCount="indefinite"
+                values="0,110 400,100 800,110 1200,100 1440,110;0,100 400,110 800,100 1200,110 1440,100;0,110 400,100 800,110 1200,100 1440,110"/>
+            </polyline>
+          </svg>
+        </div>
+        <div class="mx-auto w-fit px-8 py-5 rounded-3xl glass-clear-card shadow-xl border-2 border-cyan-300/60 bg-white/60 dark:bg-gray-900/60 relative z-10" style="backdrop-filter:none;-webkit-backdrop-filter:none;">
+          <h1 class="copper-title">SOKONIMBS</h1>
+          <p class="copper-subtitle">Flexible Safaricom Data Offers: With or Without Okoa Jahazi</p>
+        </div>
+    <style>
+      .glass-clear-card {
+        box-shadow: 0 8px 32px 0 rgba(80,200,255,0.12), 0 1.5px 8px 0 rgba(0,0,0,0.08);
+        background: rgba(255,255,255,0.60);
+        border-radius: 2rem;
+        border: 2px solid rgba(78,205,196,0.18);
+        /* No blur, just clear glass effect */
+        transition: box-shadow 0.3s, border 0.3s;
+      }
+      .dark .glass-clear-card {
+        background: rgba(30,41,59,0.60);
+        border: 2px solid rgba(78,205,196,0.22);
+      }
+    </style>
     </header>
 
     <section class="mb-8">
@@ -888,9 +938,17 @@
                 </div>
     </section>
 
+
     <footer class="text-center text-xs text-gray-500 mt-10">
         © 2025 SokoniMBS KE. All rights reserved.
     </footer>
+
+    <!-- Buy Airtime @ 10% Discount Button -->
+    <div class="max-w-2xl mx-auto mb-6 flex flex-col items-center">
+      <button class="w-full sm:w-auto px-8 py-4 mb-4 rounded-2xl font-bold text-lg text-white bg-gradient-to-r from-yellow-500 to-red-600 shadow-lg hover:scale-105 transition-all focus:outline-none focus:ring-2 focus:ring-yellow-400" onclick="showNotification('To buy airtime at 10% discount, contact +254112223307')">
+        Buy Airtime @ 10% Discount
+      </button>
+    </div>
 
     <!-- Contact Us Panel -->
 <section class="max-w-2xl mx-auto mt-16 mb-8 p-6 rounded-2xl shadow-lg bg-white/80 dark:bg-gray-900/80 backdrop-blur-md flex flex-col items-center">
@@ -924,7 +982,7 @@
                 <p id="modalOfferPrice" class="text-lg text-blue-900 dark:text-blue-200 mb-6"></p>
                 <!-- Options -->
                 <div id="buyModalOptions" class="flex flex-col gap-4 items-center">
-                    <button class="w-full py-3 px-6 rounded-xl font-bold text-lg text-white bg-gradient-to-r from-green-500 to-blue-600 shadow-lg backdrop-blur-md bg-opacity-80 hover:scale-105 transition-all focus:outline-none focus:ring-2 focus:ring-blue-400" onclick="showPhoneInput()">Buy for Your Number</button>
+                    <button class="w-full py-3 px-6 rounded-xl font-bold text-lg text-white bg-gradient-to-r from-green-500 to-blue-600 shadow-lg backdrop-blur-md bg-opacity-80 hover:scale-105 transition-all focus:outline-none" onclick="showPhoneInput()">Buy for Your Number</button>
                     <button class="w-full py-3 px-6 rounded-xl font-bold text-lg text-blue-900 dark:text-blue-200 border-2 border-blue-400 dark:border-blue-300 bg-white/30 dark:bg-gray-700/60 shadow-md backdrop-blur-md hover:bg-opacity-30 hover:scale-105 transition-all focus:outline-none focus:ring-2 focus:ring-blue-400" onclick="window.location.href='https://bingwahybrid.com/a4cbdd0379'">Buy for Another Number</button>
                         </div>
                 <!-- Phone input -->
@@ -1030,7 +1088,7 @@
           <!-- Options -->
           <div id="buyModalOptions" class="flex flex-col gap-4 items-center">
             <button class="w-full py-3 px-6 rounded-xl font-bold text-lg text-white bg-gradient-to-r from-green-500 to-blue-600 shadow-lg backdrop-blur-md bg-opacity-80 hover:scale-105 transition-all focus:outline-none focus:ring-2 focus:ring-blue-400" onclick="showPhoneInput()">Buy for Your Number</button>
-            <button class="w-full py-3 px-6 rounded-xl font-bold text-lg text-blue-900 dark:text-blue-200 border-2 border-blue-400 dark:border-blue-300 bg-white/30 dark:bg-gray-700/60 shadow-md backdrop-blur-md hover:bg-opacity-30 hover:scale-105 transition-all focus:outline-none focus:ring-2 focus:ring-blue-400" onclick="window.location.href='https://bingwahybrid.com/be3a7ea16f'">Buy for Another Number</button>
+            <button class="w-full py-3 px-6 rounded-xl font-bold text-lg text-blue-900 dark:text-blue-200 border-2 border-blue-400 dark:border-blue-300 bg-white/30 dark:bg-gray-700/60 shadow-md backdrop-blur-md hover:bg-opacity-30 hover:scale-105 transition-all focus:outline-none focus:ring-2 focus:ring-blue-400" onclick="window.location.href='https://bingwahybrid.com/a4cbdd0379'">Buy for Another Number</button>
                     </div>
           <!-- Phone input -->
           <div id="buyModalPhone" class="hidden flex-col gap-4 items-center mt-2">
@@ -1055,6 +1113,11 @@
         document.getElementById('buyModalPhone').classList.add('hidden');
         document.getElementById('buyModal').classList.remove('hidden');
         document.body.classList.add('overflow-hidden');
+        // Autofill phone if available
+        const savedPhone = localStorage.getItem('userPhone');
+        if (savedPhone) {
+          document.getElementById('userPhoneInput').value = savedPhone;
+        }
       }
       function closeBuyModal() {
         document.getElementById('buyModal').classList.add('hidden');
@@ -1063,7 +1126,9 @@
       function showPhoneInput() {
         document.getElementById('buyModalOptions').classList.add('hidden');
         document.getElementById('buyModalPhone').classList.remove('hidden');
-        document.getElementById('userPhoneInput').value = '';
+        // Autofill phone if available
+        const savedPhone = localStorage.getItem('userPhone');
+        document.getElementById('userPhoneInput').value = savedPhone || '';
         document.getElementById('userPhoneInput').focus();
         document.getElementById('payNowError').textContent = '';
         let amt = currentOffer.price.match(/\d+/) ? currentOffer.price.match(/\d+/)[0] : '';
@@ -1076,25 +1141,27 @@
         error.textContent = '';
         if (!/^(07|01)\d{8}$/.test(phone)) {
           error.textContent = 'Enter a valid phone number (07XXXXXXXX or 01XXXXXXXX)';
-                return;
-            }
+          return;
+        }
         if (!amount || isNaN(amount) || Number(amount) < 1) {
           error.textContent = 'Enter a valid amount';
-                return;
-            }
+          return;
+        }
         // Show loading state
         error.textContent = 'Processing payment...';
         fetch('https://lipia-api.kreativelabske.com/api/request/stk', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
             'Authorization': 'Bearer ab3770f1a5293bcda1c7e0088432a4c124ebd429'
           },
           body: JSON.stringify({ phone, amount })
         })
           .then(res => res.json())
-                    .then(data => {
+          .then(data => {
             if (data.success || data.status === 'success' || data.ResponseCode === '0') {
+              // Save phone to localStorage for autofill
+              localStorage.setItem('userPhone', phone);
               document.getElementById('buyModalPhone').innerHTML = `
                 <div class="flex flex-col items-center py-8">
                   <div class="text-green-500 mb-2">
@@ -1105,16 +1172,16 @@
                 </div>
               `;
               setTimeout(closeBuyModal, 3500);
-                } else {
+            } else {
               document.getElementById('buyModalPhone').innerHTML = `
                 <div class="flex flex-col items-center py-8">
                   <div class="text-red-500 mb-2">
                     <svg xmlns='http://www.w3.org/2000/svg' class='h-16 w-16' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12' /></svg>
-                        </div>
+                  </div>
                   <div class="text-red-600 dark:text-red-400 font-bold text-xl mb-2">Payment Failed</div>
                   <div class="text-gray-700 dark:text-gray-300">${data.message || data.ResponseDescription || 'Payment failed. Please try again.'}</div>
                   <button class="mt-6 px-6 py-2 rounded-lg bg-gradient-to-r from-green-500 to-blue-600 text-white font-semibold shadow hover:scale-105 transition-all" onclick="showPhoneInput()">Try Again</button>
-                        </div>
+                </div>
               `;
             }
           })
@@ -1127,8 +1194,8 @@
                 <div class="text-red-600 dark:text-red-400 font-bold text-xl mb-2">Network Error</div>
                 <div class="text-gray-700 dark:text-gray-300">Network error. Please try again.</div>
                 <button class="mt-6 px-6 py-2 rounded-lg bg-gradient-to-r from-green-500 to-blue-600 text-white font-semibold shadow hover:scale-105 transition-all" onclick="showPhoneInput()">Try Again</button>
-                    </div>
-                `;
+              </div>
+            `;
           });
         }
     </script>
@@ -1175,4 +1242,5 @@
     document.addEventListener('DOMContentLoaded', animateCardsOnScroll);
     </script>
 </body>
+<script src="background-3d.js"></script>
 </html>
