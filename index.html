@@ -4,6 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SokoniMBS - Mobile Data & Services</title>
+    <!-- Copper Black (using Copperplate/Copperplate Gothic Bold as web-safe fallback) -->
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap');
+      .copper-title {
+        font-family: 'Copperplate Gothic Bold', 'Copperplate', 'Oswald', Arial, sans-serif;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.09em;
+        font-size: 2.8rem;
+        color: #1e293b;
+        background: linear-gradient(90deg, #ff6b6b 0%, #4ecdc4 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: handwriting-fade-in 1.2s cubic-bezier(.4,2,.6,1) 0.1s both, handwriting-slide-in 1.2s cubic-bezier(.4,2,.6,1) 0.1s both;
+      }
+      @keyframes handwriting-fade-in {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      @keyframes handwriting-slide-in {
+        from { transform: translateY(-40px) scale(0.92) rotate(-4deg); }
+        to { transform: translateY(0) scale(1) rotate(0deg); }
+      }
+      .copper-subtitle {
+        font-family: 'Copperplate Gothic Bold', 'Copperplate', 'Oswald', Arial, sans-serif;
+        font-size: 1.25rem;
+        text-transform: uppercase;
+        color: #64748b;
+        letter-spacing: 0.07em;
+        margin-top: 0.2em;
+        font-weight: 700;
+        animation: handwriting-fade-in 1.4s cubic-bezier(.4,2,.6,1) 0.3s both, handwriting-slide-in 1.2s cubic-bezier(.4,2,.6,1) 0.3s both;
+      }
+    </style>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <style>
@@ -701,8 +736,8 @@
     .animate-bubble-blink3 { animation: bubble-blink3 5.5s infinite; }
   </style>
     <header class="text-center mb-8 relative">
-        <h1 class="text-3xl font-bold text-blue-900 dark:text-blue-200">SokoniMBS KE</h1>
-        <p class="text-sm text-gray-600 dark:text-gray-400">Your trusted source for bundles, calls & airtime deals</p>
+        <h1 class="copper-title">SOKONIMBS</h1>
+        <p class="copper-subtitle">Flexible Data Offers: With or Without Okoa Jahazi</p>
     </header>
 
     <section class="mb-8">
