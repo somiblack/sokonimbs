@@ -1,285 +1,375 @@
-require('dotenv').config();
+// index.js - Frontend JavaScript for SokoniMBS
 
-const express = require('express');
-const cors = require('cors');
-const path = require('path');
-const { createClient } = require('@supabase/supabase-js');
-const LipiaAPI = require('./lib/lipia');
+(function() {
+    'use strict';
 
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-// Middleware
-app.use(cors());
-app.use(express.json());
-app.use(express.static('.'));
-
-// Initialize Supabase client
-const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
-
-if (!supabaseUrl || !supabaseKey || supabaseUrl.includes('your_supabase_url_here') || supabaseUrl === 'https://demo-project.supabase.co') {
-  console.warn('Missing Supabase configuration. Some features may not work properly.');
-  console.warn('Please set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in your .env file');
-  // Create a mock Supabase client to prevent crashes
-  global.supabase = {
-    from: () => ({
-      insert: () => ({ select: () => Promise.resolve({ data: [{ id: 'demo', account_ref: 'DEMO123' }], error: null }) }),
-      update: () => ({ eq: () => Promise.resolve({ data: [], error: null }) }),
-      select: () => ({ eq: () => ({ single: () => Promise.resolve({ data: null, error: { code: 'PGRST116' } }) }) }),
-      or: () => ({ order: () => ({ limit: () => Promise.resolve({ data: [], error: null }) }) })
-    }),
-    rpc: () => Promise.resolve({ data: null, error: null })
-  };
-} else {
-  global.supabase = createClient(supabaseUrl, supabaseKey);
-}
-
-
-// Initialize Lipia API
-const lipia = new LipiaAPI();
-
-// Serve the main HTML file
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
-
-// STK Push endpoint
-app.post('/stk-push', async (req, res) => {
-  try {
-    const { phone, amount, type, offerName, recipientPhone, points } = req.body;
+    // ============================================
+    // CONFIGURATION
+    // ============================================
     
-    // Validate and format phone numbers
-    const formattedPhone = lipia.formatPhoneNumber(phone);
+    // Backend API URL - Update this to match your server
+    // For local development:
+    const BACKEND_URL = 'http://localhost:3000';
     
-    if (!lipia.isValidPhoneNumber(formattedPhone)) {
-      return res.status(400).json({
-        success: false,
-        message: 'Invalid phone number format. Please use a valid Kenyan mobile number.'
-      });
-    }
+    // For production (uncomment when deploying):
+    // const BACKEND_URL = 'https://your-domain.com';
+    
+    console.log('🚀 SokoniMBS Frontend loaded');
+    console.log(`📡 Backend URL: ${BACKEND_URL}`);
 
-    let formattedRecipientPhone = formattedPhone;
-    if (recipientPhone) {
-      formattedRecipientPhone = lipia.formatPhoneNumber(recipientPhone);
-      if (!lipia.isValidPhoneNumber(formattedRecipientPhone)) {
-        return res.status(400).json({
-          success: false,
-          message: 'Invalid recipient phone number format.'
-        });
-      }
-    }
-
-    // Validate amount
-    const numericAmount = parseFloat(amount);
-    if (isNaN(numericAmount) || numericAmount <= 0) {
-      return res.status(400).json({
-        success: false,
-        message: 'Invalid amount. Amount must be greater than 0.'
-      });
-    }
-
-    // Generate unique account reference
-    const accountRef = `TXN${Date.now()}${Math.random().toString(36).substr(2, 5).toUpperCase()}`;
-
-    // Insert transaction into database with PENDING status
-    const { data, error } = await global.supabase
-      .from('transactions')
-      .insert([
-        {
-          payer_phone: formattedPhone,
-          recipient_phone: formattedRecipientPhone,
-          amount: numericAmount,
-          type: type,
-          offer_name: offerName,
-          status: 'PENDING',
-          account_ref: accountRef,
-          customer_message: `Payment for ${offerName}`
+    // ============================================
+    // ACCORDION TOGGLE
+    // ============================================
+    
+    window.toggleAccordion = function(id) {
+        const body = document.getElementById(id + 'Body');
+        const arrow = document.getElementById(id + 'Arrow');
+        
+        if (!body || !arrow) {
+            console.warn('Accordion elements not found for:', id);
+            return;
         }
-      ])
-      .select();
 
-    if (error) {
-      console.error('Database error:', error);
-      return res.status(500).json({
-        success: false,
-        message: 'Failed to process request'
-      });
-    }
+        const isOpen = body.classList.contains('open');
 
-    // Initiate Lipia STK Push
-    const stkResponse = await lipia.stkPush({
-      amount: numericAmount,
-      phoneNumber: formattedPhone,
-      accountReference: accountRef,
-      transactionDesc: `Payment for ${offerName}`
-    });
+        // Close all other accordions
+        document.querySelectorAll('.accordion-body').forEach(el => {
+            if (el.id !== id + 'Body') {
+                el.classList.remove('open');
+                const otherArrow = document.getElementById(el.id.replace('Body', 'Arrow'));
+                if (otherArrow) otherArrow.classList.remove('open');
+            }
+        });
 
-    console.log('Lipia Response:', stkResponse);
-
-    // Update transaction with Lipia response
-    const updateData = {
-      response_code: stkResponse.success ? '0' : '1',
-      response_description: stkResponse.message || 'Unknown response'
+        if (isOpen) {
+            body.classList.remove('open');
+            arrow.classList.remove('open');
+        } else {
+            body.classList.add('open');
+            arrow.classList.add('open');
+        }
     };
 
-    if (stkResponse.success) {
-      updateData.checkout_request_id = stkResponse.reference || accountRef;
-      updateData.merchant_request_id = stkResponse.reference || accountRef;
-    } else {
-      updateData.status = 'FAILED';
-    }
-
-    await global.supabase
-      .from('transactions')
-      .update(updateData)
-      .eq('account_ref', accountRef);
-
-    // Return response to client
-    if (stkResponse.success) {
-      res.json({
-        success: true,
-        message: stkResponse.message,
-        reference: stkResponse.reference || accountRef,
-        CustomerMessage: `Payment request sent to ${formattedPhone}. Please complete the payment on your phone.`,
-        AccountReference: accountRef
-      });
-    } else {
-      res.status(400).json({
-        success: false,
-        message: stkResponse.message || 'Failed to initiate payment',
-        error: stkResponse.error
-      });
-    }
-
-  } catch (error) {
-    console.error('STK Push error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Internal server error'
-    });
-  }
-});
-
-// Callback endpoint for Lipia API (if needed in future)
-app.post('/callback/lipia', async (req, res) => {
-  try {
-    console.log('Lipia Callback received:', JSON.stringify(req.body, null, 2));
+    // ============================================
+    // SELL AIRTIME CALCULATOR
+    // ============================================
     
-    // Process callback data as needed
-    res.json({ success: true, message: 'Callback processed successfully' });
+    const airtimeInput = document.getElementById('airtimeAmount');
+    const calculateBtn = document.getElementById('calculateCashbackBtn');
+    const cashbackResult = document.getElementById('cashbackResult');
+    const cashbackValue = document.getElementById('cashbackValue');
+    const CASHBACK_RATE = 0.8;
 
-  } catch (error) {
-    console.error('Callback processing error:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
+    if (calculateBtn) {
+        calculateBtn.addEventListener('click', function() {
+            const amount = parseFloat(airtimeInput.value);
+            if (!amount || amount < 1) {
+                showToast('Please enter a valid airtime amount');
+                cashbackResult.classList.remove('show');
+                return;
+            }
+            const cashback = amount * CASHBACK_RATE;
+            cashbackValue.textContent = 'Ksh ' + cashback.toFixed(0);
+            cashbackResult.classList.add('show');
+        });
+    }
 
-// Check transaction status endpoint
-app.get('/api/transaction-status/:requestId', async (req, res) => {
-  try {
-    const { requestId } = req.params;
+    if (airtimeInput) {
+        airtimeInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') calculateBtn.click();
+        });
+    }
+
+    // ============================================
+    // PAYMENT MODAL LOGIC
+    // ============================================
     
-    // Get transaction from database
-    const { data, error } = await global.supabase
-      .from('transactions')
-      .select('*')
-      .eq('checkout_request_id', requestId)
-      .single();
+    const modal = document.getElementById('buyModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalPrice = document.getElementById('modalPrice');
+    const modalOptions = document.getElementById('modalOptions');
+    const modalPhoneInput = document.getElementById('modalPhoneInput');
+    const userPhoneInput = document.getElementById('userPhoneInput');
+    const userAmountInput = document.getElementById('userAmountInput');
+    const payNowError = document.getElementById('payNowError');
+    const paymentStatus = document.getElementById('paymentStatus');
+    const toast = document.getElementById('toast');
 
-    if (error && error.code !== 'PGRST116') {
-      console.error('Database error:', error);
-      return res.status(500).json({
-        success: false,
-        error: 'Failed to fetch transaction'
-      });
-    }
+    let currentOffer = { title: '', price: 0 };
 
-    res.json({
-      success: true,
-      transaction: data
-    });
-
-  } catch (error) {
-    console.error('Status check error:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Internal server error'
-    });
-  }
-});
-
-// Get transaction history endpoint
-app.get('/api/transactions/:phone', async (req, res) => {
-  try {
-    const { phone } = req.params;
+    // ============================================
+    // BUY BUTTON HANDLERS
+    // ============================================
     
-    // Format phone number
-    let formattedPhone = phone.replace(/[^\d]/g, '');
-    if (formattedPhone.startsWith('0')) {
-      formattedPhone = '254' + formattedPhone.slice(1);
-    } else if (!formattedPhone.startsWith('254')) {
-      formattedPhone = '254' + formattedPhone;
+    document.querySelectorAll('.buy-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const title = this.dataset.title || 'Offer';
+            const price = parseInt(this.dataset.price) || 0;
+            currentOffer.title = title;
+            currentOffer.price = price;
+            openModal(title, price);
+        });
+    });
+
+    // Discount airtime button
+    const discountBtn = document.getElementById('discountAirtimeBtn');
+    if (discountBtn) {
+        discountBtn.addEventListener('click', function() {
+            showToast('To buy airtime at 7% discount, contact +254704166953');
+        });
     }
 
-    // Set the current user phone for RLS
-    await global.supabase.rpc('set_config', {
-      setting_name: 'app.current_user_phone',
-      setting_value: formattedPhone,
-      is_local: true
-    });
-
-    // Query transactions for the user
-    const { data, error } = await global.supabase
-      .from('transactions')
-      .select('*')
-      .or(`payer_phone.eq.${formattedPhone},recipient_phone.eq.${formattedPhone}`)
-      .order('created_at', { ascending: false })
-      .limit(50);
-
-    if (error) {
-      console.error('Database error:', error);
-      return res.status(500).json({
-        success: false,
-        error: 'Failed to fetch transactions'
-      });
+    // ============================================
+    // MODAL FUNCTIONS
+    // ============================================
+    
+    function openModal(title, price) {
+        modalTitle.textContent = title;
+        modalPrice.textContent = 'Ksh ' + price + '/-';
+        modalOptions.style.display = 'block';
+        modalPhoneInput.style.display = 'none';
+        userPhoneInput.value = localStorage.getItem('userPhone') || '';
+        userAmountInput.value = price;
+        payNowError.textContent = '';
+        paymentStatus.style.display = 'none';
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
     }
 
-    // Format the response
-    const formattedTransactions = data.map(transaction => ({
-      id: transaction.id,
-      offerName: transaction.offer_name,
-      amount: transaction.amount,
-      type: transaction.type,
-      status: transaction.status,
-      payerPhone: transaction.payer_phone,
-      recipientPhone: transaction.recipient_phone,
-      responseDescription: transaction.response_description,
-      createdAt: transaction.created_at,
-      updatedAt: transaction.updated_at
-    }));
+    window.closeModal = function() {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    };
 
-    res.json({
-      success: true,
-      transactions: formattedTransactions
+    // Close modal events
+    const modalClose = document.getElementById('modalClose');
+    if (modalClose) {
+        modalClose.addEventListener('click', window.closeModal);
+    }
+
+    modal.addEventListener('click', function(e) {
+        if (e.target === this) window.closeModal();
     });
 
-  } catch (error) {
-    console.error('Transaction history error:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Internal server error'
+    // Buy for Your Number button
+    const buyForMeBtn = document.getElementById('buyForMeBtn');
+    if (buyForMeBtn) {
+        buyForMeBtn.addEventListener('click', function() {
+            modalOptions.style.display = 'none';
+            modalPhoneInput.style.display = 'block';
+            userPhoneInput.focus();
+            userAmountInput.value = currentOffer.price;
+            payNowError.textContent = '';
+            paymentStatus.style.display = 'none';
+        });
+    }
+
+    // Buy for Another Number button
+    const buyForOtherBtn = document.getElementById('buyForOtherBtn');
+    if (buyForOtherBtn) {
+        buyForOtherBtn.addEventListener('click', function() {
+            window.location.href = 'https://bingwahybrid.com/a4cbdd0379';
+            window.closeModal();
+        });
+    }
+
+    // Back button
+    const backToOptionsBtn = document.getElementById('backToOptionsBtn');
+    if (backToOptionsBtn) {
+        backToOptionsBtn.addEventListener('click', function() {
+            modalPhoneInput.style.display = 'none';
+            modalOptions.style.display = 'block';
+            payNowError.textContent = '';
+            paymentStatus.style.display = 'none';
+        });
+    }
+
+    // ============================================
+    // PAY NOW - M-PESA STK PUSH
+    // ============================================
+    
+    const payNowBtn = document.getElementById('payNowBtn');
+    if (payNowBtn) {
+        payNowBtn.addEventListener('click', function() {
+            const phone = userPhoneInput.value.trim();
+            const amount = userAmountInput.value.trim();
+            payNowError.textContent = '';
+            paymentStatus.style.display = 'none';
+
+            // Format phone number to 254XXXXXXXX
+            let formattedPhone = phone;
+            if (phone.startsWith('0')) {
+                formattedPhone = '254' + phone.substring(1);
+            } else if (!phone.startsWith('254')) {
+                formattedPhone = '254' + phone;
+            }
+
+            // Validate phone number
+            if (!/^(07|01)\d{8}$/.test(phone) && !/^254(7|1)\d{8}$/.test(formattedPhone)) {
+                payNowError.textContent = 'Enter a valid Safaricom phone number (07XXXXXXXX)';
+                return;
+            }
+            if (!amount || isNaN(amount) || Number(amount) < 1) {
+                payNowError.textContent = 'Enter a valid amount';
+                return;
+            }
+
+            // Show processing status
+            paymentStatus.style.display = 'block';
+            paymentStatus.className = 'payment-status pending';
+            paymentStatus.textContent = '⏳ Processing payment...';
+
+            // Send request to backend
+            fetch(BACKEND_URL + '/stk-push', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    phone: formattedPhone,
+                    amount: Number(amount),
+                    type: 'data',
+                    offerName: currentOffer.title
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Server response:', data);
+                
+                if (data.success) {
+                    paymentStatus.className = 'payment-status success';
+                    paymentStatus.textContent = '✅ ' + data.message;
+                    localStorage.setItem('userPhone', phone);
+                    
+                    // Show success with CheckoutRequestID if available
+                    if (data.data && data.data.CheckoutRequestID) {
+                        paymentStatus.textContent += '\n📱 Check your phone to complete payment';
+                        // Store for potential status query
+                        localStorage.setItem('checkoutRequestID', data.data.CheckoutRequestID);
+                    }
+                    
+                    // Auto-close after success
+                    setTimeout(function() { 
+                        window.closeModal(); 
+                    }, 5000);
+                } else {
+                    paymentStatus.className = 'payment-status failed';
+                    paymentStatus.textContent = '❌ ' + (data.message || 'Payment failed. Please try again.');
+                }
+            })
+            .catch(function(error) {
+                console.error('Fetch error:', error);
+                paymentStatus.className = 'payment-status failed';
+                paymentStatus.textContent = '❌ Could not connect to payment server. Please ensure the backend is running.';
+            });
+        });
+    }
+
+    // ============================================
+    // TOAST NOTIFICATIONS
+    // ============================================
+    
+    let toastTimeout;
+    window.showToast = function(message) {
+        toast.textContent = message;
+        toast.classList.add('show');
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(function() {
+            toast.classList.remove('show');
+        }, 3500);
+    };
+
+    // ============================================
+    // TRANSACTION HISTORY
+    // ============================================
+    
+    const historyBtn = document.getElementById('historyBtn');
+    if (historyBtn) {
+        historyBtn.addEventListener('click', function() {
+            const phone = document.getElementById('historyPhoneInput').value.trim();
+            if (!/^(07|01)\d{8}$/.test(phone)) {
+                showToast('Enter a valid Safaricom phone number');
+                return;
+            }
+            fetchHistory(phone);
+        });
+    }
+
+    async function fetchHistory(phone) {
+        const container = document.getElementById('transactionHistory');
+        container.innerHTML = '<div class="text-small text-center" style="padding:16px 0;">Loading...</div>';
+
+        try {
+            const supabaseUrl = 'https://lyeypdcwsxbrjethaefj.supabase.co';
+            const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx5ZXlwZGN3c3hicmpldGhhZWZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIwNjQ4NTUsImV4cCI6MjA2NzY0MDg1NX0.DG8rvOYhdW8NEJWqG-Q-D_F0zMQWVZgPsBpCzQg2h78';
+            
+            // Dynamic import for Supabase
+            const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm');
+            const supabase = createClient(supabaseUrl, supabaseKey);
+
+            const { data, error } = await supabase
+                .from('transactions')
+                .select('*')
+                .eq('phone', phone)
+                .order('created_at', { ascending: false })
+                .limit(20);
+
+            if (error) throw error;
+
+            if (!data || data.length === 0) {
+                container.innerHTML = '<div class="text-small text-center" style="padding:16px 0;">No transactions found.</div>';
+                return;
+            }
+
+            let html = '';
+            for (let i = 0; i < data.length; i++) {
+                const tx = data[i];
+                const statusClass = 'status-' + (tx.status || 'pending');
+                html += `
+                    <div class="history-item">
+                        <div>
+                            <div style="font-weight:600; font-size:0.9rem;">${tx.offer_name || 'Offer'}</div>
+                            <div style="font-size:0.7rem; color:#64748b;">${new Date(tx.created_at).toLocaleString()}</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div class="amount">Ksh ${tx.amount}</div>
+                            <span class="status ${statusClass}">${tx.status || 'pending'}</span>
+                        </div>
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+
+        } catch (err) {
+            container.innerHTML = '<div class="text-small text-center" style="padding:16px 0; color:#e31b23;">Failed to load history.</div>';
+            console.warn('History fetch error:', err);
+        }
+    }
+
+    // ============================================
+    // AUTOFILL PHONE NUMBER
+    // ============================================
+    
+    const savedPhone = localStorage.getItem('userPhone');
+    if (savedPhone) {
+        const historyInput = document.getElementById('historyPhoneInput');
+        if (historyInput) historyInput.value = savedPhone;
+        
+        const modalPhoneInputField = document.getElementById('userPhoneInput');
+        if (modalPhoneInputField) modalPhoneInputField.value = savedPhone;
+    }
+
+    // ============================================
+    // KEYBOARD SHORTCUTS
+    // ============================================
+    
+    document.addEventListener('keydown', function(e) {
+        // Escape key to close modal
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            window.closeModal();
+        }
     });
-  }
-});
 
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.json({ status: 'OK', timestamp: new Date().toISOString() });
-});
-
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log(`Visit http://localhost:${PORT} to view the application`);
-});
+    console.log('✅ SokoniMBS Frontend initialized successfully');
+    console.log(`📡 Backend endpoint: ${BACKEND_URL}/stk-push`);
+})();
