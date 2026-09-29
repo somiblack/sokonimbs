@@ -55,6 +55,25 @@ const DARAJA_CONFIG = {
     environment: process.env.DARAJA_ENVIRONMENT || 'production'
 };
 
+// Daraja production rejects localhost, HTTP, and malformed/Markdown URLs.
+// Fall back to this public Render endpoint if the deployment variable is bad.
+const DEFAULT_CALLBACK_URL = 'https://sokonimbs-1.onrender.com/api/callback';
+function resolveCallbackUrl(value) {
+    const candidate = (value || DEFAULT_CALLBACK_URL).trim();
+    try {
+        const parsed = new URL(candidate);
+        if (parsed.protocol !== 'https:' || !parsed.hostname ||
+            parsed.hostname === 'localhost' || parsed.hostname === '127.0.0.1') {
+            throw new Error('Callback must use a public HTTPS URL');
+        }
+        return parsed.toString();
+    } catch (error) {
+        console.warn(`⚠️ Invalid DARAJA_CALLBACK_URL (${error.message}); using ${DEFAULT_CALLBACK_URL}`);
+        return DEFAULT_CALLBACK_URL;
+    }
+}
+const DARAJA_CALLBACK_URL = resolveCallbackUrl(process.env.DARAJA_CALLBACK_URL);
+
 // Validate Daraja credentials
 const requiredConfig = ['consumerKey', 'consumerSecret', 'passkey'];
 const missingConfig = requiredConfig.filter(key => !DARAJA_CONFIG[key]);
@@ -233,7 +252,7 @@ app.post('/stk-push', async (req, res) => {
             PartyA: cleanPhone,
             PartyB: DARAJA_CONFIG.shortCode,
             PhoneNumber: cleanPhone,
-            CallBackURL: process.env.DARAJA_CALLBACK_URL || 'https://your-domain.com/api/callback',
+            CallBackURL: DARAJA_CALLBACK_URL,
             AccountReference: accountReference,
             TransactionDesc: offerName || 'Data Bundle Purchase'
         };
@@ -478,6 +497,7 @@ app.get('/health', (req, res) => {
         status: 'ok', 
         environment: DARAJA_CONFIG.environment,
         shortcode: DARAJA_CONFIG.shortCode,
+        callbackUrl: DARAJA_CALLBACK_URL,
         supabase: supabase ? 'connected' : 'not configured',
         timestamp: new Date().toISOString()
     });

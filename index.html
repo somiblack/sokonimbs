@@ -1620,7 +1620,9 @@
 
             // --- BACKEND API CONFIGURATION ---
             // Replace with your actual backend URL
-            var BACKEND_URL = 'http://localhost:3000';
+            var BACKEND_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+                ? 'http://localhost:3000'
+                : 'https://sokonimbs-1.onrender.com';
 
             // --- BUY BUTTON HANDLERS ---
             var buyButtons = document.querySelectorAll('.buy-btn');

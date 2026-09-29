@@ -7,12 +7,10 @@
     // CONFIGURATION
     // ============================================
     
-    // Backend API URL - Update this to match your server
-    // For local development:
-    const BACKEND_URL = 'http://localhost:3000';
-    
-    // For production (uncomment when deploying):
-    // const BACKEND_URL = 'https://your-domain.com';
+    // Backend API URL
+    const BACKEND_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+        ? 'http://localhost:3000'
+        : 'https://sokonimbs-1.onrender.com';
     
     console.log('🚀 SokoniMBS Frontend loaded');
     console.log(`📡 Backend URL: ${BACKEND_URL}`);
