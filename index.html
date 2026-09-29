@@ -1761,13 +1761,17 @@
                             }, 5000);
                         } else {
                             paymentStatus.className = 'payment-status failed';
-                            paymentStatus.textContent = '❌ ' + (data.message || 'Payment failed. Please try again.');
+                            var failureMessage = data.message || 'Payment failed. Please try again.';
+                            if (data.details && data.details !== data.message) {
+                                failureMessage += ' (' + data.details + ')';
+                            }
+                            paymentStatus.textContent = '❌ ' + failureMessage;
                         }
                     })
                     .catch(function(error) {
                         console.error('Fetch error:', error);
                         paymentStatus.className = 'payment-status failed';
-                        paymentStatus.textContent = '❌ Could not connect to payment server. Ensure backend is running.';
+                        paymentStatus.textContent = '❌ Could not reach the payment server. ' + error.message;
                     });
                 });
             }
