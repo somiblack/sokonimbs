@@ -2,6 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const path = require('path');
 const { createClient } = require('@supabase/supabase-js');
 
 dotenv.config();
@@ -503,19 +504,9 @@ app.get('/health', (req, res) => {
     });
 });
 
-// --- 6. Root endpoint ---
+// --- 6. Storefront ---
 app.get('/', (req, res) => {
-    res.json({ 
-        message: 'SokoniMBS M-Pesa API',
-        version: '1.0.0',
-        endpoints: {
-            stkPush: 'POST /stk-push',
-            stkQuery: 'POST /stk-query',
-            callback: 'POST /api/callback',
-            history: 'GET /transactions/:phone',
-            health: 'GET /health'
-        }
-    });
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // --- Start Server ---
