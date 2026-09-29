@@ -55,6 +55,14 @@ const DARAJA_CONFIG = {
     shortCode: process.env.DARAJA_SHORTCODE || '174379',
     environment: process.env.DARAJA_ENVIRONMENT || 'production'
 };
+const VALID_TRANSACTION_TYPES = ['CustomerPayBillOnline', 'CustomerBuyGoodsOnline'];
+const configuredTransactionType = process.env.DARAJA_TRANSACTION_TYPE || 'CustomerPayBillOnline';
+const DARAJA_TRANSACTION_TYPE = VALID_TRANSACTION_TYPES.includes(configuredTransactionType)
+    ? configuredTransactionType
+    : 'CustomerPayBillOnline';
+if (DARAJA_TRANSACTION_TYPE !== configuredTransactionType) {
+    console.warn(`⚠️ Invalid DARAJA_TRANSACTION_TYPE; using ${DARAJA_TRANSACTION_TYPE}`);
+}
 
 // Daraja production rejects localhost, HTTP, and malformed/Markdown URLs.
 // Fall back to this public Render endpoint if the deployment variable is bad.
@@ -248,7 +256,7 @@ app.post('/stk-push', async (req, res) => {
             BusinessShortCode: DARAJA_CONFIG.shortCode,
             Password: password,
             Timestamp: timestamp,
-            TransactionType: 'CustomerPayBillOnline',
+            TransactionType: DARAJA_TRANSACTION_TYPE,
             Amount: amount,
             PartyA: cleanPhone,
             PartyB: DARAJA_CONFIG.shortCode,
@@ -498,6 +506,7 @@ app.get('/health', (req, res) => {
         status: 'ok', 
         environment: DARAJA_CONFIG.environment,
         shortcode: DARAJA_CONFIG.shortCode,
+        transactionType: DARAJA_TRANSACTION_TYPE,
         callbackUrl: DARAJA_CALLBACK_URL,
         supabase: supabase ? 'connected' : 'not configured',
         timestamp: new Date().toISOString()
