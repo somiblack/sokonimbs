@@ -361,8 +361,6 @@
 
         .offer-card {
             background: var(--mpesa-card-bg);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
             border-radius: 14px;
             padding: 14px 12px;
             box-shadow: var(--mpesa-shadow);
@@ -372,7 +370,10 @@
             min-height: 152px;
             position: relative;
             overflow: hidden;
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            content-visibility: auto;
+            contain-intrinsic-size: auto 152px;
+            transition: transform 0.16s ease, border-color 0.16s ease;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .offer-card::before,
@@ -393,13 +394,13 @@
         .offer-card > * { position: relative; z-index: 1; }
 
         .offer-card:active {
-            transform: scale(0.97);
+            transform: scale(0.985);
         }
 
         @media (hover: hover) {
             .offer-card:hover {
-                transform: translateY(-3px);
-                box-shadow: 0 16px 34px rgba(16, 90, 49, 0.14), 0 4px 10px rgba(15, 23, 42, 0.05);
+                transform: translateY(-2px);
+                border-color: rgba(0, 166, 81, 0.42);
             }
         }
 
@@ -465,9 +466,10 @@
             font-weight: 600;
             width: 100%;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: background-color 0.16s ease, transform 0.16s ease;
             margin-top: auto;
             text-align: center;
+            touch-action: manipulation;
         }
 
         .contact-panel a.contact-link {
@@ -484,13 +486,12 @@
 
         .offer-card .buy-btn:active {
             background: var(--mpesa-green-dark);
+            transform: scale(0.985);
         }
 
         /* --- DROPDOWN / ACCORDION STYLES --- */
         .accordion-item {
             background: var(--mpesa-card-bg);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
             border-radius: 14px;
             margin-bottom: 12px;
             border: 1px solid var(--mpesa-border);
@@ -513,6 +514,7 @@
             -webkit-tap-highlight-color: transparent;
             gap: 12px;
             transition: background 0.2s;
+            touch-action: manipulation;
         }
 
         .accordion-header:active {
@@ -1134,9 +1136,25 @@
             color: #854d0e;
         }
 
+        @media (prefers-reduced-motion: reduce) {
+            .offer-card,
+            .offer-card .buy-btn,
+            .theme-toggle,
+            .theme-toggle-knob,
+            .accordion-header .arrow {
+                transition: none !important;
+            }
+
+            .offer-card:hover,
+            .offer-card:active,
+            .offer-card .buy-btn:active {
+                transform: none !important;
+            }
+        }
+
         @media (max-width: 480px) {
             .app-header h1 { font-size: 1.6rem; }
-            .offer-card { min-height: 146px; padding: 13px 11px; }
+            .offer-card { min-height: 146px; padding: 13px 11px; contain-intrinsic-size: auto 146px; }
             .offer-card h3 { font-size: 0.9rem; }
             .offer-card .price { font-size: 0.95rem; }
             .sell-input-group {
