@@ -1526,7 +1526,7 @@
             <div id="modalOptions">
                 <div class="btn-group">
                     <button class="btn btn-primary" id="buyForMeBtn">Buy for Your Number</button>
-                    <button class="btn btn-outline" id="buyForOtherBtn">Buy for Another Number</button>
+                    <button class="btn btn-outline" id="buyForOtherBtn" disabled aria-disabled="true" title="This option is temporarily unavailable">Buy for Another Number — Under Maintenance</button>
                 </div>
                 <div class="modal-close" id="modalClose">Cancel</div>
             </div>
@@ -1679,14 +1679,6 @@
                     userAmountInput.value = currentOffer.price;
                     payNowError.textContent = '';
                     paymentStatus.style.display = 'none';
-                });
-            }
-
-            var buyForOtherBtn = document.getElementById('buyForOtherBtn');
-            if (buyForOtherBtn) {
-                buyForOtherBtn.addEventListener('click', function() {
-                    window.location.href = 'https://bingwahybrid.com/a4cbdd0379';
-                    closeModal();
                 });
             }
 
