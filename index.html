@@ -185,6 +185,46 @@
             margin-bottom: 16px;
         }
 
+        .category-nav {
+            position: sticky;
+            top: 8px;
+            z-index: 20;
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 8px;
+            margin: 0 0 16px;
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            border-radius: 14px;
+            background: rgba(248, 250, 252, 0.94);
+            box-shadow: 0 5px 18px rgba(15, 23, 42, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            scrollbar-width: none;
+        }
+
+        .category-nav::-webkit-scrollbar { display: none; }
+
+        .category-nav a {
+            flex: 0 0 auto;
+            padding: 8px 12px;
+            border: 1px solid rgba(0, 166, 81, 0.16);
+            border-radius: 999px;
+            background: #fff;
+            color: var(--mpesa-text-primary);
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .category-nav a:focus-visible {
+            outline: 3px solid rgba(0, 166, 81, 0.32);
+            outline-offset: 2px;
+        }
+
+        .section-title[id], .sub-section-title[id] { scroll-margin-top: 78px; }
+
         .offer-card {
             background: var(--mpesa-card-bg);
             backdrop-filter: var(--glass-blur);
@@ -195,6 +235,7 @@
             border: 1px solid var(--mpesa-border);
             display: flex;
             flex-direction: column;
+            min-height: 152px;
             transition: transform 0.15s ease, box-shadow 0.15s ease;
         }
 
@@ -226,18 +267,19 @@
         .badge-sms { background: rgba(52, 211, 153, 0.2); color: #065f46; }
 
         .offer-card h3 {
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-weight: 700;
             color: var(--mpesa-text-primary);
-            line-height: 1.2;
-            margin-bottom: 2px;
+            line-height: 1.3;
+            min-height: 2.6em;
+            margin-bottom: 7px;
         }
 
         .offer-card .price {
-            font-size: 0.9rem;
-            font-weight: 600;
+            font-size: 1rem;
+            font-weight: 750;
             color: var(--mpesa-green);
-            margin-bottom: 8px;
+            margin-bottom: 12px;
         }
 
         .offer-card .price small {
@@ -251,7 +293,8 @@
             color: white;
             border: none;
             border-radius: 8px;
-            padding: 10px 0;
+            min-height: 42px;
+            padding: 10px 8px;
             font-size: 0.85rem;
             font-weight: 600;
             width: 100%;
@@ -259,6 +302,18 @@
             transition: background 0.2s;
             margin-top: auto;
             text-align: center;
+        }
+
+        .contact-panel a.contact-link {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .contact-panel a.contact-link:hover { text-decoration: underline; }
+
+        .contact-panel .footer-note {
+            margin-top: 14px;
+            color: var(--mpesa-text-secondary);
         }
 
         .offer-card .buy-btn:active {
@@ -915,8 +970,9 @@
 
         @media (max-width: 480px) {
             .app-header h1 { font-size: 1.6rem; }
-            .offer-card h3 { font-size: 0.85rem; }
-            .offer-card .price { font-size: 0.85rem; }
+            .offer-card { min-height: 146px; padding: 13px 11px; }
+            .offer-card h3 { font-size: 0.9rem; }
+            .offer-card .price { font-size: 0.95rem; }
             .sell-input-group {
                 flex-direction: column;
             }
@@ -970,6 +1026,16 @@
         </div>
     </header>
 
+    <nav class="category-nav" aria-label="Browse offers">
+        <a href="#hotOffers">🔥 Hot</a>
+        <a href="#dailyOffers">📅 Daily</a>
+        <a href="#renewableOffers">🔄 Renewable</a>
+        <a href="#monthlyOffers">📆 Weekly &amp; Monthly</a>
+        <a href="#minutesOffers">⏱️ Minutes</a>
+        <a href="#smsOffers">💬 SMS</a>
+        <a href="#discountAirtimeBtn">🎯 Airtime</a>
+    </nav>
+
     <!-- ===== ACCORDION: BUY DATA MANUALLY ===== -->
     <div class="accordion-item" id="manualBuy">
         <div class="accordion-header" onclick="toggleAccordion('manualBuy')">
@@ -980,7 +1046,7 @@
                     <small>Pay to Till 4288958</small>
                 </div>
             </div>
-            <span class="badge-accordion">Paybill</span>
+            <span class="badge-accordion">Till</span>
             <span class="arrow" id="manualBuyArrow">▼</span>
         </div>
         <div class="accordion-body" id="manualBuyBody">
@@ -1076,7 +1142,7 @@
     </div>
 
     <!-- ===== HOT OFFERS ===== -->
-    <div class="section-title">🔥 Hot Offers <span>Trending</span></div>
+    <div class="section-title" id="hotOffers">🔥 Hot Offers <span>Trending</span></div>
     <div class="offers-grid">
         <div class="offer-card">
             <span class="badge badge-trending">Trending</span>
@@ -1120,7 +1186,7 @@
     </div>
 
     <!-- ===== DAILY OFFERS (ONCE PER DAY) ===== -->
-    <div class="section-title">📅 Daily Offers <span>Once Per Day</span></div>
+    <div class="section-title" id="dailyOffers">📅 Daily Offers <span>Once Per Day</span></div>
     <div class="offers-grid">
         <div class="offer-card">
             <span class="badge badge-daily">Daily</span>
@@ -1172,7 +1238,7 @@
     </div>
 
     <!-- ===== MINUTES OFFERS ===== -->
-    <div class="section-title">⏱️ Minutes Offers</div>
+    <div class="section-title" id="minutesOffers">⏱️ Minutes Offers</div>
     <div class="offers-grid">
         <div class="offer-card">
             <span class="badge badge-hot">Hot</span>
@@ -1201,7 +1267,7 @@
     </div>
 
     <!-- ===== SMS OFFERS ===== -->
-    <div class="section-title">💬 SMS Offers</div>
+    <div class="section-title" id="smsOffers">💬 SMS Offers</div>
     <div class="offers-grid">
         <div class="offer-card">
             <span class="badge badge-sms">SMS</span>
@@ -1265,7 +1331,7 @@
     </div>
 
     <!-- ===== RENEWABLE OFFERS ===== -->
-    <div class="section-title">🔄 Renewable Offers</div>
+    <div class="section-title" id="renewableOffers">🔄 Renewable Offers</div>
     <div class="offers-grid">
         <div class="offer-card">
             <h3>2GB · 24 Hrs</h3>
@@ -1285,7 +1351,7 @@
     </div>
 
     <!-- ===== MONTHLY & WEEKLY OFFERS ===== -->
-    <div class="section-title">📆 Monthly & Weekly Offers</div>
+    <div class="section-title" id="monthlyOffers">📆 Monthly & Weekly Offers</div>
 
     <div class="sub-section-title">Monthly Bundles</div>
     <div class="offers-grid">
@@ -1410,7 +1476,7 @@
                         <p style="color:var(--mpesa-text-secondary); font-size:0.9rem;">Click the <span class="highlight-green">"Buy Now"</span> button on any offer card, enter your phone number, and complete the M-Pesa payment. You'll receive the bundle instantly.</p>
                     </div>
                     <div style="margin:8px 0;">
-                        <p style="font-weight:600; color:var(--mpesa-text-primary);">🟢 Option 2: Buy Manually (M-Pesa Paybill)</p>
+                        <p style="font-weight:600; color:var(--mpesa-text-primary);">🟢 Option 2: Buy Manually (M-Pesa Till)</p>
                         <p style="color:var(--mpesa-text-secondary); font-size:0.9rem;">Follow the steps in the <span class="highlight-green">"Buy Data Manually"</span> section above:</p>
                         <ul style="margin:4px 0 4px 20px; color:var(--mpesa-text-secondary); font-size:0.9rem;">
                             <li>Open M-Pesa → Lipa Na M-Pesa</li>
@@ -1503,15 +1569,12 @@
     <!-- ===== CONTACT ===== -->
     <div class="contact-panel">
         <h3>📞 Contact Us</h3>
-        <div class="phone">+254 704 166 953</div>
-        <div class="email">1codedgrid@gmail.com</div>
+        <div class="phone"><a class="contact-link" href="tel:+254704166953">+254 704 166 953</a></div>
+        <div class="email"><a class="contact-link" href="mailto:1codedgrid@gmail.com">1codedgrid@gmail.com</a></div>
         <div class="social-icons">
-            <a href="#" class="whatsapp" aria-label="WhatsApp">📱</a>
-            <a href="#" class="facebook" aria-label="Facebook">f</a>
-            <a href="#" class="instagram" aria-label="Instagram">📷</a>
-            <a href="#" class="twitter" aria-label="Twitter">🐦</a>
+            <a href="https://wa.me/254704166953" class="whatsapp" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer">💬</a>
         </div>
-        <div class="text-small mt-2">© 2025 SokoniMBS KE</div>
+        <div class="text-small footer-note">© <span id="copyrightYear"></span> SokoniMBS KE</div>
     </div>
 
     <!-- ===== TOAST ===== -->
@@ -1545,6 +1608,8 @@
     </div>
 
     <script>
+        document.getElementById('copyrightYear').textContent = new Date().getFullYear();
+
         (function() {
             // --- ACCORDION TOGGLE FUNCTION ---
             window.toggleAccordion = function(id) {
