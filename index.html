@@ -13,7 +13,12 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: #eef2f7;
+            background:
+                radial-gradient(ellipse at 8% 4%, rgba(0, 166, 81, 0.18), transparent 34%),
+                radial-gradient(ellipse at 94% 22%, rgba(123, 220, 156, 0.22), transparent 32%),
+                radial-gradient(ellipse at 52% 72%, rgba(214, 250, 225, 0.72), transparent 46%),
+                linear-gradient(145deg, #fbfffc 0%, #f1faf4 48%, #ffffff 100%);
+            background-attachment: fixed;
             color: #1e293b;
             padding: 12px;
             min-height: 100vh;
@@ -26,13 +31,13 @@
             --mpesa-green-dark: #008a44;
             --mpesa-red: #e31b23;
             --mpesa-white: #ffffff;
-            --mpesa-bg: #f0f2f5;
-            --mpesa-card-bg: rgba(255, 255, 255, 0.65);
+            --mpesa-bg: #f1faf4;
+            --mpesa-card-bg: rgba(255, 255, 255, 0.58);
             --mpesa-text-primary: #1e293b;
             --mpesa-text-secondary: #475569;
-            --mpesa-border: rgba(255, 255, 255, 0.3);
-            --mpesa-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
-            --glass-blur: blur(12px);
+            --mpesa-border: rgba(255, 255, 255, 0.74);
+            --mpesa-shadow: 0 10px 30px rgba(16, 90, 49, 0.08), 0 2px 8px rgba(15, 23, 42, 0.04);
+            --glass-blur: blur(16px);
         }
 
         /* --- CREATIVE HEADER --- */
@@ -241,6 +246,13 @@
 
         .offer-card:active {
             transform: scale(0.97);
+        }
+
+        @media (hover: hover) {
+            .offer-card:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 16px 34px rgba(16, 90, 49, 0.14), 0 4px 10px rgba(15, 23, 42, 0.05);
+            }
         }
 
         .offer-card .badge {
