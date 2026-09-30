@@ -46,24 +46,45 @@
 
         .theme-toggle {
             position: absolute;
-            top: 12px;
-            right: 12px;
+            top: 14px;
+            right: 14px;
             z-index: 2;
-            display: inline-flex;
+            display: flex;
             align-items: center;
-            gap: 6px;
-            min-height: 36px;
-            padding: 7px 11px;
+            width: 44px;
+            height: 26px;
+            padding: 2px;
             border: 1px solid rgba(255, 255, 255, 0.35);
             border-radius: 999px;
             background: rgba(0, 0, 0, 0.16);
             color: #fff;
             font: inherit;
-            font-size: 0.75rem;
-            font-weight: 700;
             cursor: pointer;
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
+            transition: background 0.2s ease;
+        }
+
+        .theme-toggle-knob {
+            display: grid;
+            place-items: center;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #fff;
+            color: #166534;
+            font-size: 0.75rem;
+            line-height: 1;
+            transform: translateX(0);
+            transition: transform 0.2s ease;
+        }
+
+        .theme-toggle[aria-checked="true"] {
+            background: rgba(15, 23, 42, 0.5);
+        }
+
+        .theme-toggle[aria-checked="true"] .theme-toggle-knob {
+            transform: translateX(18px);
         }
 
         .theme-toggle:focus-visible {
@@ -145,8 +166,7 @@
         }
 
         @media (max-width: 420px) {
-            .theme-toggle { top: 9px; right: 9px; padding: 6px 9px; }
-            .app-header { padding-top: 52px; }
+            .theme-toggle { top: 10px; right: 10px; }
         }
 
         /* --- CREATIVE HEADER --- */
@@ -1170,8 +1190,8 @@
 
     <!-- ===== CREATIVE HEADER ===== -->
     <header class="app-header">
-        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
-            <span aria-hidden="true">🌙</span><span>Dark mode</span>
+        <button class="theme-toggle" id="themeToggle" type="button" role="switch" aria-label="Dark mode" aria-checked="false" title="Toggle dark mode">
+            <span class="theme-toggle-knob" aria-hidden="true">☾</span>
         </button>
         <span class="header-badge">📱 Safaricom Bundles</span>
         <h1>SOKONI-<span class="highlight">MBS</span> KENYA</h1>
@@ -1766,11 +1786,10 @@
 
             function syncThemeToggle() {
                 var isDark = document.body.getAttribute('data-theme') === 'dark';
-                themeToggle.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
-                themeToggle.setAttribute('aria-pressed', String(isDark));
-                themeToggle.innerHTML = isDark
-                    ? '<span aria-hidden="true">☀️</span><span>Light mode</span>'
-                    : '<span aria-hidden="true">🌙</span><span>Dark mode</span>';
+                themeToggle.setAttribute('aria-label', isDark ? 'Light mode' : 'Dark mode');
+                themeToggle.setAttribute('aria-checked', String(isDark));
+                themeToggle.title = isDark ? 'Switch to light mode' : 'Switch to dark mode';
+                themeToggle.innerHTML = '<span class="theme-toggle-knob" aria-hidden="true">' + (isDark ? '☀' : '☾') + '</span>';
             }
 
             themeToggle.addEventListener('click', function() {
