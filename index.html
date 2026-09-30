@@ -40,6 +40,115 @@
             --glass-blur: blur(16px);
         }
 
+        body {
+            transition: background 0.25s ease, color 0.25s ease;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            z-index: 2;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            min-height: 36px;
+            padding: 7px 11px;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            border-radius: 999px;
+            background: rgba(0, 0, 0, 0.16);
+            color: #fff;
+            font: inherit;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .theme-toggle:focus-visible {
+            outline: 3px solid #fff;
+            outline-offset: 3px;
+        }
+
+        body[data-theme="dark"] {
+            color-scheme: dark;
+            background:
+                radial-gradient(ellipse at 8% 4%, rgba(0, 166, 81, 0.2), transparent 34%),
+                radial-gradient(ellipse at 94% 22%, rgba(37, 110, 72, 0.24), transparent 32%),
+                linear-gradient(145deg, #0b1510 0%, #101d17 48%, #111827 100%);
+            color: #e2e8f0;
+        }
+
+        body[data-theme="dark"] .category-nav {
+            background: rgba(17, 27, 22, 0.94);
+            border-color: rgba(148, 163, 184, 0.22);
+        }
+
+        body[data-theme="dark"] .category-nav a {
+            background: rgba(30, 41, 36, 0.92);
+            border-color: rgba(52, 211, 153, 0.24);
+            color: #e2e8f0;
+        }
+
+        body[data-theme="dark"] .offer-card,
+        body[data-theme="dark"] .accordion-item {
+            --mpesa-card-bg: rgba(20, 32, 26, 0.82);
+            --mpesa-text-primary: #e5eee8;
+            --mpesa-text-secondary: #b3c3ba;
+            --mpesa-border: rgba(148, 163, 184, 0.22);
+            --mpesa-shadow: 0 10px 30px rgba(0, 0, 0, 0.22), 0 2px 8px rgba(0, 0, 0, 0.16);
+        }
+
+        body[data-theme="dark"] .contact-panel,
+        body[data-theme="dark"] .history-item {
+            background: rgba(20, 32, 26, 0.84);
+            color: #e2e8f0;
+        }
+
+        body[data-theme="dark"] .social-icons a:not(.whatsapp):not(.facebook):not(.instagram):not(.twitter) {
+            background: rgba(148, 163, 184, 0.18);
+            color: #e2e8f0;
+        }
+
+        body[data-theme="dark"] .modal-sheet {
+            background: rgba(20, 32, 26, 0.97);
+            color: #e5eee8;
+            border-color: rgba(148, 163, 184, 0.24);
+        }
+
+        body[data-theme="dark"] input,
+        body[data-theme="dark"] .modal-sheet input {
+            background: rgba(15, 23, 20, 0.9) !important;
+            border-color: rgba(148, 163, 184, 0.34) !important;
+            color: #f1f5f9;
+        }
+
+        body[data-theme="dark"] input::placeholder {
+            color: #94a3b8;
+        }
+
+        body[data-theme="dark"] .guide-box code {
+            background: rgba(148, 163, 184, 0.16);
+            color: #e2e8f0;
+        }
+
+        body[data-theme="dark"] .btn-outline {
+            background: rgba(148, 163, 184, 0.12);
+            border-color: rgba(148, 163, 184, 0.32);
+            color: #e2e8f0;
+        }
+
+        body[data-theme="dark"] .manual-steps .step,
+        body[data-theme="dark"] .faq-divider {
+            border-color: rgba(148, 163, 184, 0.22);
+        }
+
+        @media (max-width: 420px) {
+            .theme-toggle { top: 9px; right: 9px; padding: 6px 9px; }
+            .app-header { padding-top: 52px; }
+        }
+
         /* --- CREATIVE HEADER --- */
         .app-header {
             background: linear-gradient(135deg, #00a651 0%, #008a44 50%, #006b33 100%);
@@ -1048,9 +1157,22 @@
     </style>
 </head>
 <body>
+    <script>
+        (function() {
+            try {
+                var savedTheme = localStorage.getItem('sokoniTheme');
+                if (savedTheme === 'dark') document.body.setAttribute('data-theme', 'dark');
+            } catch (error) {
+                // Keep the light theme if browser storage is unavailable.
+            }
+        })();
+    </script>
 
     <!-- ===== CREATIVE HEADER ===== -->
     <header class="app-header">
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+            <span aria-hidden="true">🌙</span><span>Dark mode</span>
+        </button>
         <span class="header-badge">📱 Safaricom Bundles</span>
         <h1>SOKONI-<span class="highlight">MBS</span> KENYA</h1>
         <div class="tagline">
@@ -1637,6 +1759,34 @@
 
     <script>
         document.getElementById('copyrightYear').textContent = new Date().getFullYear();
+
+        (function() {
+            var themeToggle = document.getElementById('themeToggle');
+            if (!themeToggle) return;
+
+            function syncThemeToggle() {
+                var isDark = document.body.getAttribute('data-theme') === 'dark';
+                themeToggle.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+                themeToggle.setAttribute('aria-pressed', String(isDark));
+                themeToggle.innerHTML = isDark
+                    ? '<span aria-hidden="true">☀️</span><span>Light mode</span>'
+                    : '<span aria-hidden="true">🌙</span><span>Dark mode</span>';
+            }
+
+            themeToggle.addEventListener('click', function() {
+                var isDark = document.body.getAttribute('data-theme') !== 'dark';
+                if (isDark) document.body.setAttribute('data-theme', 'dark');
+                else document.body.removeAttribute('data-theme');
+                try {
+                    localStorage.setItem('sokoniTheme', isDark ? 'dark' : 'light');
+                } catch (error) {
+                    // Theme remains active for this page even if it cannot be saved.
+                }
+                syncThemeToggle();
+            });
+
+            syncThemeToggle();
+        })();
 
         (function() {
             // --- ACCORDION TOGGLE FUNCTION ---
