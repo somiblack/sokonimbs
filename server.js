@@ -63,6 +63,10 @@ const DARAJA_TRANSACTION_TYPE = VALID_TRANSACTION_TYPES.includes(configuredTrans
 if (DARAJA_TRANSACTION_TYPE !== configuredTransactionType) {
     console.warn(`⚠️ Invalid DARAJA_TRANSACTION_TYPE; using ${DARAJA_TRANSACTION_TYPE}`);
 }
+const DARAJA_TILL_NUMBER = process.env.DARAJA_TILL_NUMBER || DARAJA_CONFIG.shortCode;
+const DARAJA_PARTY_B = DARAJA_TRANSACTION_TYPE === 'CustomerBuyGoodsOnline'
+    ? DARAJA_TILL_NUMBER
+    : DARAJA_CONFIG.shortCode;
 
 // Daraja production rejects localhost, HTTP, and malformed/Markdown URLs.
 // Fall back to this public Render endpoint if the deployment variable is bad.
@@ -259,7 +263,7 @@ app.post('/stk-push', async (req, res) => {
             TransactionType: DARAJA_TRANSACTION_TYPE,
             Amount: amount,
             PartyA: cleanPhone,
-            PartyB: DARAJA_CONFIG.shortCode,
+            PartyB: DARAJA_PARTY_B,
             PhoneNumber: cleanPhone,
             CallBackURL: DARAJA_CALLBACK_URL,
             AccountReference: accountReference,
@@ -507,6 +511,7 @@ app.get('/health', (req, res) => {
         environment: DARAJA_CONFIG.environment,
         shortcode: DARAJA_CONFIG.shortCode,
         transactionType: DARAJA_TRANSACTION_TYPE,
+        partyB: DARAJA_PARTY_B,
         callbackUrl: DARAJA_CALLBACK_URL,
         supabase: supabase ? 'connected' : 'not configured',
         timestamp: new Date().toISOString()
