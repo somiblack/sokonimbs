@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>SOKONI-MBS KENYA - Data & Airtime</title>
+    <meta name="theme-color" content="#00a651">
+    <meta name="description" content="Browse and buy Safaricom data bundles, airtime and SMS offers with SokoniMBS Kenya.">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="SokoniMBS">
+    <link rel="manifest" href="./manifest.json">
+    <link rel="apple-touch-icon" href="./icons/icon-192.png">
     <style>
         * {
             margin: 0;
@@ -87,6 +94,44 @@
             transform: translateX(18px);
         }
 
+        .install-app-btn {
+            position: absolute;
+            top: 12px;
+            right: 66px;
+            z-index: 2;
+            display: inline-grid;
+            place-items: center;
+            width: 30px;
+            height: 30px;
+            padding: 0;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.16);
+            color: #fff;
+            font: inherit;
+            font-size: 1rem;
+            font-weight: 700;
+            line-height: 1;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .install-app-btn[hidden] { display: none; }
+
+        .offline-notice {
+            margin-top: 10px;
+            padding: 7px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            color: #fff;
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+
+        .offline-notice[hidden] { display: none; }
+
         .theme-toggle:focus-visible {
             outline: 3px solid #fff;
             outline-offset: 3px;
@@ -167,6 +212,7 @@
 
         @media (max-width: 420px) {
             .theme-toggle { top: 10px; right: 10px; }
+            .install-app-btn { top: 8px; right: 54px; }
         }
 
         /* --- CREATIVE HEADER --- */
@@ -1208,6 +1254,7 @@
 
     <!-- ===== CREATIVE HEADER ===== -->
     <header class="app-header">
+        <button class="install-app-btn" id="pwaInstallBtn" type="button" aria-label="Install SokoniMBS" title="Install SokoniMBS" hidden>↓</button>
         <button class="theme-toggle" id="themeToggle" type="button" role="switch" aria-label="Dark mode" aria-checked="false" title="Toggle dark mode">
             <span class="theme-toggle-knob" aria-hidden="true">☾</span>
         </button>
@@ -1221,6 +1268,7 @@
             <span>⚡ Instant</span>
             <span>🔄 24/7</span>
         </div>
+        <div class="offline-notice" id="offlineNotice" role="status" hidden>You’re offline. Offers are saved; M-Pesa payments need internet.</div>
     </header>
 
     <nav class="category-nav" aria-label="Browse offers">
@@ -2043,7 +2091,9 @@
                     .catch(function(error) {
                         console.error('Fetch error:', error);
                         paymentStatus.className = 'payment-status failed';
-                        paymentStatus.textContent = '❌ Could not reach the payment server. ' + error.message;
+                        paymentStatus.textContent = navigator.onLine
+                            ? '❌ Could not reach the payment server. ' + error.message
+                            : '❌ You’re offline. Reconnect to the internet to request an M-Pesa prompt.';
                     });
                 });
             }
@@ -2132,6 +2182,61 @@
 
             console.log('SokoniMBS — Offers updated with new pricing');
             console.log('Backend URL:', BACKEND_URL);
+        })();
+    </script>
+
+    <script>
+        (function() {
+            var offlineNotice = document.getElementById('offlineNotice');
+            function updateConnectionStatus() {
+                if (offlineNotice) offlineNotice.hidden = navigator.onLine;
+            }
+            window.addEventListener('online', updateConnectionStatus);
+            window.addEventListener('offline', updateConnectionStatus);
+            updateConnectionStatus();
+
+            if ('serviceWorker' in navigator && window.isSecureContext) {
+                window.addEventListener('load', function() {
+                    navigator.serviceWorker.register('./service-worker.js').catch(function(error) {
+                        console.warn('Offline support could not be enabled:', error);
+                    });
+                });
+            }
+
+            var installButton = document.getElementById('pwaInstallBtn');
+            var installPrompt = null;
+            var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+            var isInstalled = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+
+            function showInstallButton() {
+                if (installButton && !isInstalled) installButton.hidden = false;
+            }
+
+            window.addEventListener('beforeinstallprompt', function(event) {
+                event.preventDefault();
+                installPrompt = event;
+                showInstallButton();
+            });
+
+            if (isIOS && !isInstalled) showInstallButton();
+
+            if (installButton) {
+                installButton.addEventListener('click', async function() {
+                    if (installPrompt) {
+                        installPrompt.prompt();
+                        await installPrompt.userChoice;
+                        installPrompt = null;
+                        installButton.hidden = true;
+                    } else if (isIOS) {
+                        window.showToast('To install: tap Share in Safari, then Add to Home Screen.');
+                    }
+                });
+            }
+
+            window.addEventListener('appinstalled', function() {
+                if (installButton) installButton.hidden = true;
+                installPrompt = null;
+            });
         })();
     </script>
 
