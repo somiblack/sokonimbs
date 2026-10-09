@@ -47,6 +47,28 @@
             --glass-blur: blur(16px);
         }
 
+        .ui-icon {
+            display: inline-block;
+            width: 1.05em;
+            height: 1.05em;
+            flex: none;
+            vertical-align: -0.16em;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .header-badge .ui-icon, .category-nav .ui-icon, .section-title .ui-icon { margin-right: 0.28em; }
+        .category-nav a { display: inline-flex; align-items: center; gap: 5px; }
+        .header-icons .ui-icon { width: 1.15em; height: 1.15em; margin-right: 4px; }
+        .accordion-header .icon-circle .ui-icon { width: 1.15em; height: 1.15em; }
+        .theme-toggle-knob .ui-icon { width: 13px; height: 13px; vertical-align: 0; }
+        .faq-answer li .ui-icon { width: 0.95em; height: 0.95em; margin-right: 0.2em; color: var(--mpesa-green-dark); }
+
+        .icon-library { position: absolute; width: 0; height: 0; overflow: hidden; }
+
         body {
             transition: background 0.25s ease, color 0.25s ease;
         }
@@ -1271,39 +1293,65 @@
         })();
     </script>
 
+    <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+        <symbol id="icon-smartphone" viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="2.3"/><path d="M10 18.5h4"/><path d="M9 5h6"/></symbol>
+        <symbol id="icon-signal" viewBox="0 0 24 24"><path d="M3 20h2v-3H3zM8 20h2v-6H8zM13 20h2v-9h-2zM18 20h2V6h-2z"/></symbol>
+        <symbol id="icon-refresh" viewBox="0 0 24 24"><path d="M20 7v5h-5"/><path d="M4.8 9A7.5 7.5 0 0 1 18 6.5L20 12M4 17v-5h5"/><path d="M19.2 15A7.5 7.5 0 0 1 6 17.5L4 12"/></symbol>
+        <symbol id="icon-flame" viewBox="0 0 24 24"><path d="M12 22c4.3 0 7-3.2 7-7.1 0-2.8-1.7-5.3-4.4-7.6.2 2-1.1 3.1-2.3 3.8.2-3.5-1.4-6-4.1-8.1.2 3.8-3.2 6.4-3.2 11.6C5 18.9 7.8 22 12 22Z"/><path d="M12 22c-1.8-1.1-2.6-2.5-2.4-4.2.2-1.1.9-2 2-3 .1 1.6 1.1 2.4 2.3 3.2.2 1.7-.5 3-1.9 4Z"/></symbol>
+        <symbol id="icon-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 17h.01M12 17h.01"/></symbol>
+        <symbol id="icon-repeat" viewBox="0 0 24 24"><path d="m17 2 4 4-4 4"/><path d="M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4"/><path d="M21 13v2a3 3 0 0 1-3 3H3"/></symbol>
+        <symbol id="icon-message" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 4a8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z"/></symbol>
+        <symbol id="icon-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/><path d="m16 8 5-5M17 3h4v4"/></symbol>
+        <symbol id="icon-wallet" viewBox="0 0 24 24"><path d="M4 6.5h15a2 2 0 0 1 2 2v11H4a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2h14"/><path d="M21 11h-5a2.5 2.5 0 0 0 0 5h5"/><path d="M16 13.5h.01"/></symbol>
+        <symbol id="icon-history" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 2.6-6.4L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></symbol>
+        <symbol id="icon-book" viewBox="0 0 24 24"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 4.5v17M8 6h8M8 10h7"/></symbol>
+        <symbol id="icon-chart" viewBox="0 0 24 24"><path d="M3 3v18h18M7 15l4-4 3 3 6-7"/><path d="M16 7h4v4"/></symbol>
+        <symbol id="icon-megaphone" viewBox="0 0 24 24"><path d="m3 11 18-5v12L3 14zM11 16l2 6H8l-2-7M3 11v3"/><path d="M21 9v6"/></symbol>
+        <symbol id="icon-coins" viewBox="0 0 24 24"><ellipse cx="8" cy="6" rx="5" ry="3"/><path d="M3 6v5c0 1.7 2.2 3 5 3s5-1.3 5-3V6M3 11v5c0 1.7 2.2 3 5 3 1.1 0 2.1-.2 2.9-.6"/><path d="M16 12c2.8 0 5 1.3 5 3s-2.2 3-5 3-5-1.3-5-3 2.2-3 5-3ZM11 15v4c0 1.7 2.2 3 5 3s5-1.3 5-3v-4"/></symbol>
+        <symbol id="icon-bag" viewBox="0 0 24 24"><path d="M5 8h14l1 13H4zM9 8V6a3 3 0 0 1 6 0v2M9 12v1M15 12v1"/></symbol>
+        <symbol id="icon-handshake" viewBox="0 0 24 24"><path d="m3 12 4-4 4 1 2-1 4 1 4 4-3 3-2-1-3 3-2-1-2 1-6-6Z"/><path d="m7 8 3-3 4 1 2-1 4 3M9 13l5 5M12 11l5 5M15 10l4 4"/></symbol>
+        <symbol id="icon-briefcase" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18M10 12v2h4v-2"/></symbol>
+        <symbol id="icon-phone" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.4 19.4 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7l.5 3a2 2 0 0 1-.6 1.7L7.2 10a16 16 0 0 0 6 6l1.6-1.8a2 2 0 0 1 1.7-.6l3 .5a2 2 0 0 1 1.5 2.8Z"/></symbol>
+        <symbol id="icon-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12 2.5 2.5L16 9"/></symbol>
+        <symbol id="icon-chevron" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+        <symbol id="icon-alert" viewBox="0 0 24 24"><path d="M10.3 3.9 2.6 17.2A2 2 0 0 0 4.3 20h15.4a2 2 0 0 0 1.7-2.8L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/></symbol>
+        <symbol id="icon-moon" viewBox="0 0 24 24"><path d="M20.8 14.2A8.8 8.8 0 0 1 9.8 3.2 9 9 0 1 0 20.8 14.2Z"/></symbol>
+        <symbol id="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+    </svg>
+
     <!-- ===== CREATIVE HEADER ===== -->
     <header class="app-header">
         <button class="theme-toggle" id="themeToggle" type="button" role="switch" aria-label="Dark mode" aria-checked="false" title="Toggle dark mode">
-            <span class="theme-toggle-knob" aria-hidden="true">☾</span>
+            <span class="theme-toggle-knob" aria-hidden="true"><svg class="ui-icon"><use href="#icon-moon"></use></svg></span>
         </button>
-        <span class="header-badge">📱 Safaricom Bundles</span>
+        <span class="header-badge"><svg class="ui-icon" aria-hidden="true"><use href="#icon-smartphone"></use></svg> Safaricom Bundles</span>
         <h1>SOKONI-<span class="highlight">MBS</span> KENYA</h1>
         <div class="tagline">
             Pata data <span class="accent">with</span> or <span class="accent-alt">without</span> Okoa Jahazi
         </div>
         <div class="header-icons">
-            <span>📶 4G/5G</span>
-            <span>⚡ Instant</span>
-            <span>🔄 24/7</span>
+            <span><svg class="ui-icon" aria-hidden="true"><use href="#icon-signal"></use></svg> 4G/5G</span>
+            <span><svg class="ui-icon" aria-hidden="true"><use href="#icon-check"></use></svg> Instant</span>
+            <span><svg class="ui-icon" aria-hidden="true"><use href="#icon-refresh"></use></svg> 24/7</span>
         </div>
         <div class="offline-notice" id="offlineNotice" role="status" hidden>You’re offline. Offers are saved; M-Pesa payments need internet.</div>
     </header>
 
     <nav class="category-nav" aria-label="Browse offers">
-        <a href="#hotOffers">🔥 Hot</a>
-        <a href="#dailyOffers">📅 Daily</a>
-        <a href="#renewableOffers">🔄 Renewable &amp; Repeatable</a>
-        <a href="#monthlyOffers">📆 Weekly &amp; Monthly</a>
-        <a href="#minutesOffers">⏱️ Minutes</a>
-        <a href="#smsOffers">💬 SMS</a>
-        <a href="#discountAirtimeBtn">🎯 Airtime</a>
+        <a href="#hotOffers"><svg class="ui-icon" aria-hidden="true"><use href="#icon-flame"></use></svg>Hot</a>
+        <a href="#dailyOffers"><svg class="ui-icon" aria-hidden="true"><use href="#icon-calendar"></use></svg>Daily</a>
+        <a href="#renewableOffers"><svg class="ui-icon" aria-hidden="true"><use href="#icon-repeat"></use></svg>Renewable &amp; Repeatable</a>
+        <a href="#monthlyOffers"><svg class="ui-icon" aria-hidden="true"><use href="#icon-calendar"></use></svg>Weekly &amp; Monthly</a>
+        <a href="#minutesOffers"><svg class="ui-icon" aria-hidden="true"><use href="#icon-phone"></use></svg>Minutes</a>
+        <a href="#smsOffers"><svg class="ui-icon" aria-hidden="true"><use href="#icon-message"></use></svg>SMS</a>
+        <a href="#discountAirtimeBtn"><svg class="ui-icon" aria-hidden="true"><use href="#icon-target"></use></svg>Airtime</a>
     </nav>
 
     <!-- ===== ACCORDION: BUY DATA MANUALLY ===== -->
     <div class="accordion-item" id="manualBuy">
         <div class="accordion-header" onclick="toggleAccordion('manualBuy')">
             <div class="left">
-                <div class="icon-circle">📲</div>
+                <div class="icon-circle"><svg class="ui-icon" aria-hidden="true"><use href="#icon-smartphone"></use></svg></div>
                 <div class="title">
                     Buy Data Manually via M-Pesa
                     <small>Pay to Till 4288958</small>
@@ -1340,7 +1388,7 @@
                     </div>
                 </div>
                 <div class="support-section">
-                    <span class="support-label">⚠️ Incase of delays contact support:</span>
+                    <span class="support-label"><svg class="ui-icon" aria-hidden="true"><use href="#icon-alert"></use></svg> In case of delays contact support:</span>
                     <div class="support-numbers">
                         <a href="tel:0112223307">011 222 3307</a>
                         <a href="tel:0704166953">0704 166 953</a>
@@ -1354,7 +1402,7 @@
     <div class="accordion-item" id="sellAirtime">
         <div class="accordion-header" onclick="toggleAccordion('sellAirtime')">
             <div class="left">
-                <div class="icon-circle">💰</div>
+                <div class="icon-circle"><svg class="ui-icon" aria-hidden="true"><use href="#icon-wallet"></use></svg></div>
                 <div class="title">
                     Sell Airtime
                     <small>Get 80% cashback</small>
@@ -1405,7 +1453,7 @@
     </div>
 
     <!-- ===== HOT OFFERS ===== -->
-    <div class="section-title" id="hotOffers">🔥 Hot Offers <span>Trending</span></div>
+    <div class="section-title" id="hotOffers"><svg class="ui-icon" aria-hidden="true"><use href="#icon-flame"></use></svg> Hot Offers <span>Trending</span></div>
     <div class="offers-grid">
         <div class="offer-card">
             <span class="badge badge-trending">Trending</span>
@@ -1448,7 +1496,7 @@
     </div>
 
     <!-- ===== DAILY OFFERS (ONCE PER DAY) ===== -->
-    <div class="section-title" id="dailyOffers">📅 Daily Offers <span>Once Per Day</span></div>
+    <div class="section-title" id="dailyOffers"><svg class="ui-icon" aria-hidden="true"><use href="#icon-calendar"></use></svg> Daily Offers <span>Once Per Day</span></div>
     <div class="offers-grid">
         <div class="offer-card">
             <span class="badge badge-daily">Daily</span>
@@ -1471,7 +1519,7 @@
     </div>
 
     <!-- ===== RENEWABLE & REPEATABLE OFFERS ===== -->
-    <div class="section-title" id="renewableOffers">🔄 Renewable &amp; Repeatable Offers</div>
+    <div class="section-title" id="renewableOffers"><svg class="ui-icon" aria-hidden="true"><use href="#icon-repeat"></use></svg> Renewable &amp; Repeatable Offers</div>
     <div class="offers-grid">
         <div class="offer-card">
             <span class="badge badge-popular">Renewable &amp; Repeatable</span>
@@ -1507,7 +1555,7 @@
     </div>
 
     <!-- ===== MINUTES OFFERS ===== -->
-    <div class="section-title" id="minutesOffers">⏱️ Minutes Offers</div>
+    <div class="section-title" id="minutesOffers"><svg class="ui-icon" aria-hidden="true"><use href="#icon-phone"></use></svg> Minutes Offers</div>
     <div class="offers-grid">
         <div class="offer-card">
             <span class="badge badge-hot">Hot</span>
@@ -1536,7 +1584,7 @@
     </div>
 
     <!-- ===== SMS OFFERS ===== -->
-    <div class="section-title" id="smsOffers">💬 SMS Offers</div>
+    <div class="section-title" id="smsOffers"><svg class="ui-icon" aria-hidden="true"><use href="#icon-message"></use></svg> SMS Offers</div>
     <div class="offers-grid">
         <div class="offer-card">
             <span class="badge badge-sms">SMS</span>
@@ -1577,7 +1625,7 @@
     </div>
 
     <!-- ===== HOT TALKTIME / MINUTES OFFERS ===== -->
-    <div class="section-title">⏱️ Hot Talktime <span>Minutes</span></div>
+    <div class="section-title"><svg class="ui-icon" aria-hidden="true"><use href="#icon-phone"></use></svg> Hot Talktime <span>Minutes</span></div>
     <div class="offers-grid">
         <div class="offer-card">
             <span class="badge badge-hot">Hot</span>
@@ -1618,7 +1666,7 @@
     </div>
 
     <!-- ===== MONTHLY & WEEKLY OFFERS ===== -->
-    <div class="section-title" id="monthlyOffers">📆 Monthly & Weekly Offers</div>
+    <div class="section-title" id="monthlyOffers"><svg class="ui-icon" aria-hidden="true"><use href="#icon-calendar"></use></svg> Monthly &amp; Weekly Offers</div>
 
     <div class="sub-section-title">Monthly Bundles</div>
     <div class="offers-grid">
@@ -1636,12 +1684,12 @@
     <!-- ===== DISCOUNT AIRTIME ===== -->
     <div style="margin: 12px 0;">
         <button id="discountAirtimeBtn" style="width:100%; padding:14px; background:linear-gradient(135deg,#00a651,#008a44); color:white; border:none; border-radius:14px; font-weight:700; font-size:1rem; box-shadow:0 4px 12px rgba(0,166,81,0.25); cursor:pointer;">
-            🎯 Buy Airtime @ 7% Discount
+            <svg class="ui-icon" aria-hidden="true"><use href="#icon-target"></use></svg> Buy Airtime @ 7% Discount
         </button>
     </div>
 
     <!-- ===== TRANSACTION HISTORY ===== -->
-    <div class="section-title">📋 Transaction History</div>
+    <div class="section-title"><svg class="ui-icon" aria-hidden="true"><use href="#icon-history"></use></svg> Transaction History</div>
     <div style="display:flex; gap:8px; margin-bottom:12px;">
         <input id="historyPhoneInput" type="tel" placeholder="Phone (07XXXXXXXX)" style="flex:1; padding:12px 14px; border:1.5px solid rgba(226,232,240,0.8); border-radius:12px; font-size:0.95rem; background:rgba(248,250,252,0.8); backdrop-filter:blur(4px);">
         <button id="historyBtn" style="background:var(--mpesa-green); color:white; border:none; border-radius:12px; padding:0 18px; font-weight:600; cursor:pointer;">Show</button>
@@ -1657,7 +1705,7 @@
     <div class="accordion-item" id="faqBingwa">
         <div class="accordion-header" onclick="toggleAccordion('faqBingwa')">
             <div class="left">
-                <div class="icon-circle" style="background:rgba(245,158,11,0.15);">📘</div>
+                <div class="icon-circle" style="background:rgba(245,158,11,0.15);"><svg class="ui-icon" aria-hidden="true"><use href="#icon-book"></use></svg></div>
                 <div class="title">
                     Learn about Bingwa Sokoni
                     <small>Consultation & advisory services</small>
@@ -1672,17 +1720,17 @@
                     <p><strong>What is Bingwa Sokoni?</strong></p>
                     <p>Bingwa Sokoni is a premium consultation service that connects you with experienced business and digital advisors. Whether you need guidance on:</p>
                     <ul style="margin:8px 0 8px 20px; color:var(--mpesa-text-secondary); font-size:0.9rem;">
-                        <li>📊 Business strategy &amp; growth</li>
-                        <li>📱 Digital marketing &amp; online presence</li>
-                        <li>💰 Financial planning &amp; investment</li>
-                        <li>🛒 E-commerce &amp; marketplace optimization</li>
-                        <li>🤝 Partnership &amp; networking opportunities</li>
+                        <li><svg class="ui-icon" aria-hidden="true"><use href="#icon-chart"></use></svg> Business strategy &amp; growth</li>
+                        <li><svg class="ui-icon" aria-hidden="true"><use href="#icon-smartphone"></use></svg> Digital marketing &amp; online presence</li>
+                        <li><svg class="ui-icon" aria-hidden="true"><use href="#icon-coins"></use></svg> Financial planning &amp; investment</li>
+                        <li><svg class="ui-icon" aria-hidden="true"><use href="#icon-bag"></use></svg> E-commerce &amp; marketplace optimization</li>
+                        <li><svg class="ui-icon" aria-hidden="true"><use href="#icon-handshake"></use></svg> Partnership &amp; networking opportunities</li>
                     </ul>
                     <p>Our experts provide tailored solutions to help you succeed.</p>
 
                     <hr class="faq-divider">
 
-                    <p><strong>💼 Consultation Rates</strong></p>
+                    <p><strong><svg class="ui-icon" aria-hidden="true"><use href="#icon-briefcase"></use></svg> Consultation Rates</strong></p>
                     <p style="margin-top:4px;">Professional consultation services are available. Rates are set after a client reaches out to discuss their needs.</p>
 
                     <hr class="faq-divider">
@@ -1708,11 +1756,11 @@
                     </div>
 
                     <div class="support-section" style="margin-top:10px;">
-                        <span class="support-label">📞 Book a session:</span>
+                        <span class="support-label"><svg class="ui-icon" aria-hidden="true"><use href="#icon-phone"></use></svg> Book a session:</span>
                         <div class="support-numbers">
                             <a href="tel:0112223307">011 222 3307</a>
                             <a href="tel:0704166953">0704 166 953</a>
-                            <a href="https://wa.me/254704166953" target="_blank" style="background:rgba(37,211,102,0.15); color:#25D366;">💬 WhatsApp</a>
+                            <a href="https://wa.me/254704166953" target="_blank" style="background:rgba(37,211,102,0.15); color:#25D366;"><svg class="ui-icon" aria-hidden="true"><use href="#icon-message"></use></svg> WhatsApp</a>
                         </div>
                     </div>
                 </div>
@@ -1724,7 +1772,7 @@
     <div class="accordion-item" id="faqBuy">
         <div class="accordion-header" onclick="toggleAccordion('faqBuy')">
             <div class="left">
-                <div class="icon-circle" style="background:rgba(0,166,81,0.12);">📶</div>
+                <div class="icon-circle" style="background:rgba(0,166,81,0.12);"><svg class="ui-icon" aria-hidden="true"><use href="#icon-signal"></use></svg></div>
                 <div class="title">
                     How to buy data bundles?
                     <small>Step-by-step guide</small>
@@ -1738,11 +1786,11 @@
                 <div class="faq-answer">
                     <p><strong>You have two easy options to buy data:</strong></p>
                     <div style="margin:8px 0;">
-                        <p style="font-weight:600; color:var(--mpesa-text-primary);">🟢 Option 1: Buy via App (Instant)</p>
+                        <p style="font-weight:600; color:var(--mpesa-text-primary);"><svg class="ui-icon" aria-hidden="true"><use href="#icon-check"></use></svg> Option 1: Buy via App (Instant)</p>
                         <p style="color:var(--mpesa-text-secondary); font-size:0.9rem;">Click the <span class="highlight-green">"Buy Now"</span> button on any offer card, enter your phone number, and complete the M-Pesa payment. You'll receive the bundle instantly.</p>
                     </div>
                     <div style="margin:8px 0;">
-                        <p style="font-weight:600; color:var(--mpesa-text-primary);">🟢 Option 2: Buy Manually (M-Pesa Till)</p>
+                        <p style="font-weight:600; color:var(--mpesa-text-primary);"><svg class="ui-icon" aria-hidden="true"><use href="#icon-check"></use></svg> Option 2: Buy Manually (M-Pesa Till)</p>
                         <p style="color:var(--mpesa-text-secondary); font-size:0.9rem;">Follow the steps in the <span class="highlight-green">"Buy Data Manually"</span> section above:</p>
                         <ul style="margin:4px 0 4px 20px; color:var(--mpesa-text-secondary); font-size:0.9rem;">
                             <li>Open M-Pesa → Lipa Na M-Pesa</li>
@@ -1781,9 +1829,9 @@
                 <div class="faq-answer">
                     <p><strong>Okoa Jahazi</strong> is Safaricom's emergency credit service that allows you to access airtime and data when you have insufficient balance.</p>
                     <ul style="margin:8px 0 8px 20px; color:var(--mpesa-text-secondary); font-size:0.9rem;">
-                        <li>🔹 <strong>How it works:</strong> Dial <code>*131#</code> and select "Okoa Jahazi" to request credit</li>
-                        <li>🔹 <strong>Repayment:</strong> The borrowed amount is automatically deducted when you next top up</li>
-                        <li>🔹 <strong>Eligibility:</strong> Available to active Safaricom subscribers with good usage history</li>
+                        <li><svg class="ui-icon" aria-hidden="true"><use href="#icon-chevron"></use></svg> <strong>How it works:</strong> Dial <code>*131#</code> and select "Okoa Jahazi" to request credit</li>
+                        <li><svg class="ui-icon" aria-hidden="true"><use href="#icon-chevron"></use></svg> <strong>Repayment:</strong> The borrowed amount is automatically deducted when you next top up</li>
+                        <li><svg class="ui-icon" aria-hidden="true"><use href="#icon-chevron"></use></svg> <strong>Eligibility:</strong> Available to active Safaricom subscribers with good usage history</li>
                     </ul>
                     <p style="color:var(--mpesa-text-secondary); font-size:0.9rem;">At SokoniMBS, we offer data bundles that you can purchase <span class="highlight-green">with or without</span> Okoa Jahazi credit.</p>
                 </div>
@@ -1795,7 +1843,7 @@
     <div class="accordion-item" id="faqSell">
         <div class="accordion-header" onclick="toggleAccordion('faqSell')">
             <div class="left">
-                <div class="icon-circle" style="background:rgba(0,166,81,0.12);">💸</div>
+                <div class="icon-circle" style="background:rgba(0,166,81,0.12);"><svg class="ui-icon" aria-hidden="true"><use href="#icon-coins"></use></svg></div>
                 <div class="title">
                     How to sell airtime?
                     <small>Get 80% cashback</small>
@@ -1809,7 +1857,7 @@
                 <div class="faq-answer">
                     <p><strong>Sell your unused airtime and get 80% cashback!</strong></p>
                     <div style="margin:8px 0;">
-                        <p style="font-weight:600; color:var(--mpesa-text-primary);">📱 How to sell:</p>
+                        <p style="font-weight:600; color:var(--mpesa-text-primary);"><svg class="ui-icon" aria-hidden="true"><use href="#icon-smartphone"></use></svg> How to sell:</p>
                         <ul style="margin:4px 0 4px 20px; color:var(--mpesa-text-secondary); font-size:0.9rem;">
                             <li>Dial <code style="background:rgba(0,0,0,0.05); padding:2px 8px; border-radius:4px;">*140*AMOUNT*0114599801#</code></li>
                             <li>Replace <strong>AMOUNT</strong> with the airtime value you want to sell</li>
@@ -1818,7 +1866,7 @@
                         </ul>
                     </div>
                     <div style="margin:8px 0;">
-                        <p style="font-weight:600; color:var(--mpesa-text-primary);">💰 Example:</p>
+                        <p style="font-weight:600; color:var(--mpesa-text-primary);"><svg class="ui-icon" aria-hidden="true"><use href="#icon-coins"></use></svg> Example:</p>
                         <p style="color:var(--mpesa-text-secondary); font-size:0.9rem;">Sell Ksh 100 airtime → Receive <span class="highlight-green">Ksh 80</span> cashback</p>
                     </div>
                     <div class="support-section" style="margin-top:8px;">
@@ -1834,11 +1882,11 @@
 
     <!-- ===== CONTACT ===== -->
     <div class="contact-panel">
-        <h3>📞 Contact Us</h3>
+        <h3><svg class="ui-icon" aria-hidden="true"><use href="#icon-phone"></use></svg> Contact Us</h3>
         <div class="phone"><a class="contact-link" href="tel:+254704166953">+254 704 166 953</a></div>
         <div class="email"><a class="contact-link" href="mailto:1codedgrid@gmail.com">1codedgrid@gmail.com</a></div>
         <div class="social-icons">
-            <a href="https://wa.me/254704166953" class="whatsapp" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer">💬</a>
+            <a href="https://wa.me/254704166953" class="whatsapp" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer"><svg class="ui-icon" aria-hidden="true"><use href="#icon-message"></use></svg></a>
         </div>
         <div class="text-small footer-note">© <span id="copyrightYear"></span> SokoniMBS KE</div>
     </div>
@@ -1893,7 +1941,7 @@
                 themeToggle.setAttribute('aria-label', isDark ? 'Light mode' : 'Dark mode');
                 themeToggle.setAttribute('aria-checked', String(isDark));
                 themeToggle.title = isDark ? 'Switch to light mode' : 'Switch to dark mode';
-                themeToggle.innerHTML = '<span class="theme-toggle-knob" aria-hidden="true">' + (isDark ? '☀' : '☾') + '</span>';
+                themeToggle.innerHTML = '<span class="theme-toggle-knob" aria-hidden="true"><svg class="ui-icon"><use href="#icon-' + (isDark ? 'sun' : 'moon') + '"></use></svg></span>';
             }
 
             themeToggle.addEventListener('click', function() {
